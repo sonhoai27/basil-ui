@@ -35,6 +35,7 @@ import { SegmentedControl } from './segmented-control';
 import { EmptyState, ErrorState } from './empty-state';
 import { Pagination } from './pagination';
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 type Density = 'comfortable' | 'compact';
 
@@ -138,7 +139,7 @@ export function DataTable<TData>({
   isLoading,
   isError,
   onRetry,
-  emptyTitle = 'No data',
+  emptyTitle,
   emptyDescription,
   emptyAction,
   pageSize = 15,
@@ -174,6 +175,7 @@ export function DataTable<TData>({
   onStateChange,
   appliedView,
 }: DataTableProps<TData>) {
+  const t = useMessages();
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting ?? []);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(
@@ -217,7 +219,7 @@ export function DataTable<TData>({
             table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
-          aria-label="Select all"
+          aria-label={t.table.selectAllAria}
         />
       ),
       cell: ({ row }) => (
@@ -225,7 +227,7 @@ export function DataTable<TData>({
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(v) => row.toggleSelected(!!v)}
-            aria-label="Select row"
+            aria-label={t.table.selectRowAria}
           />
         </span>
       ),
@@ -233,7 +235,7 @@ export function DataTable<TData>({
       enableHiding: false,
     };
     return [selectCol, ...columns];
-  }, [columns, enableRowSelection]);
+  }, [columns, enableRowSelection, t]);
 
   const table = useReactTable({
     data,
@@ -353,9 +355,9 @@ export function DataTable<TData>({
                 <Input
                   value={globalFilter}
                   onChange={(e) => setGlobalFilter(e.target.value)}
-                  placeholder={searchPlaceholder ?? 'Search…'}
+                  placeholder={searchPlaceholder ?? t.table.searchPlaceholder}
                   className="w-full pl-8 sm:w-64"
-                  aria-label="Search"
+                  aria-label={t.common.search}
                 />
               </div>
             ) : null}
@@ -364,12 +366,12 @@ export function DataTable<TData>({
             {densityToggle ? (
               <SegmentedControl
                 size="sm"
-                ariaLabel="Display density"
+                ariaLabel={t.table.density}
                 value={densityState}
                 onChange={(v) => setDensityState(v as Density)}
                 options={[
-                  { value: 'comfortable', label: 'Comfortable' },
-                  { value: 'compact', label: 'Compact' },
+                  { value: 'comfortable', label: t.table.densityComfortable },
+                  { value: 'compact', label: t.table.densityCompact },
                 ]}
               />
             ) : null}
@@ -377,11 +379,11 @@ export function DataTable<TData>({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" leadingIcon={<SlidersHorizontal size={14} />}>
-                    Columns
+                    {t.table.columns}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuLabel>Show columns</DropdownMenuLabel>
+                  <DropdownMenuLabel>{t.table.showColumns}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {hidableColumns.map((col) => (
                     <DropdownMenuCheckboxItem
@@ -404,16 +406,16 @@ export function DataTable<TData>({
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-primary-subtle px-4 py-2.5">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm font-medium text-primary">
-              {allSelected ? `All ${totalFiltered} selected` : `${selectedRows.length} selected`}
+              {allSelected ? t.table.selectedAll(totalFiltered) : t.table.selected(selectedRows.length)}
             </span>
             {!allSelected && allPageSelected && moreBeyondPage && !manualPagination ? (
               <Button variant="link" size="sm" onClick={() => table.toggleAllRowsSelected(true)}>
-                Select all {totalFiltered}
+                {t.table.selectAllN(totalFiltered)}
               </Button>
             ) : null}
             {!allSelected && allPageSelected && manualPagination && onSelectAllAcrossPages ? (
               <Button variant="link" size="sm" onClick={onSelectAllAcrossPages}>
-                Select all {rowCount}
+                {t.table.selectAllN(rowCount ?? 0)}
               </Button>
             ) : null}
           </div>
@@ -424,8 +426,8 @@ export function DataTable<TData>({
       <div className="overflow-hidden rounded-lg border border-border bg-card">
         {isError ? (
           <ErrorState
-            description="Couldn't load the data. Check your connection and try again."
-            action={onRetry ? { label: 'Retry', onClick: onRetry } : undefined}
+            description={t.table.errorDescription}
+            action={onRetry ? { label: t.common.retry, onClick: onRetry } : undefined}
           />
         ) : isLoading ? (
             <Table aria-label={ariaLabel ?? caption} aria-busy className={densityCls} style={tableStyle} containerStyle={scrollStyle}>
@@ -460,12 +462,12 @@ export function DataTable<TData>({
         ) : rows.length === 0 ? (
           showFilteredEmpty ? (
             <EmptyState
-              title={filteredEmptyTitle ?? 'No matching results'}
-              description={filteredEmptyDescription ?? 'Try changing your search or removing some filters.'}
-              action={canClear ? { label: 'Clear filters', onClick: clearFilters } : undefined}
+              title={filteredEmptyTitle ?? t.table.filteredEmptyTitle}
+              description={filteredEmptyDescription ?? t.table.filteredEmptyDescription}
+              action={canClear ? { label: t.table.clearFilters, onClick: clearFilters } : undefined}
             />
           ) : (
-            <EmptyState title={emptyTitle} description={emptyDescription} action={emptyAction} />
+            <EmptyState title={emptyTitle ?? t.table.noData} description={emptyDescription} action={emptyAction} />
           )
         ) : (
             <Table aria-label={caption ? undefined : ariaLabel} className={densityCls} style={tableStyle} containerStyle={scrollStyle}>
@@ -503,7 +505,7 @@ export function DataTable<TData>({
                               onTouchStart={h.getResizeHandler()}
                               aria-hidden
                               data-resizing={h.column.getIsResizing() ? '' : undefined}
-                              title="Drag to resize column"
+                              title={t.table.resize}
                               className="group/rz absolute right-0 top-0 z-[1] flex h-full w-3 cursor-col-resize touch-none select-none justify-end"
                             >
                               {/* Divider always visible → signals the column is resizable; thicker + green on hover/drag */}
@@ -543,16 +545,16 @@ export function DataTable<TData>({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-4">
             {rowCount !== undefined ? (
-              <span className="font-tabular text-xs text-muted-foreground">{rowCount} results</span>
+              <span className="font-tabular text-xs text-muted-foreground">{t.common.results(rowCount)}</span>
             ) : null}
             {pageSizeOptions ? (
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Rows</span>
+                <span className="text-xs text-muted-foreground">{t.table.rows}</span>
                 <Select
                   value={String(pagination.pageSize)}
                   onValueChange={(v) => table.setPageSize(Number(v))}
                 >
-                  <SelectTrigger className="h-8 w-[74px]" aria-label="Rows per page">
+                  <SelectTrigger className="h-8 w-[74px]" aria-label={t.table.rowsPerPage}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

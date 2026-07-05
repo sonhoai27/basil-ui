@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MoreHorizontal } from 'lucide-react';
 
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,10 +28,11 @@ export interface KebabMenuProps {
  * needs an overflow menu.
  */
 export function KebabMenu({ items, align = 'end' }: KebabMenuProps) {
+  const t = useMessages();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open menu"
+        aria-label={t.kebab.open}
         className={cn(
           'inline-flex size-8 items-center justify-center rounded-md text-muted-foreground',
           'transition-colors hover:bg-muted hover:text-foreground',

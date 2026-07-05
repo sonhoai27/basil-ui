@@ -6,6 +6,7 @@ import { Calendar as CalendarIcon, X } from "lucide-react"
 import type { Matcher } from "react-day-picker"
 
 import { cn } from "../../lib/utils"
+import { useMessages } from "../../i18n"
 import { Calendar } from "../ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
@@ -30,7 +31,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
     {
       value,
       onChange,
-      placeholder = "Pick a date",
+      placeholder,
       className,
       disabled,
       fromDate,
@@ -40,7 +41,9 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
     },
     ref
   ) => {
+    const t = useMessages()
     const [open, setOpen] = React.useState(false)
+    const placeholderText = placeholder ?? t.datePicker.placeholder
     const showClear = !hideClear && !disabled && value != null
 
     // react-day-picker v10: constrain the date range via `before`/`after` matchers,
@@ -59,7 +62,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
             type="button"
             disabled={disabled}
             aria-haspopup="dialog"
-            aria-label={value ? format(value, "dd/MM/yyyy") : placeholder}
+            aria-label={value ? format(value, "dd/MM/yyyy") : placeholderText}
             data-placeholder={value ? undefined : ""}
             className={cn(
               "flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-left text-sm transition-colors",
@@ -71,13 +74,13 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
           >
             <CalendarIcon className="h-4 w-4 shrink-0 opacity-70" />
             <span className="line-clamp-1 flex-1">
-              {value ? format(value, "dd/MM/yyyy") : placeholder}
+              {value ? format(value, "dd/MM/yyyy") : placeholderText}
             </span>
             {showClear ? (
               <span
                 role="button"
                 tabIndex={0}
-                aria-label="Clear date"
+                aria-label={t.datePicker.clear}
                 className="-mr-1 inline-flex shrink-0 items-center justify-center rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                 onClick={(e) => {
                   e.stopPropagation()

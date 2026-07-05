@@ -2,6 +2,7 @@ import * as React from 'react';
 import { UploadCloud as UploadIcon, X as XIcon } from 'lucide-react';
 
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 export interface FileUploadProps {
   value?: File[];
@@ -52,6 +53,7 @@ interface FilePreviewProps {
 }
 
 const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove, disabled }) => {
+  const t = useMessages();
   const isImage = file.type.startsWith('image/');
   const [url, setUrl] = React.useState<string | null>(null);
 
@@ -89,7 +91,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove, disabled }) =
         type="button"
         onClick={onRemove}
         disabled={disabled}
-        aria-label={`Remove ${file.name}`}
+        aria-label={t.fileUpload.remove(file.name)}
         className={cn(
           'flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors',
           'hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50',
@@ -110,6 +112,8 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     { value = [], onChange, accept, multiple = true, maxSizeMB, disabled, hint, className },
     ref,
   ) => {
+    const t = useMessages();
+    const hintText = hint ?? t.fileUpload.hint;
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [dragOver, setDragOver] = React.useState(false);
     const [note, setNote] = React.useState<string | null>(null);
@@ -177,7 +181,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           role="button"
           tabIndex={disabled ? -1 : 0}
           aria-disabled={disabled || undefined}
-          aria-describedby={hint ? descId : undefined}
+          aria-describedby={hintText ? descId : undefined}
           onClick={openPicker}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -213,9 +217,9 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           <p className="text-sm font-medium text-foreground">
             Drag and drop or click to select
           </p>
-          {hint ? (
+          {hintText ? (
             <p id={descId} className="text-xs text-muted-foreground">
-              {hint}
+              {hintText}
             </p>
           ) : null}
           <input

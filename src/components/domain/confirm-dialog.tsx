@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '../ui/alert-dialog';
+import { useMessages } from '../../i18n';
 
 export interface ConfirmDialogProps {
   open: boolean;
@@ -26,12 +27,15 @@ export function ConfirmDialog({
   onOpenChange,
   title,
   description,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
+  confirmLabel,
+  cancelLabel,
   destructive,
   isLoading,
   onConfirm,
 }: ConfirmDialogProps) {
+  const t = useMessages();
+  const confirm = confirmLabel ?? t.confirmDialog.confirm;
+  const cancel = cancelLabel ?? t.confirmDialog.cancel;
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -40,13 +44,13 @@ export function ConfirmDialog({
           {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>{cancelLabel}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>{cancel}</AlertDialogCancel>
           <AlertDialogAction
             disabled={isLoading}
             onClick={() => void onConfirm()}
             variant={destructive ? 'destructive' : undefined}
           >
-            {confirmLabel}
+            {confirm}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

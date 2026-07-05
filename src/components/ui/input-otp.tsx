@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 export interface InputOTPProps {
   /** Number of input cells (default 6). */
@@ -20,9 +21,11 @@ export interface InputOTPProps {
  */
 export const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(
   (
-    { length = 6, value, onChange, disabled, autoFocus, ariaLabel = 'OTP code', className },
+    { length = 6, value, onChange, disabled, autoFocus, ariaLabel, className },
     ref,
   ) => {
+    const t = useMessages();
+    const label = ariaLabel ?? t.inputOtp.aria;
     const inputsRef = React.useRef<Array<HTMLInputElement | null>>([]);
     const [activeIndex, setActiveIndex] = React.useState<number>(autoFocus ? 0 : -1);
 
@@ -136,7 +139,7 @@ export const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(
     return (
       <div
         role="group"
-        aria-label={ariaLabel}
+        aria-label={label}
         className={cn('flex items-center gap-2', className)}
       >
         {chars.map((char, index) => (
@@ -152,7 +155,7 @@ export const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(
             maxLength={1}
             value={char}
             disabled={disabled}
-            aria-label={`Digit ${index + 1}`}
+            aria-label={t.inputOtp.digit(index + 1)}
             onChange={(e) => handleChange(index, e.target.value)}
             onKeyDown={(e) => handleKeyDown(index, e)}
             onPaste={(e) => handlePaste(index, e)}

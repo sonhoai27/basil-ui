@@ -15,6 +15,7 @@ import {
 } from '../ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Separator } from '../ui/separator';
+import { useMessages } from '../../i18n';
 
 export interface FacetedFilterOption {
   label: string;
@@ -39,6 +40,7 @@ export function DataTableFacetedFilter<TData>({
   title,
   options,
 }: DataTableFacetedFilterProps<TData>) {
+  const t = useMessages();
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set((column?.getFilterValue() as string[] | undefined) ?? []);
 
@@ -56,7 +58,7 @@ export function DataTableFacetedFilter<TData>({
               <div className="hidden gap-1 lg:flex">
                 {selectedValues.size > 2 ? (
                   <Badge variant="soft-primary" size="sm" className="font-tabular">
-                    {selectedValues.size} selected
+                    {selectedValues.size} {t.facetedFilter.selected}
                   </Badge>
                 ) : (
                   options
@@ -76,7 +78,7 @@ export function DataTableFacetedFilter<TData>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>No results.</CommandEmpty>
+            <CommandEmpty>{t.facetedFilter.empty}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -124,7 +126,7 @@ export function DataTableFacetedFilter<TData>({
                     onSelect={() => column?.setFilterValue(undefined)}
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    {t.facetedFilter.clearFilters}
                   </CommandItem>
                 </CommandGroup>
               </>

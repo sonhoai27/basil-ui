@@ -1,0 +1,128 @@
+import type { Messages } from './messages';
+
+/** Vietnamese locale. Pass to `<BasilProvider messages={vi}>`. */
+export const vi: Messages = {
+  common: {
+    loading: 'Đang tải',
+    retry: 'Thử lại',
+    clear: 'Xoá',
+    cancel: 'Huỷ',
+    save: 'Lưu',
+    search: 'Tìm kiếm',
+    selectAll: 'Chọn tất cả',
+    previous: 'Trước',
+    next: 'Sau',
+    remove: (label) => (label ? `Bỏ ${label}` : 'Bỏ'),
+    results: (n) => `${n} kết quả`,
+  },
+  table: {
+    noData: 'Không có dữ liệu',
+    noResults: 'Không tìm thấy kết quả phù hợp',
+    filteredEmptyTitle: 'Không tìm thấy kết quả phù hợp',
+    filteredEmptyDescription: 'Thử đổi từ khoá hoặc bỏ bớt bộ lọc.',
+    errorDescription: 'Không tải được dữ liệu. Kiểm tra kết nối rồi thử lại.',
+    clearFilters: 'Xoá bộ lọc',
+    columns: 'Cột',
+    showColumns: 'Hiện cột',
+    rows: 'Số dòng',
+    rowsPerPage: 'Số dòng mỗi trang',
+    density: 'Mật độ hiển thị',
+    densityComfortable: 'Thoáng',
+    densityCompact: 'Gọn',
+    searchPlaceholder: 'Tìm kiếm…',
+    resize: 'Kéo để giãn cột',
+    selectAllAria: 'Chọn tất cả',
+    selectRowAria: 'Chọn dòng',
+    selected: (n) => `Đã chọn ${n}`,
+    selectedAll: (n) => `Đã chọn tất cả ${n}`,
+    selectAllN: (n) => `Chọn tất cả ${n}`,
+  },
+  pagination: {
+    aria: 'Phân trang',
+    pageOf: (page, count) => `Trang ${page} / ${count}`,
+  },
+  combobox: {
+    placeholder: 'Chọn...',
+    searchPlaceholder: 'Tìm kiếm...',
+    empty: 'Không có kết quả.',
+    clear: 'Xoá lựa chọn',
+    create: (query) => `Tạo mới "${query}"`,
+  },
+  multiSelect: {
+    placeholder: 'Chọn...',
+    searchPlaceholder: 'Tìm kiếm...',
+    empty: 'Không có kết quả.',
+  },
+  datePicker: {
+    placeholder: 'Chọn ngày',
+    clear: 'Xoá ngày',
+  },
+  dateRangePicker: {
+    placeholder: 'Chọn khoảng ngày',
+    clear: 'Xoá khoảng ngày',
+    presetToday: 'Hôm nay',
+    preset7d: '7 ngày',
+    preset30d: '30 ngày',
+    presetThisMonth: 'Tháng này',
+  },
+  numberField: {
+    decrease: 'Giảm',
+    increase: 'Tăng',
+  },
+  inputOtp: {
+    aria: 'Mã OTP',
+    digit: (n) => `Chữ số ${n}`,
+  },
+  fileUpload: {
+    hint: 'Kéo thả hoặc bấm để chọn',
+    remove: (name) => `Bỏ ${name}`,
+  },
+  savedViews: {
+    all: 'Tất cả',
+    rename: 'Đổi tên',
+    delete: 'Xoá',
+    renameTitle: 'Đổi tên bộ lọc',
+    namePlaceholder: 'VD: Chưa thu tiền',
+    cancel: 'Huỷ',
+    save: 'Lưu',
+    saveCurrent: 'Lưu bộ lọc hiện tại',
+    aria: 'Bộ lọc đã lưu',
+  },
+  facetedFilter: {
+    empty: 'Không có kết quả.',
+    clearFilters: 'Xoá bộ lọc',
+    selected: 'đã chọn',
+  },
+  filterChips: {
+    filtering: 'Đang lọc:',
+    clearAll: 'Xoá tất cả',
+    remove: (label) => `Bỏ lọc ${label}`,
+    results: (n) => `· ${n} kết quả`,
+  },
+  status: {
+    pending_payment: 'Chờ thanh toán',
+    paid: 'Đã thanh toán',
+    packing: 'Đang đóng',
+    sent: 'Đã gửi',
+    cancelled: 'Đã huỷ',
+  },
+  errorState: {
+    title: 'Đã có lỗi xảy ra',
+  },
+  banner: {
+    dismiss: 'Đóng',
+  },
+  confirmDialog: {
+    confirm: 'Xác nhận',
+    cancel: 'Huỷ',
+  },
+  timeline: {
+    by: (actor) => `bởi ${actor}`,
+  },
+  badges: {
+    outOfStock: 'Tạm hết',
+  },
+  kebab: {
+    open: 'Mở menu',
+  },
+};

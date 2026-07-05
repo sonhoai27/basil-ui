@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Leaf as LeafIcon, TriangleAlert as TriangleAlertIcon } from 'lucide-react';
 import { Button } from './button';
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 interface StateShellProps {
   role: 'status' | 'alert';
@@ -79,14 +80,15 @@ export interface ErrorStateProps {
 
 /** Error state — destructive warning icon + retry CTA. */
 export const ErrorState = React.forwardRef<HTMLDivElement, ErrorStateProps>(
-  ({ title = 'Something went wrong', description, icon, action, className }, ref) => {
+  ({ title, description, icon, action, className }, ref) => {
+    const t = useMessages();
     return (
       <StateShell
         ref={ref}
         role="alert"
         icon={icon ?? <TriangleAlertIcon size={32} />}
         iconClassName="text-destructive"
-        title={title}
+        title={title ?? t.errorState.title}
         titleClassName="font-semibold"
         description={description}
         action={

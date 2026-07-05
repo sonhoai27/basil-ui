@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 export interface FilterChip {
   /** Unique key used for removal. */
@@ -26,6 +27,7 @@ export interface FilterChipsProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 export const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(
   ({ filters, onRemove, onClearAll, resultCount, className, ...props }, ref) => {
+    const t = useMessages();
     if (filters.length === 0) return null;
     return (
       <div
@@ -33,7 +35,7 @@ export const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(
         className={cn('flex flex-wrap items-center gap-2', className)}
         {...props}
       >
-        <span className="text-xs font-medium text-muted-foreground">Filtering:</span>
+        <span className="text-xs font-medium text-muted-foreground">{t.filterChips.filtering}</span>
         {filters.map((f) => (
           <span
             key={f.id}
@@ -44,7 +46,7 @@ export const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(
             <button
               type="button"
               onClick={() => onRemove(f.id)}
-              aria-label={`Remove ${f.label} filter`}
+              aria-label={t.filterChips.remove(f.label)}
               className="inline-flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X size={12} aria-hidden />
@@ -57,11 +59,11 @@ export const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(
             onClick={onClearAll}
             className="text-xs font-semibold text-primary transition-colors hover:text-primary-hover"
           >
-            Clear all
+            {t.filterChips.clearAll}
           </button>
         ) : null}
         {resultCount !== undefined ? (
-          <span className="font-tabular text-xs text-muted-foreground">· {resultCount} results</span>
+          <span className="font-tabular text-xs text-muted-foreground">{t.filterChips.results(resultCount)}</span>
         ) : null}
       </div>
     );

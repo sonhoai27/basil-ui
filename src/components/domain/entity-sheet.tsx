@@ -9,6 +9,7 @@ import {
 import { Skeleton } from '../ui/skeleton';
 import { ErrorState } from './empty-state';
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 interface EntitySheetProps {
   open: boolean;
@@ -63,6 +64,7 @@ export const EntitySheet = React.forwardRef<HTMLDivElement, EntitySheetProps>(
     },
     ref,
   ) => {
+    const t = useMessages();
     const errorProps =
       typeof error === 'string' ? { description: error } : error;
     const isBusy = Boolean(loading || error);
@@ -92,7 +94,7 @@ export const EntitySheet = React.forwardRef<HTMLDivElement, EntitySheetProps>(
                 description={errorProps?.description}
                 action={
                   errorProps?.onRetry
-                    ? { label: 'Retry', onClick: errorProps.onRetry }
+                    ? { label: t.common.retry, onClick: errorProps.onRetry }
                     : undefined
                 }
               />

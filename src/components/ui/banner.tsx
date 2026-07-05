@@ -10,6 +10,7 @@ import {
 } from "lucide-react"
 
 import { cn } from "../../lib/utils"
+import { useMessages } from "../../i18n"
 
 /**
  * Banner — page-level, full-width, dismissible notice (unlike the inline Alert).
@@ -59,6 +60,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
     { className, variant, title, icon, action, onDismiss, children, ...props },
     ref
   ) => {
+    const t = useMessages()
     const DefaultIcon = VARIANT_ICON[variant ?? "info"]
     return (
       <div
@@ -94,7 +96,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
           <button
             type="button"
             onClick={onDismiss}
-            aria-label="Dismiss"
+            aria-label={t.banner.dismiss}
             className="-mr-1 -mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md text-current opacity-70 transition-opacity hover:opacity-100"
           >
             <X className="size-4" aria-hidden />

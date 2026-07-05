@@ -203,9 +203,9 @@ PRs are welcome! Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md) and open an 
 
 ## Roadmap
 
-**Up next:** real i18n (English + Vietnamese) · charts on Recharts. → **[Full roadmap](./ROADMAP.md)**
+**New in 0.2:** i18n (`BasilProvider` + EN/VI locales) · charts on Recharts (bar/line/area/donut). → **[Full roadmap](./ROADMAP.md)**
 
-Shipped: shadcn registry ✓ · MCP server ✓ · agent-native docs ✓. Coming: dashboard/POS templates, dark mode, tests + CI, a dedicated docs site.
+Shipped: shadcn registry ✓ · MCP server ✓ · agent-native docs ✓ · i18n ✓ · charts ✓. Coming: dashboard/POS templates, dark mode, tests + CI, a dedicated docs site.
 
 ## License
 

@@ -11,6 +11,7 @@ import { Calendar as CalendarIcon, X } from "lucide-react"
 import type { DateRange, Matcher } from "react-day-picker"
 
 import { cn } from "../../lib/utils"
+import { useMessages, type Messages } from "../../i18n"
 import { Calendar } from "../ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
@@ -45,36 +46,38 @@ export interface DateRangePickerProps {
   presets?: boolean | DateRangePickerPreset[]
 }
 
-const DEFAULT_PRESETS: DateRangePickerPreset[] = [
-  {
-    label: "Today",
-    getRange: () => {
-      const today = new Date()
-      return { from: today, to: today }
+function createDefaultPresets(t: Messages): DateRangePickerPreset[] {
+  return [
+    {
+      label: t.dateRangePicker.presetToday,
+      getRange: () => {
+        const today = new Date()
+        return { from: today, to: today }
+      },
     },
-  },
-  {
-    label: "7 days",
-    getRange: () => {
-      const today = new Date()
-      return { from: subDays(today, 6), to: today }
+    {
+      label: t.dateRangePicker.preset7d,
+      getRange: () => {
+        const today = new Date()
+        return { from: subDays(today, 6), to: today }
+      },
     },
-  },
-  {
-    label: "30 days",
-    getRange: () => {
-      const today = new Date()
-      return { from: subDays(today, 29), to: today }
+    {
+      label: t.dateRangePicker.preset30d,
+      getRange: () => {
+        const today = new Date()
+        return { from: subDays(today, 29), to: today }
+      },
     },
-  },
-  {
-    label: "This month",
-    getRange: () => {
-      const today = new Date()
-      return { from: startOfMonth(today), to: endOfMonth(today) }
+    {
+      label: t.dateRangePicker.presetThisMonth,
+      getRange: () => {
+        const today = new Date()
+        return { from: startOfMonth(today), to: endOfMonth(today) }
+      },
     },
-  },
-]
+  ]
+}
 
 function formatRange(range?: DateRange): string | null {
   if (!range?.from) return null
@@ -89,7 +92,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
     {
       value,
       onChange,
-      placeholder = "Pick a date range",
+      placeholder,
       numberOfMonths = 2,
       disabled,
       fromDate,
@@ -100,8 +103,10 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
     },
     ref
   ) => {
+    const t = useMessages()
     const [open, setOpen] = React.useState(false)
 
+    const placeholderText = placeholder ?? t.dateRangePicker.placeholder
     const label = formatRange(value)
     const showClear = !disabled && value?.from != null
 
@@ -110,7 +115,12 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
     if (fromDate) disabledMatchers.push({ before: fromDate })
     if (toDate) disabledMatchers.push({ after: toDate })
 
-    const presetList = presets === true ? DEFAULT_PRESETS : Array.isArray(presets) ? presets : null
+    const presetList =
+      presets === true
+        ? createDefaultPresets(t)
+        : Array.isArray(presets)
+          ? presets
+          : null
 
     return (
       <Popover open={open} onOpenChange={setOpen}>
@@ -120,7 +130,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
             type="button"
             disabled={disabled}
             aria-haspopup="dialog"
-            aria-label={label ?? placeholder}
+            aria-label={label ?? placeholderText}
             data-placeholder={label ? undefined : ""}
             className={cn(
               "flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-left text-sm transition-colors",
@@ -132,13 +142,13 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
           >
             <CalendarIcon className="h-4 w-4 shrink-0 opacity-70" />
             <span className="line-clamp-1 flex-1 font-tabular">
-              {label ?? placeholder}
+              {label ?? placeholderText}
             </span>
             {showClear ? (
               <span
                 role="button"
                 tabIndex={0}
-                aria-label="Clear date range"
+                aria-label={t.dateRangePicker.clear}
                 className="-mr-1 inline-flex shrink-0 items-center justify-center rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                 onClick={(e) => {
                   e.stopPropagation()

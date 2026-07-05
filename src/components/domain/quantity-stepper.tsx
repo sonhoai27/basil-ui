@@ -1,5 +1,6 @@
 import { Minus as MinusIcon, Plus as PlusIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 export interface QuantityStepperProps {
   value: number;
@@ -22,6 +23,7 @@ export function QuantityStepper({
   size = 'md',
   className,
 }: QuantityStepperProps) {
+  const t = useMessages();
   const btn =
     size === 'sm'
       ? 'h-8 w-8 [&_svg]:size-3.5'
@@ -39,7 +41,7 @@ export function QuantityStepper({
     >
       <button
         type="button"
-        aria-label="Decrease quantity"
+        aria-label={t.numberField.decrease}
         onClick={() => onChange(Math.max(min, value - step))}
         disabled={value <= min}
         className={cn(
@@ -62,7 +64,7 @@ export function QuantityStepper({
       </span>
       <button
         type="button"
-        aria-label="Increase quantity"
+        aria-label={t.numberField.increase}
         onClick={() => onChange(Math.min(max, value + step))}
         disabled={value >= max}
         className={cn(

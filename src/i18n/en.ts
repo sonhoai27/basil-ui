@@ -1,0 +1,128 @@
+import type { Messages } from './messages';
+
+/** English locale (the default). */
+export const en: Messages = {
+  common: {
+    loading: 'Loading',
+    retry: 'Retry',
+    clear: 'Clear',
+    cancel: 'Cancel',
+    save: 'Save',
+    search: 'Search',
+    selectAll: 'Select all',
+    previous: 'Previous',
+    next: 'Next',
+    remove: (label) => (label ? `Remove ${label}` : 'Remove'),
+    results: (n) => `${n} results`,
+  },
+  table: {
+    noData: 'No data',
+    noResults: 'No matching results',
+    filteredEmptyTitle: 'No matching results',
+    filteredEmptyDescription: 'Try a different search or clear some filters.',
+    errorDescription: "Couldn't load data. Check your connection and try again.",
+    clearFilters: 'Clear filters',
+    columns: 'Columns',
+    showColumns: 'Show columns',
+    rows: 'Rows',
+    rowsPerPage: 'Rows per page',
+    density: 'Display density',
+    densityComfortable: 'Comfortable',
+    densityCompact: 'Compact',
+    searchPlaceholder: 'Search…',
+    resize: 'Drag to resize column',
+    selectAllAria: 'Select all',
+    selectRowAria: 'Select row',
+    selected: (n) => `${n} selected`,
+    selectedAll: (n) => `All ${n} selected`,
+    selectAllN: (n) => `Select all ${n}`,
+  },
+  pagination: {
+    aria: 'Pagination',
+    pageOf: (page, count) => `Page ${page} / ${count}`,
+  },
+  combobox: {
+    placeholder: 'Select...',
+    searchPlaceholder: 'Search...',
+    empty: 'No results.',
+    clear: 'Clear selection',
+    create: (query) => `Create "${query}"`,
+  },
+  multiSelect: {
+    placeholder: 'Select...',
+    searchPlaceholder: 'Search...',
+    empty: 'No results.',
+  },
+  datePicker: {
+    placeholder: 'Pick a date',
+    clear: 'Clear date',
+  },
+  dateRangePicker: {
+    placeholder: 'Pick a date range',
+    clear: 'Clear date range',
+    presetToday: 'Today',
+    preset7d: '7 days',
+    preset30d: '30 days',
+    presetThisMonth: 'This month',
+  },
+  numberField: {
+    decrease: 'Decrease',
+    increase: 'Increase',
+  },
+  inputOtp: {
+    aria: 'One-time code',
+    digit: (n) => `Digit ${n}`,
+  },
+  fileUpload: {
+    hint: 'Drag and drop or click to select',
+    remove: (name) => `Remove ${name}`,
+  },
+  savedViews: {
+    all: 'All',
+    rename: 'Rename',
+    delete: 'Delete',
+    renameTitle: 'Rename view',
+    namePlaceholder: 'e.g. Unpaid',
+    cancel: 'Cancel',
+    save: 'Save',
+    saveCurrent: 'Save current filter',
+    aria: 'Saved views',
+  },
+  facetedFilter: {
+    empty: 'No results.',
+    clearFilters: 'Clear filters',
+    selected: 'selected',
+  },
+  filterChips: {
+    filtering: 'Filtering:',
+    clearAll: 'Clear all',
+    remove: (label) => `Remove ${label} filter`,
+    results: (n) => `· ${n} results`,
+  },
+  status: {
+    pending_payment: 'Pending payment',
+    paid: 'Paid',
+    packing: 'Packing',
+    sent: 'Sent',
+    cancelled: 'Cancelled',
+  },
+  errorState: {
+    title: 'Something went wrong',
+  },
+  banner: {
+    dismiss: 'Dismiss',
+  },
+  confirmDialog: {
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+  },
+  timeline: {
+    by: (actor) => `by ${actor}`,
+  },
+  badges: {
+    outOfStock: 'Out of stock',
+  },
+  kebab: {
+    open: 'Open menu',
+  },
+};

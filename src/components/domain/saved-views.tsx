@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { KebabMenu } from './kebab-menu';
+import { useMessages } from '../../i18n';
 
 /**
  * SavedViews — presentational preset/segment tab strip for saved DataTable
@@ -65,6 +66,7 @@ const ViewTab = React.forwardRef<
   { view, active, tabIndex, onSelect, onRename, onDelete, onKeyDown },
   ref,
 ) {
+  const t = useMessages();
   const [renameOpen, setRenameOpen] = React.useState(false);
   const [value, setValue] = React.useState(view.name);
 
@@ -74,11 +76,11 @@ const ViewTab = React.forwardRef<
 
   const items = [
     onRename && {
-      label: 'Rename',
+      label: t.savedViews.rename,
       onSelect: () => setRenameOpen(true),
     },
     onDelete && {
-      label: 'Delete',
+      label: t.savedViews.delete,
       destructive: true,
       onSelect: onDelete,
     },
@@ -123,7 +125,7 @@ const ViewTab = React.forwardRef<
               className="flex flex-col gap-2"
             >
               <label className="text-xs font-medium text-muted-foreground">
-                Rename filter
+                {t.savedViews.renameTitle}
               </label>
               <Input
                 autoFocus
@@ -138,10 +140,10 @@ const ViewTab = React.forwardRef<
                   variant="ghost"
                   onClick={() => setRenameOpen(false)}
                 >
-                  Cancel
+                  {t.savedViews.cancel}
                 </Button>
                 <Button type="submit" size="sm" disabled={!value.trim()}>
-                  Save
+                  {t.savedViews.save}
                 </Button>
               </div>
             </form>
@@ -154,6 +156,7 @@ const ViewTab = React.forwardRef<
 
 /** "+ Save current filter" affordance — Popover with Input + Save. */
 function SaveNewPopover({ onSaveNew }: { onSaveNew: (name: string) => void }) {
+  const t = useMessages();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
 
@@ -179,7 +182,7 @@ function SaveNewPopover({ onSaveNew }: { onSaveNew: (name: string) => void }) {
           )}
         >
           <Plus className="size-4" />
-          Save current filter
+          {t.savedViews.saveCurrent}
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-64">
@@ -197,7 +200,7 @@ function SaveNewPopover({ onSaveNew }: { onSaveNew: (name: string) => void }) {
             autoFocus
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="e.g. Unpaid"
+            placeholder={t.savedViews.namePlaceholder}
             aria-label="New filter name"
           />
           <div className="flex justify-end gap-2">
@@ -207,11 +210,11 @@ function SaveNewPopover({ onSaveNew }: { onSaveNew: (name: string) => void }) {
               variant="ghost"
               onClick={() => setOpen(false)}
             >
-              Cancel
+              {t.savedViews.cancel}
             </Button>
             <Button type="submit" size="sm" disabled={!value.trim()}>
               <Check className="size-4" />
-              Save
+              {t.savedViews.save}
             </Button>
           </div>
         </form>
@@ -229,11 +232,13 @@ export const SavedViews = React.forwardRef<HTMLDivElement, SavedViewsProps>(
       onSaveNew,
       onRename,
       onDelete,
-      allLabel = 'All',
+      allLabel,
       className,
     },
     ref,
   ) {
+    const t = useMessages();
+    const resolvedAllLabel = allLabel ?? t.savedViews.all;
     const activeAll = !activeId;
     // Roving-tabindex tab list: [all, ...views].
     const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
@@ -288,7 +293,7 @@ export const SavedViews = React.forwardRef<HTMLDivElement, SavedViewsProps>(
       >
         <div
           role="tablist"
-          aria-label="Saved filters"
+          aria-label={t.savedViews.aria}
           className="flex items-center gap-4 overflow-x-auto"
         >
           <button
@@ -303,7 +308,7 @@ export const SavedViews = React.forwardRef<HTMLDivElement, SavedViewsProps>(
             onKeyDown={(e) => handleKeyDown(e, 0)}
             className={cn(tabClass(activeAll), 'shrink-0')}
           >
-            {allLabel}
+            {resolvedAllLabel}
           </button>
 
           {views.map((view, i) => {

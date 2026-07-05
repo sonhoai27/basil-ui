@@ -8,14 +8,11 @@ Legend: 🔴 P0 (adoption make-or-break) · 🟡 P1 (trust) · 🟢 P2 (breadth)
 
 ---
 
-## 🎯 Up next (committed focus)
+## 🎯 Up next
 
-- **Real i18n (EN + VI)** — move from "English defaults + override via props" to a proper
-  locale/messages system: a `BasilProvider` (or messages context) with shippable
-  **English and Vietnamese** locale packs, so every default string is localizable in one place.
-- **Charts (Recharts)** — a small, on-brand chart set built on **[Recharts](https://recharts.org)**
-  (bar / line / area / donut + a themed tooltip/legend) to complement the existing `Sparkline`.
-  Wire chart colors to the design tokens; keep them flat/hairline.
+**Shipped in v0.2:** ✅ **i18n** (`BasilProvider` + `useMessages` + EN/VI locale packs) · ✅ **charts on Recharts** (`BarChart`/`LineChart`/`AreaChart`/`DonutChart`, token-driven, flat).
+
+Next focus → **P0 #1 & #2** below: verify consumer install and ship a Sales dashboard template.
 
 ---
 

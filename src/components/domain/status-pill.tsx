@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Badge, type BadgeProps } from '../ui/badge';
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 /**
  * Default order lifecycle statuses. StatusPill is opinionated for commerce/POS;
@@ -12,13 +13,13 @@ type SoftVariant = NonNullable<BadgeProps['variant']>;
 
 const STATUS_CONFIG: Record<
   OrderStatus,
-  { label: string; variant: SoftVariant; dot: string }
+  { variant: SoftVariant; dot: string }
 > = {
-  pending_payment: { label: 'Pending payment', variant: 'soft-warning', dot: 'bg-warning' },
-  paid:            { label: 'Paid',            variant: 'soft-success', dot: 'bg-success' },
-  packing:         { label: 'Packing',         variant: 'soft-info',    dot: 'bg-info' },
-  sent:            { label: 'Sent',            variant: 'soft-primary', dot: 'bg-primary' },
-  cancelled:       { label: 'Cancelled',       variant: 'soft-muted',   dot: 'bg-muted-foreground' },
+  pending_payment: { variant: 'soft-warning', dot: 'bg-warning' },
+  paid:            { variant: 'soft-success', dot: 'bg-success' },
+  packing:         { variant: 'soft-info',    dot: 'bg-info' },
+  sent:            { variant: 'soft-primary', dot: 'bg-primary' },
+  cancelled:       { variant: 'soft-muted',   dot: 'bg-muted-foreground' },
 };
 
 export interface StatusPillProps
@@ -28,6 +29,7 @@ export interface StatusPillProps
 
 export const StatusPill = React.forwardRef<HTMLDivElement, StatusPillProps>(
   ({ status, className, ...props }, ref) => {
+    const t = useMessages();
     const cfg = STATUS_CONFIG[status];
     return (
       <Badge
@@ -38,7 +40,7 @@ export const StatusPill = React.forwardRef<HTMLDivElement, StatusPillProps>(
         {...props}
       >
         <span className={cn('h-1.5 w-1.5 rounded-full', cfg.dot)} aria-hidden />
-        {cfg.label}
+        {t.status[status]}
       </Badge>
     );
   },

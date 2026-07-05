@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 export type TimelineVariant =
   | 'default'
@@ -66,6 +67,7 @@ export const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
     },
     ref,
   ) => {
+    const t = useMessages();
     return (
       <li
         ref={ref}
@@ -121,7 +123,7 @@ export const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
           ) : null}
           {actor ? (
             <div className="mt-1 text-xs text-muted-foreground">
-              by {actor}
+              {t.timeline.by(actor)}
             </div>
           ) : null}
         </div>

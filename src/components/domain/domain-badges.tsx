@@ -1,5 +1,6 @@
 import { Badge } from '../ui/badge';
 import { cn } from '../../lib/utils';
+import { useMessages } from '../../i18n';
 
 export function VatBadge({ className }: { className?: string }) {
   return (
@@ -10,9 +11,10 @@ export function VatBadge({ className }: { className?: string }) {
 }
 
 export function OutOfStockBadge({ className }: { className?: string }) {
+  const t = useMessages();
   return (
     <Badge variant="soft-destructive" size="sm" className={cn('font-medium', className)} role="status">
-      Out of stock
+      {t.badges.outOfStock}
     </Badge>
   );
 }

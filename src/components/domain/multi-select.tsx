@@ -4,6 +4,7 @@ import * as React from "react"
 import { Check, ChevronsUpDown, X } from "lucide-react"
 
 import { cn } from "../../lib/utils"
+import { useMessages } from "../../i18n"
 import { Badge } from "../ui/badge"
 import {
   Command,
@@ -42,16 +43,21 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
       items,
       value,
       onChange,
-      placeholder = "Select...",
-      searchPlaceholder = "Search...",
-      emptyText = "No results.",
+      placeholder,
+      searchPlaceholder,
+      emptyText,
       maxDisplay,
       disabled,
       className,
     },
     ref
   ) => {
+    const t = useMessages()
     const [open, setOpen] = React.useState(false)
+
+    const placeholderText = placeholder ?? t.multiSelect.placeholder
+    const searchPlaceholderText = searchPlaceholder ?? t.multiSelect.searchPlaceholder
+    const emptyTextValue = emptyText ?? t.multiSelect.empty
 
     const selectedItems = React.useMemo(
       () =>
@@ -82,7 +88,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
             disabled={disabled}
             aria-haspopup="listbox"
             aria-expanded={open}
-            aria-label={placeholder}
+            aria-label={placeholderText}
             data-placeholder={selectedItems.length === 0 ? "" : undefined}
             className={cn(
               "flex min-h-10 w-full items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-1.5 text-left text-sm transition-colors",
@@ -92,7 +98,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
           >
             {selectedItems.length === 0 ? (
               <span className="line-clamp-1 flex-1 text-muted-foreground">
-                {placeholder}
+                {placeholderText}
               </span>
             ) : (
               <span className="flex min-w-0 flex-1 flex-wrap items-center gap-1">
@@ -107,7 +113,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                     <span
                       role="button"
                       tabIndex={0}
-                      aria-label={`Remove ${item.label}`}
+                      aria-label={t.common.remove(item.label)}
                       className="inline-flex shrink-0 items-center justify-center rounded-full p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                       onClick={(e) => {
                         e.stopPropagation()
@@ -140,9 +146,9 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
           align="start"
         >
           <Command>
-            <CommandInput placeholder={searchPlaceholder} />
+            <CommandInput placeholder={searchPlaceholderText} />
             <CommandList>
-              <CommandEmpty>{emptyText}</CommandEmpty>
+              <CommandEmpty>{emptyTextValue}</CommandEmpty>
               <CommandGroup>
                 {items.map((item) => {
                   const isSelected = value.includes(item.value)

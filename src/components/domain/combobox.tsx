@@ -4,6 +4,7 @@ import * as React from "react"
 import { Check, ChevronsUpDown, Plus, X } from "lucide-react"
 
 import { cn } from "../../lib/utils"
+import { useMessages } from "../../i18n"
 import {
   Command,
   CommandEmpty,
@@ -45,9 +46,9 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       items,
       value,
       onChange,
-      placeholder = "Select...",
-      searchPlaceholder = "Search...",
-      emptyText = "No results.",
+      placeholder,
+      searchPlaceholder,
+      emptyText,
       disabled,
       className,
       allowClear,
@@ -56,8 +57,13 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     },
     ref
   ) => {
+    const t = useMessages()
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState("")
+
+    const placeholderText = placeholder ?? t.combobox.placeholder
+    const searchPlaceholderText = searchPlaceholder ?? t.combobox.searchPlaceholder
+    const emptyTextValue = emptyText ?? t.combobox.empty
 
     const selected = React.useMemo(
       () => items.find((item) => item.value === value),
@@ -92,7 +98,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             disabled={disabled}
             aria-haspopup="listbox"
             aria-expanded={open}
-            aria-label={selected ? selected.label : placeholder}
+            aria-label={selected ? selected.label : placeholderText}
             data-placeholder={selected ? undefined : ""}
             className={cn(
               "flex h-10 w-full items-center justify-between gap-2 whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-left text-sm transition-colors",
@@ -108,14 +114,14 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                 </span>
               ) : null}
               <span className="line-clamp-1">
-                {selected ? selected.label : placeholder}
+                {selected ? selected.label : placeholderText}
               </span>
             </span>
             {showClear ? (
               <span
                 role="button"
                 tabIndex={0}
-                aria-label="Clear selection"
+                aria-label={t.combobox.clear}
                 className="-mr-1 inline-flex shrink-0 items-center justify-center rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                 onClick={(e) => {
                   e.stopPropagation()
@@ -142,12 +148,12 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
         >
           <Command>
             <CommandInput
-              placeholder={searchPlaceholder}
+              placeholder={searchPlaceholderText}
               value={query}
               onValueChange={setQuery}
             />
             <CommandList>
-              {!showCreate ? <CommandEmpty>{emptyText}</CommandEmpty> : null}
+              {!showCreate ? <CommandEmpty>{emptyTextValue}</CommandEmpty> : null}
               <CommandGroup>
                 {items.map((item) => {
                   const isSelected = item.value === value
@@ -195,11 +201,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                   >
                     <Plus className="h-4 w-4 shrink-0" />
                     <span className="line-clamp-1">
-                      {createLabel ? (
-                        createLabel(trimmed)
-                      ) : (
-                        <>Create &ldquo;{trimmed}&rdquo;</>
-                      )}
+                      {createLabel ? createLabel(trimmed) : t.combobox.create(trimmed)}
                     </span>
                   </CommandItem>
                 ) : null}

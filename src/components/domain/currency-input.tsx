@@ -2,6 +2,7 @@ import * as React from "react"
 import { Minus, Plus } from "lucide-react"
 
 import { cn } from "../../lib/utils"
+import { useMessages } from "../../i18n"
 
 /** Format an integer with vi-VN thousands grouping (dot separator): 1250000 → "1.250.000". */
 function formatGrouped(n: number): string {
@@ -167,6 +168,7 @@ const NumberField = React.forwardRef<HTMLInputElement, NumberFieldProps>(
     },
     ref
   ) => {
+    const t = useMessages()
     const clamp = (n: number): number => {
       let out = n
       if (min !== undefined && out < min) out = min
@@ -201,7 +203,7 @@ const NumberField = React.forwardRef<HTMLInputElement, NumberFieldProps>(
         {steppers && (
           <button
             type="button"
-            aria-label="Decrease"
+            aria-label={t.numberField.decrease}
             disabled={disabled || atMin}
             onClick={() => bump(-1)}
             className={stepperCls}
@@ -235,7 +237,7 @@ const NumberField = React.forwardRef<HTMLInputElement, NumberFieldProps>(
         {steppers && (
           <button
             type="button"
-            aria-label="Increase"
+            aria-label={t.numberField.increase}
             disabled={disabled || atMax}
             onClick={() => bump(1)}
             className={stepperCls}

@@ -5,6 +5,9 @@
 
 export { cn } from './lib/utils';
 
+// i18n — BasilProvider + useMessages + en/vi locale packs (components default to English)
+export * from './i18n';
+
 // shadcn ui official primitives — re-export TRỰC TIẾP
 export * from './components/ui/accordion';
 export * from './components/ui/alert';
@@ -82,3 +85,10 @@ export * from './components/domain/timeline';
 export * from './components/ui/progress';
 export * from './components/domain/stepper';
 export * from './components/domain/sparkline';
+
+// Charts (Recharts, token-driven) — bar / line / area / donut + shared primitives
+export * from './components/charts/chart-primitives';
+export * from './components/charts/bar-chart';
+export * from './components/charts/line-chart';
+export * from './components/charts/area-chart';
+export * from './components/charts/donut-chart';

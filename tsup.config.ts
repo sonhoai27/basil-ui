@@ -8,5 +8,5 @@ export default defineConfig({
   clean: true,
   treeshake: true,
   // Peers + anything the consumer supplies. CSS/tokens ship as source (styles.css).
-  external: ['react', 'react-dom', 'react/jsx-runtime', 'tailwindcss'],
+  external: ['react', 'react-dom', 'react/jsx-runtime', 'tailwindcss', 'recharts'],
 });

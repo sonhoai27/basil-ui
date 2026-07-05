@@ -2,6 +2,7 @@ import * as React from "react"
 import { Loader2 } from "lucide-react"
 
 import { cn } from "../../lib/utils"
+import { useMessages } from "../../i18n"
 
 const sizeMap = {
   sm: 16,
@@ -15,17 +16,20 @@ export interface SpinnerProps
 }
 
 const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
-  ({ className, size = "md", ...props }, ref) => (
-    <span
-      ref={ref}
-      role="status"
-      aria-label="Loading"
-      className={cn("inline-flex text-primary", className)}
-      {...props}
-    >
-      <Loader2 className="animate-spin" size={sizeMap[size]} aria-hidden="true" />
-    </span>
-  )
+  ({ className, size = "md", ...props }, ref) => {
+    const t = useMessages()
+    return (
+      <span
+        ref={ref}
+        role="status"
+        aria-label={t.common.loading}
+        className={cn("inline-flex text-primary", className)}
+        {...props}
+      >
+        <Loader2 className="animate-spin" size={sizeMap[size]} aria-hidden="true" />
+      </span>
+    )
+  }
 )
 Spinner.displayName = "Spinner"
 
