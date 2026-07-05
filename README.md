@@ -49,12 +49,24 @@ npm i react react-dom @tanstack/react-table
 
 > React **18 or 19** and Tailwind **v4** are peer requirements.
 
-Import the stylesheet **once** at your app root:
+### Tailwind v4 (required)
 
-```tsx
-// app entry (e.g. main.tsx / layout.tsx)
-import 'basil-ui/styles.css';
+Basil ships its own theme as a Tailwind v4 stylesheet, so your app needs the Tailwind v4 build plugin — [`@tailwindcss/vite`](https://tailwindcss.com/docs/installation/using-vite) for Vite or [`@tailwindcss/postcss`](https://tailwindcss.com/docs/installation/using-postcss) for Next.js / PostCSS. Without it, `basil-ui/styles.css` is passed through unprocessed and no utilities are generated.
+
+```ts
+// vite.config.ts
+import tailwindcss from '@tailwindcss/vite';
+export default defineConfig({ plugins: [react(), tailwindcss()] });
 ```
+
+Then import the stylesheet **once** at your app root:
+
+```css
+/* app CSS entry, e.g. src/index.css */
+@import 'basil-ui/styles.css';
+```
+
+That single import pulls in Tailwind, Basil's `@theme` tokens, **and** the `@source` directives that scan `basil-ui/dist` — so Basil's own component classes are emitted automatically, with no `content`/`@source` config on your side. (A plain `import 'basil-ui/styles.css';` in your JS entry also works when that file goes through the same Tailwind pipeline; the CSS `@import` above is the reliable default.)
 
 ### Font (opt-in)
 
