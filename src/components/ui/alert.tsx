@@ -11,8 +11,8 @@ import {
 import { cn } from "../../lib/utils"
 
 /**
- * Alert — callout borderless: nền tint + icon & chữ cùng hue (không viền).
- * Tự render icon mặc định theo variant; truyền `icon` để override, `icon={false}` để ẩn.
+ * Alert — borderless callout: tinted background with icon and text in the same hue (no border).
+ * Renders a default icon per variant; pass `icon` to override, or `icon={false}` to hide it.
  */
 const alertVariants = cva(
   "relative flex w-full items-start gap-3 rounded-xl px-4 py-3.5 text-sm",
@@ -44,7 +44,7 @@ const VARIANT_ICON: Record<
 export interface AlertProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {
-  /** Node icon tuỳ ý; `false` để ẩn icon. Mặc định: icon theo variant. */
+  /** Custom icon node; `false` to hide the icon. Defaults to the variant icon. */
   icon?: React.ReactNode | false
 }
 

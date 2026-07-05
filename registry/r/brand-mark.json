@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "brand-mark",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/brand-mark.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from '../../lib/utils';\n\nexport interface BrandMarkProps {\n  size?: 'sm' | 'md' | 'lg';\n  className?: string;\n}\n\nconst SIZE_CLASS: Record<NonNullable<BrandMarkProps['size']>, { box: string; icon: number }> = {\n  sm: { box: 'h-6 w-6', icon: 14 },\n  md: { box: 'h-8 w-8', icon: 18 },\n  lg: { box: 'h-10 w-10', icon: 22 },\n};\n\n/**\n * Brand mark — a primary-green rounded square holding a white leaf glyph.\n * The leaf uses `currentColor` (= text-primary-foreground) so it follows the token.\n */\nexport function BrandMark({ size = 'md', className }: BrandMarkProps) {\n  const { box, icon } = SIZE_CLASS[size];\n  return (\n    <span\n      className={cn(\n        'inline-flex shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground',\n        box,\n        className,\n      )}\n      aria-hidden\n    >\n      <svg\n        width={icon}\n        height={icon}\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n      >\n        <path\n          d=\"M20 4C18 4 14 4.5 11 7.5C8 10.5 7 14 7 16.5C7 18 7.5 19.5 8.5 20.5L20 9V4Z\"\n          fill=\"currentColor\"\n        />\n        <path\n          d=\"M8.5 20.5L4 16\"\n          stroke=\"currentColor\"\n          strokeWidth=\"1.5\"\n          strokeLinecap=\"round\"\n        />\n      </svg>\n    </span>\n  );\n}\n"
+    }
+  ]
+}

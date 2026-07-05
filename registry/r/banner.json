@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "banner",
+  "type": "registry:ui",
+  "dependencies": [
+    "class-variance-authority",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/banner.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport {\n  Info,\n  CircleCheck,\n  TriangleAlert,\n  CircleX,\n  X,\n  type LucideIcon,\n} from \"lucide-react\"\n\nimport { cn } from \"../../lib/utils\"\n\n/**\n * Banner — page-level, full-width, dismissible notice (unlike the inline Alert).\n * Borderless tint (bg-{hue}-bg text-{hue}-text) like Alert but laid out horizontally:\n * icon + content on the left, `action` on the right, and a × button when `onDismiss` is set.\n */\nconst bannerVariants = cva(\n  \"relative flex w-full items-start gap-3 rounded-lg px-4 py-3 text-sm\",\n  {\n    variants: {\n      variant: {\n        info: \"bg-info-bg text-info-text\",\n        success: \"bg-success-bg text-success-text\",\n        warning: \"bg-warning-bg text-warning-text\",\n        destructive: \"bg-destructive-bg text-destructive-text\",\n      },\n    },\n    defaultVariants: { variant: \"info\" },\n  }\n)\n\nconst VARIANT_ICON: Record<\n  NonNullable<VariantProps<typeof bannerVariants>[\"variant\"]>,\n  LucideIcon\n> = {\n  info: Info,\n  success: CircleCheck,\n  warning: TriangleAlert,\n  destructive: CircleX,\n}\n\nexport interface BannerProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\">,\n    VariantProps<typeof bannerVariants> {\n  /** Bold title (optional). */\n  title?: React.ReactNode\n  /** Custom icon node; `false` to hide it. Defaults to the variant icon. */\n  icon?: React.ReactNode | false\n  /** Action slot on the right (button/link). */\n  action?: React.ReactNode\n  /** When a handler is provided, renders a × button to dismiss. */\n  onDismiss?: () => void\n}\n\nconst Banner = React.forwardRef<HTMLDivElement, BannerProps>(\n  (\n    { className, variant, title, icon, action, onDismiss, children, ...props },\n    ref\n  ) => {\n    const DefaultIcon = VARIANT_ICON[variant ?? \"info\"]\n    return (\n      <div\n        ref={ref}\n        role=\"status\"\n        className={cn(bannerVariants({ variant }), className)}\n        {...props}\n      >\n        {icon !== false ? (\n          <span className=\"mt-px shrink-0 [&>svg]:size-5\" aria-hidden>\n            {icon ?? <DefaultIcon className=\"size-5\" />}\n          </span>\n        ) : null}\n        <div className=\"min-w-0 flex-1\">\n          {title ? (\n            <p className=\"font-semibold leading-snug tracking-tight\">{title}</p>\n          ) : null}\n          {children ? (\n            <div\n              className={cn(\n                \"opacity-90 [&_p]:leading-relaxed\",\n                title && \"mt-0.5\"\n              )}\n            >\n              {children}\n            </div>\n          ) : null}\n        </div>\n        {action ? (\n          <div className=\"ml-1 mt-px flex shrink-0 items-center\">{action}</div>\n        ) : null}\n        {onDismiss ? (\n          <button\n            type=\"button\"\n            onClick={onDismiss}\n            aria-label=\"Dismiss\"\n            className=\"-mr-1 -mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md text-current opacity-70 transition-opacity hover:opacity-100\"\n          >\n            <X className=\"size-4\" aria-hidden />\n          </button>\n        ) : null}\n      </div>\n    )\n  }\n)\nBanner.displayName = \"Banner\"\n\nexport { Banner }\n"
+    }
+  ]
+}

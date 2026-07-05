@@ -41,7 +41,7 @@ export interface EditableCellProps {
 }
 
 /**
- * Inline-editable table cell (sửa SL/giá/ghi chú ngay trên bảng). Lives inside a
+ * Inline-editable table cell (edit quantity/price/notes right in the table). Lives inside a
  * clickable DataTable row, so every interaction stops propagation to keep the
  * row-click from firing.
  *

@@ -3,11 +3,11 @@ import { Check } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 /**
- * Stepper — progress indicator cho luồng nhiều bước (order-create:
- * "Chọn khách → Thêm sản phẩm → Giao hàng → Xác nhận").
- * completed = bg-primary + Check; current = viền primary + số; upcoming = viền border + số.
- * Connector giữa các node: primary nếu ranh giới đã hoàn tất, else border-border.
- * Không nhầm với QuantityStepper (number input).
+ * Stepper — progress indicator for a multi-step flow (e.g. order creation:
+ * "Select customer → Add products → Delivery → Confirm").
+ * completed = bg-primary + Check; current = primary border + number; upcoming = border + number.
+ * Connector between nodes: primary if the boundary is completed, else border-border.
+ * Not to be confused with QuantityStepper (a number input).
  */
 export interface StepperStep {
   label: string;
@@ -16,10 +16,10 @@ export interface StepperStep {
 
 export interface StepperProps {
   steps: StepperStep[];
-  /** Index bước đang active (0-based). */
+  /** Index of the active step (0-based). */
   current: number;
   orientation?: 'horizontal' | 'vertical';
-  /** Khi truyền, các bước ĐÃ HOÀN TẤT trở thành <button> để điều hướng ngược. */
+  /** When provided, COMPLETED steps become <button>s for navigating back. */
   onStepClick?: (index: number) => void;
   className?: string;
 }
@@ -54,9 +54,9 @@ export const Stepper = React.forwardRef<HTMLOListElement, StepperProps>(
           const state = stateOf(index);
           const isFirst = index === 0;
           const isLast = index === steps.length - 1;
-          // Ranh giới trước node đã hoàn tất khi node trước đó đã xong (index <= current).
+          // The boundary before a node is completed once the previous node is done (index <= current).
           const beforeDone = index <= current;
-          // Ranh giới sau node đã hoàn tất khi chính node này đã xong.
+          // The boundary after a node is completed once this node itself is done.
           const afterDone = index < current;
           const clickable = !!onStepClick && state === 'completed';
 

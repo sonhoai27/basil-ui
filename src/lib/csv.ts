@@ -1,23 +1,23 @@
 /**
- * CSV export helper — chuẩn Excel + tiếng Việt (BOM UTF-8, phân tách bằng dấu phẩy).
- * Không phải "feature app": đây là tiện ích để bảng dữ liệu xuất ra file.
+ * CSV export helper — Excel-friendly and Unicode-safe (UTF-8 BOM, comma-separated).
+ * Not an app feature: this is a utility for exporting table data to a file.
  */
 
 export interface CsvColumn<T> {
-  /** Tiêu đề cột trong file. */
+  /** Column heading in the file. */
   header: string;
-  /** Lấy giá trị ô từ một dòng. */
+  /** Extracts the cell value from a row. */
   value: (row: T) => string | number | null | undefined;
 }
 
-/** Bọc 1 ô CSV: escape dấu ", xuống dòng, dấu phẩy bằng cách đặt trong ngoặc kép. */
+/** Wraps a single CSV cell: escapes ", newline, and comma by quoting the value. */
 function csvCell(v: string | number | null | undefined): string {
   const s = v === null || v === undefined ? '' : String(v);
   if (/[",\r\n]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
   return s;
 }
 
-/** Sinh chuỗi CSV từ danh sách dòng + định nghĩa cột. */
+/** Builds a CSV string from a list of rows + column definitions. */
 export function toCsv<T>(rows: T[], columns: CsvColumn<T>[]): string {
   const head = columns.map((c) => csvCell(c.header)).join(',');
   const body = rows.map((row) => columns.map((c) => csvCell(c.value(row))).join(',')).join('\r\n');
@@ -25,8 +25,8 @@ export function toCsv<T>(rows: T[], columns: CsvColumn<T>[]): string {
 }
 
 /**
- * Xuất và tải file .csv. Thêm BOM UTF-8 để Excel đọc đúng dấu tiếng Việt.
- * No-op ngoài môi trường trình duyệt (SSR-safe).
+ * Generates and downloads a .csv file. Prepends a UTF-8 BOM so Excel reads
+ * accented/Unicode characters correctly. No-op outside the browser (SSR-safe).
  */
 export function downloadCsv<T>(filename: string, rows: T[], columns: CsvColumn<T>[]): void {
   if (typeof document === 'undefined') return;

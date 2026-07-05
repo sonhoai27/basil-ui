@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "date-picker",
+  "type": "registry:ui",
+  "dependencies": [
+    "date-fns",
+    "lucide-react",
+    "react-day-picker"
+  ],
+  "registryDependencies": [
+    "calendar",
+    "popover",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/date-picker.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { format } from \"date-fns\"\nimport { Calendar as CalendarIcon, X } from \"lucide-react\"\nimport type { Matcher } from \"react-day-picker\"\n\nimport { cn } from \"../../lib/utils\"\nimport { Calendar } from \"../ui/calendar\"\nimport { Popover, PopoverContent, PopoverTrigger } from \"../ui/popover\"\n\nexport interface DatePickerProps {\n  value?: Date\n  onChange?: (date?: Date) => void\n  placeholder?: string\n  className?: string\n  disabled?: boolean\n  /** Ngày sớm nhất được chọn. */\n  fromDate?: Date\n  /** Ngày muộn nhất được chọn. */\n  toDate?: Date\n  /** Matcher các ngày bị vô hiệu hoá trong lịch. */\n  disabledDates?: Matcher | Matcher[]\n  /** Ẩn nút xoá ngày đã chọn. */\n  hideClear?: boolean\n}\n\nconst DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(\n  (\n    {\n      value,\n      onChange,\n      placeholder = \"Chọn ngày\",\n      className,\n      disabled,\n      fromDate,\n      toDate,\n      disabledDates,\n      hideClear,\n    },\n    ref\n  ) => {\n    const [open, setOpen] = React.useState(false)\n    const showClear = !hideClear && !disabled && value != null\n\n    // react-day-picker v10: giới hạn khoảng ngày qua matcher `before`/`after`,\n    // gộp cùng matcher `disabledDates` do caller truyền vào.\n    const disabledMatchers: Matcher[] = []\n    if (fromDate) disabledMatchers.push({ before: fromDate })\n    if (toDate) disabledMatchers.push({ after: toDate })\n    if (Array.isArray(disabledDates)) disabledMatchers.push(...disabledDates)\n    else if (disabledDates) disabledMatchers.push(disabledDates)\n\n    return (\n      <Popover open={open} onOpenChange={setOpen}>\n        <PopoverTrigger asChild>\n          <button\n            ref={ref}\n            type=\"button\"\n            disabled={disabled}\n            aria-haspopup=\"dialog\"\n            aria-label={value ? format(value, \"dd/MM/yyyy\") : placeholder}\n            data-placeholder={value ? undefined : \"\"}\n            className={cn(\n              \"flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-left text-sm transition-colors\",\n              \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary\",\n              \"disabled:cursor-not-allowed disabled:opacity-50\",\n              !value && \"text-muted-foreground\",\n              className\n            )}\n          >\n            <CalendarIcon className=\"h-4 w-4 shrink-0 opacity-70\" />\n            <span className=\"line-clamp-1 flex-1\">\n              {value ? format(value, \"dd/MM/yyyy\") : placeholder}\n            </span>\n            {showClear ? (\n              <span\n                role=\"button\"\n                tabIndex={0}\n                aria-label=\"Xoá ngày\"\n                className=\"-mr-1 inline-flex shrink-0 items-center justify-center rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground\"\n                onClick={(e) => {\n                  e.stopPropagation()\n                  onChange?.(undefined)\n                }}\n                onKeyDown={(e) => {\n                  if (e.key === \"Enter\" || e.key === \" \") {\n                    e.preventDefault()\n                    e.stopPropagation()\n                    onChange?.(undefined)\n                  }\n                }}\n              >\n                <X className=\"h-3.5 w-3.5\" />\n              </span>\n            ) : null}\n          </button>\n        </PopoverTrigger>\n        <PopoverContent className=\"w-auto p-0\" align=\"start\">\n          <Calendar\n            mode=\"single\"\n            selected={value}\n            onSelect={(date: Date | undefined) => {\n              onChange?.(date)\n              setOpen(false)\n            }}\n            startMonth={fromDate}\n            endMonth={toDate}\n            disabled={disabledMatchers.length > 0 ? disabledMatchers : undefined}\n          />\n        </PopoverContent>\n      </Popover>\n    )\n  }\n)\nDatePicker.displayName = \"DatePicker\"\n\nexport { DatePicker }\n"
+    }
+  ]
+}

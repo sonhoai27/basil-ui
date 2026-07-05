@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "drawer",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "sheet",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/drawer.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"../../lib/utils\"\nimport {\n  Sheet,\n  SheetClose,\n  SheetContent,\n  SheetDescription,\n  SheetOverlay,\n  SheetPortal,\n  SheetTitle,\n  SheetTrigger,\n} from \"./sheet\"\n\n/**\n * Drawer — a panel that slides in from a screen EDGE (defaults to the right), NOT a bottom sheet.\n * Built on Sheet (Radix Dialog) for reliability; change `side` to slide in from a different edge.\n */\nconst Drawer = Sheet\nconst DrawerTrigger = SheetTrigger\nconst DrawerClose = SheetClose\nconst DrawerPortal = SheetPortal\nconst DrawerOverlay = SheetOverlay\nconst DrawerTitle = SheetTitle\nconst DrawerDescription = SheetDescription\n\nconst DrawerContent = React.forwardRef<\n  React.ElementRef<typeof SheetContent>,\n  React.ComponentPropsWithoutRef<typeof SheetContent>\n>(({ side = \"right\", className, ...props }, ref) => (\n  <SheetContent\n    ref={ref}\n    side={side}\n    className={cn(\"flex flex-col gap-0 p-0\", className)}\n    {...props}\n  />\n))\nDrawerContent.displayName = \"DrawerContent\"\n\nconst DrawerHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (\n  <div className={cn(\"flex flex-col gap-1.5 border-b border-border p-5\", className)} {...props} />\n)\nDrawerHeader.displayName = \"DrawerHeader\"\n\nconst DrawerFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (\n  <div className={cn(\"mt-auto flex flex-col gap-2 border-t border-border p-5\", className)} {...props} />\n)\nDrawerFooter.displayName = \"DrawerFooter\"\n\nexport {\n  Drawer,\n  DrawerPortal,\n  DrawerOverlay,\n  DrawerTrigger,\n  DrawerClose,\n  DrawerContent,\n  DrawerHeader,\n  DrawerFooter,\n  DrawerTitle,\n  DrawerDescription,\n}\n"
+    }
+  ]
+}

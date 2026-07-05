@@ -16,17 +16,17 @@ interface EntitySheetProps {
   title: string;
   subtitle?: React.ReactNode;
   children: React.ReactNode;
-  /** Buttons phụ — render row trên (export, secondary actions) */
+  /** Secondary buttons — rendered in the top row (export, secondary actions) */
   secondaryActions?: React.ReactNode;
-  /** Buttons chính — render row dưới (cancel + primary) */
+  /** Primary buttons — rendered in the bottom row (cancel + primary) */
   primaryActions: React.ReactNode;
-  /** Slot trái footer ngang hàng primary — destructive */
+  /** Left footer slot, inline with the primary actions — destructive */
   destructive?: React.ReactNode;
-  /** Helper text trên top footer */
+  /** Helper text above the footer */
   helper?: React.ReactNode;
-  /** Đang tải — thay body bằng skeleton, ẩn footer actions */
+  /** Loading — replaces the body with a skeleton and hides the footer actions */
   loading?: boolean;
-  /** Lỗi — thay body bằng ErrorState inline, ẩn footer actions */
+  /** Error — replaces the body with an inline ErrorState and hides the footer actions */
   error?: { title?: string; description?: string; onRetry?: () => void } | string;
   className?: string;
   bodyClassName?: string;
@@ -92,7 +92,7 @@ export const EntitySheet = React.forwardRef<HTMLDivElement, EntitySheetProps>(
                 description={errorProps?.description}
                 action={
                   errorProps?.onRetry
-                    ? { label: 'Thử lại', onClick: errorProps.onRetry }
+                    ? { label: 'Retry', onClick: errorProps.onRetry }
                     : undefined
                 }
               />

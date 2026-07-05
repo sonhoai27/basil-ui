@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "calendar",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react",
+    "react-day-picker"
+  ],
+  "registryDependencies": [
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/calendar.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\"\nimport { ChevronLeft, ChevronRight, ChevronDown } from \"lucide-react\"\nimport { DayButton, DayPicker, getDefaultClassNames } from \"react-day-picker\"\n\nimport { cn } from \"../../lib/utils\"\nimport { Button, buttonVariants } from \"./button\"\n\n/**\n * Calendar — react-day-picker v10 + Tailwind v4. Uses a FIXED cell size (size-9)\n * instead of `--cell-size` (the v3 arbitrary-var syntax does not resolve in v4). Even 7-column grid.\n */\nfunction Calendar({\n  className,\n  classNames,\n  showOutsideDays = true,\n  captionLayout = \"label\",\n  components,\n  ...props\n}: React.ComponentProps<typeof DayPicker>) {\n  const d = getDefaultClassNames()\n\n  return (\n    <DayPicker\n      showOutsideDays={showOutsideDays}\n      captionLayout={captionLayout}\n      className={cn(\"p-3\", className)}\n      classNames={{\n        root: cn(\"w-fit\", d.root),\n        months: cn(\"relative flex flex-col gap-4\", d.months),\n        month: cn(\"flex w-full flex-col gap-3\", d.month),\n        nav: cn(\"absolute inset-x-1 top-1 flex items-center justify-between\", d.nav),\n        button_previous: cn(\n          buttonVariants({ variant: \"ghost\" }),\n          \"size-8 p-0 aria-disabled:opacity-40\",\n          d.button_previous\n        ),\n        button_next: cn(\n          buttonVariants({ variant: \"ghost\" }),\n          \"size-8 p-0 aria-disabled:opacity-40\",\n          d.button_next\n        ),\n        month_caption: cn(\"flex h-8 items-center justify-center\", d.month_caption),\n        caption_label: cn(\"select-none text-sm font-semibold\", d.caption_label),\n        month_grid: cn(\"w-full border-collapse\", d.month_grid),\n        weekdays: cn(\"flex\", d.weekdays),\n        weekday: cn(\n          \"flex h-8 w-9 select-none items-center justify-center text-[0.75rem] font-medium text-muted-foreground\",\n          d.weekday\n        ),\n        week: cn(\"mt-1 flex w-full\", d.week),\n        day: cn(\"relative h-9 w-9 select-none p-0 text-center\", d.day),\n        outside: cn(\"text-muted-foreground/50\", d.outside),\n        disabled: cn(\"text-muted-foreground opacity-40\", d.disabled),\n        hidden: cn(\"invisible\", d.hidden),\n        ...classNames,\n      }}\n      components={{\n        Chevron: ({ orientation, className, ...rest }) => {\n          const Icon =\n            orientation === \"left\"\n              ? ChevronLeft\n              : orientation === \"right\"\n                ? ChevronRight\n                : ChevronDown\n          return <Icon className={cn(\"size-4\", className)} {...rest} />\n        },\n        DayButton: CalendarDayButton,\n        ...components,\n      }}\n      {...props}\n    />\n  )\n}\n\nfunction CalendarDayButton({\n  className,\n  day,\n  modifiers,\n  ...props\n}: React.ComponentProps<typeof DayButton>) {\n  const ref = React.useRef<HTMLButtonElement>(null)\n  React.useEffect(() => {\n    if (modifiers.focused) ref.current?.focus()\n  }, [modifiers.focused])\n\n  return (\n    <Button\n      ref={ref}\n      variant=\"ghost\"\n      size=\"icon-sm\"\n      data-day={day.date.toLocaleDateString()}\n      data-selected={modifiers.selected || undefined}\n      data-today={modifiers.today || undefined}\n      className={cn(\n        \"size-9 rounded-md p-0 font-normal\",\n        \"data-[today=true]:ring-1 data-[today=true]:ring-inset data-[today=true]:ring-primary/50\",\n        \"data-[selected=true]:bg-primary data-[selected=true]:font-medium data-[selected=true]:text-primary-foreground data-[selected=true]:ring-0 data-[selected=true]:hover:bg-primary-hover data-[selected=true]:hover:text-primary-foreground\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Calendar, CalendarDayButton }\n"
+    }
+  ]
+}

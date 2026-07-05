@@ -5,9 +5,9 @@ import { cn } from "../../lib/utils"
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement> & {
-    /** Class cho div cuộn bao quanh (dùng để set max-height / sticky). */
+    /** Class for the surrounding scroll container (use to set max-height / sticky). */
     containerClassName?: string
-    /** Style cho div cuộn bao quanh (ví dụ maxHeight). */
+    /** Style for the surrounding scroll container (e.g. maxHeight). */
     containerStyle?: React.CSSProperties
   }
 >(({ className, containerClassName, containerStyle, ...props }, ref) => (

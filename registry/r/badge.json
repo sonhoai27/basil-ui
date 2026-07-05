@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:ui",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/badge.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"../../lib/utils\"\n\nconst badgeVariants = cva(\n  \"inline-flex items-center gap-1 rounded-full font-medium transition-colors\",\n  {\n    variants: {\n      variant: {\n        default:\n          \"border-transparent bg-primary text-primary-foreground hover:bg-primary/90\",\n        secondary:\n          \"border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80\",\n        destructive:\n          \"border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/90\",\n        outline: \"border border-border bg-card text-foreground\",\n        caption:\n          \"border-transparent bg-primary text-primary-foreground font-semibold uppercase tracking-wider hover:bg-primary/90\",\n        // Soft/tinted variants — use the paired -bg/-text tokens\n        \"soft-primary\":  \"border-transparent bg-primary-subtle text-primary\",\n        \"soft-success\":  \"border-transparent bg-success-bg text-success-text\",\n        \"soft-warning\":  \"border-transparent bg-warning-bg text-warning-text\",\n        \"soft-info\":     \"border-transparent bg-info-bg text-info-text\",\n        \"soft-muted\":    \"border-transparent bg-muted text-muted-foreground\",\n        \"soft-destructive\": \"border-transparent bg-destructive-bg text-destructive-text\",\n      },\n      size: {\n        default: \"px-3 py-0.5 text-[13px]\",\n        sm: \"px-2 py-0 text-[11px]\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\",\n    },\n  }\n)\n\nexport interface BadgeProps\n  extends React.HTMLAttributes<HTMLDivElement>,\n    VariantProps<typeof badgeVariants> {}\n\nconst Badge = React.forwardRef<HTMLDivElement, BadgeProps>(\n  ({ className, variant, size, ...props }, ref) => {\n    return (\n      <div\n        ref={ref}\n        className={cn(badgeVariants({ variant, size }), className)}\n        {...props}\n      />\n    )\n  }\n)\nBadge.displayName = \"Badge\"\n\nexport { Badge, badgeVariants }\n"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "domain-badges",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "badge",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/domain-badges.tsx",
+      "type": "registry:ui",
+      "content": "import { Badge } from '../ui/badge';\nimport { cn } from '../../lib/utils';\n\nexport function VatBadge({ className }: { className?: string }) {\n  return (\n    <Badge variant=\"soft-warning\" size=\"sm\" className={cn('font-semibold', className)}>\n      VAT\n    </Badge>\n  );\n}\n\nexport function OutOfStockBadge({ className }: { className?: string }) {\n  return (\n    <Badge variant=\"soft-destructive\" size=\"sm\" className={cn('font-medium', className)} role=\"status\">\n      Tạm hết\n    </Badge>\n  );\n}\n\n"
+    }
+  ]
+}

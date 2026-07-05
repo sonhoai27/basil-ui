@@ -3,7 +3,7 @@ import * as React from 'react';
 import { cn } from '../../lib/utils';
 
 export interface InputOTPProps {
-  /** Số ô nhập (mặc định 6). */
+  /** Number of input cells (default 6). */
   length?: number;
   value: string;
   onChange: (value: string) => void;
@@ -14,19 +14,19 @@ export interface InputOTPProps {
 }
 
 /**
- * Ô nhập mã OTP dạng segmented — mỗi ô 1 chữ số.
- * Tự nhảy ô kế khi gõ, Backspace lùi ô, mũi tên di chuyển, dán (paste) điền toàn bộ.
- * Chỉ nhận chữ số.
+ * Segmented OTP code input — one digit per cell.
+ * Auto-advances to the next cell while typing, Backspace steps back, arrow keys
+ * move between cells, and pasting fills all cells at once. Accepts digits only.
  */
 export const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(
   (
-    { length = 6, value, onChange, disabled, autoFocus, ariaLabel = 'Mã OTP', className },
+    { length = 6, value, onChange, disabled, autoFocus, ariaLabel = 'OTP code', className },
     ref,
   ) => {
     const inputsRef = React.useRef<Array<HTMLInputElement | null>>([]);
     const [activeIndex, setActiveIndex] = React.useState<number>(autoFocus ? 0 : -1);
 
-    // Cho phép parent lấy ref tới ô đầu tiên.
+    // Let the parent grab a ref to the first cell.
     React.useImperativeHandle(ref, () => inputsRef.current[0] as HTMLInputElement, []);
 
     React.useEffect(() => {
@@ -56,11 +56,11 @@ export const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(
     const handleChange = (index: number, raw: string) => {
       const digitsOnly = raw.replace(/\D/g, '');
       if (!digitsOnly) {
-        // Xoá qua onChange (vd. gõ ký tự không hợp lệ) — không đổi.
+        // Cleared via onChange (e.g. an invalid character was typed) — no change.
         return;
       }
       if (digitsOnly.length > 1) {
-        // Người dùng gõ/dán nhiều số vào 1 ô — lấp dần từ ô hiện tại.
+        // User typed/pasted several digits into one cell — fill forward from here.
         const next = [...chars];
         let cursor = index;
         for (const d of digitsOnly) {
@@ -152,7 +152,7 @@ export const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(
             maxLength={1}
             value={char}
             disabled={disabled}
-            aria-label={`Chữ số ${index + 1}`}
+            aria-label={`Digit ${index + 1}`}
             onChange={(e) => handleChange(index, e.target.value)}
             onKeyDown={(e) => handleKeyDown(index, e)}
             onPaste={(e) => handlePaste(index, e)}

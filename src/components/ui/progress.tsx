@@ -54,7 +54,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     const clamped = Math.min(Math.max(value ?? 0, 0), safeMax);
     const pct = Math.round((clamped / safeMax) * 100);
 
-    const valueText = indeterminate ? 'Đang xử lý' : `${pct}%`;
+    const valueText = indeterminate ? 'Processing' : `${pct}%`;
 
     return (
       <div ref={ref} className={cn('w-full', className)} {...props}>

@@ -23,39 +23,39 @@ export const Buttons: Story = () => (
     <div className="space-y-3">
       <Label>Variants</Label>
       <div className="flex flex-wrap items-center gap-3">
-        <Button variant="default">Tạo đơn hàng</Button>
-        <Button variant="secondary">Lưu nháp</Button>
-        <Button variant="outline">Xuất Excel</Button>
-        <Button variant="ghost">Bỏ qua</Button>
-        <Button variant="destructive">Huỷ đơn</Button>
-        <Button variant="link">Xem chi tiết</Button>
+        <Button variant="default">New order</Button>
+        <Button variant="secondary">Save draft</Button>
+        <Button variant="outline">Export</Button>
+        <Button variant="ghost">Skip</Button>
+        <Button variant="destructive">Cancel order</Button>
+        <Button variant="link">View details</Button>
       </div>
     </div>
 
     <div className="space-y-3">
       <Label>Sizes</Label>
       <div className="flex flex-wrap items-center gap-3">
-        <Button size="sm">Nhỏ (sm)</Button>
-        <Button size="default">Mặc định</Button>
-        <Button size="lg">Lớn (lg)</Button>
-        <Button size="icon" aria-label="Thêm sản phẩm">
+        <Button size="sm">Small (sm)</Button>
+        <Button size="default">Default</Button>
+        <Button size="lg">Large (lg)</Button>
+        <Button size="icon" aria-label="Add product">
           <Plus />
         </Button>
-        <Button size="icon-sm" aria-label="In đơn" variant="outline">
+        <Button size="icon-sm" aria-label="Print order" variant="outline">
           <Printer />
         </Button>
       </div>
     </div>
 
     <div className="space-y-3">
-      <Label>Với icon</Label>
+      <Label>With icon</Label>
       <div className="flex flex-wrap items-center gap-3">
-        <Button leadingIcon={<Plus />}>Thêm dòng hàng</Button>
+        <Button leadingIcon={<Plus />}>Add line item</Button>
         <Button variant="outline" trailingIcon={<ArrowRight />}>
-          Tiếp tục
+          Continue
         </Button>
         <Button variant="secondary" leadingIcon={<Printer />} trailingIcon={<ArrowRight />}>
-          In &amp; gửi
+          Print &amp; send
         </Button>
       </div>
     </div>
@@ -63,12 +63,12 @@ export const Buttons: Story = () => (
     <div className="space-y-3">
       <Label>Loading</Label>
       <div className="flex flex-wrap items-center gap-3">
-        <Button isLoading>Đang lưu…</Button>
+        <Button isLoading>Saving…</Button>
         <Button variant="secondary" isLoading>
-          Đang xử lý
+          Processing
         </Button>
         <Button variant="outline" isLoading>
-          Đang tải
+          Loading
         </Button>
       </div>
     </div>
@@ -76,12 +76,12 @@ export const Buttons: Story = () => (
     <div className="space-y-3">
       <Label>Disabled</Label>
       <div className="flex flex-wrap items-center gap-3">
-        <Button disabled>Tạo đơn hàng</Button>
+        <Button disabled>New order</Button>
         <Button variant="outline" disabled leadingIcon={<Check />}>
-          Đã xác nhận
+          Confirmed
         </Button>
         <Button variant="destructive" disabled>
-          Huỷ đơn
+          Cancel order
         </Button>
       </div>
     </div>
@@ -90,10 +90,10 @@ export const Buttons: Story = () => (
       <Label>Full width</Label>
       <div className="max-w-md space-y-3">
         <Button fullWidth leadingIcon={<Plus />}>
-          Thêm khách hàng mới
+          Add new customer
         </Button>
         <Button fullWidth variant="outline">
-          Quay lại danh sách đơn
+          Back to orders
         </Button>
       </div>
     </div>
@@ -109,23 +109,23 @@ export const Badges: Story = () => (
     <div className="space-y-3">
       <Label>Solid</Label>
       <div className="flex flex-wrap items-center gap-3">
-        <Badge variant="default">Mới</Badge>
-        <Badge variant="secondary">Bán sỉ</Badge>
-        <Badge variant="destructive">Hết hàng</Badge>
-        <Badge variant="outline">DH-2401</Badge>
-        <Badge variant="caption">Ưu đãi</Badge>
+        <Badge variant="default">New</Badge>
+        <Badge variant="secondary">Wholesale</Badge>
+        <Badge variant="destructive">Out of stock</Badge>
+        <Badge variant="outline">#2401</Badge>
+        <Badge variant="caption">Promo</Badge>
       </div>
     </div>
 
     <div className="space-y-3">
       <Label>Soft / tinted</Label>
       <div className="flex flex-wrap items-center gap-3">
-        <Badge variant="soft-primary">Đã gửi</Badge>
-        <Badge variant="soft-success">Đã thanh toán</Badge>
-        <Badge variant="soft-warning">Chờ thanh toán</Badge>
-        <Badge variant="soft-info">Đang đóng</Badge>
-        <Badge variant="soft-muted">Đã huỷ</Badge>
-        <Badge variant="soft-destructive">Quá hạn</Badge>
+        <Badge variant="soft-primary">Sent</Badge>
+        <Badge variant="soft-success">Paid</Badge>
+        <Badge variant="soft-warning">Pending payment</Badge>
+        <Badge variant="soft-info">Packing</Badge>
+        <Badge variant="soft-muted">Cancelled</Badge>
+        <Badge variant="soft-destructive">Overdue</Badge>
       </div>
     </div>
 
@@ -133,37 +133,37 @@ export const Badges: Story = () => (
       <Label>Size sm</Label>
       <div className="flex flex-wrap items-center gap-3">
         <Badge variant="default" size="sm">
-          Mới
+          New
         </Badge>
         <Badge variant="secondary" size="sm">
-          Bán sỉ
+          Wholesale
         </Badge>
         <Badge variant="destructive" size="sm">
-          Hết hàng
+          Out of stock
         </Badge>
         <Badge variant="outline" size="sm">
-          DH-2401
+          #2401
         </Badge>
         <Badge variant="caption" size="sm">
-          Ưu đãi
+          Promo
         </Badge>
         <Badge variant="soft-primary" size="sm">
-          Đã gửi
+          Sent
         </Badge>
         <Badge variant="soft-success" size="sm">
-          Đã thanh toán
+          Paid
         </Badge>
         <Badge variant="soft-warning" size="sm">
-          Chờ thanh toán
+          Pending payment
         </Badge>
         <Badge variant="soft-info" size="sm">
-          Đang đóng
+          Packing
         </Badge>
         <Badge variant="soft-muted" size="sm">
-          Đã huỷ
+          Cancelled
         </Badge>
         <Badge variant="soft-destructive" size="sm">
-          Quá hạn
+          Overdue
         </Badge>
       </div>
     </div>
@@ -176,7 +176,7 @@ export const Badges: Story = () => (
 
 export const StatusPills: Story = () => (
   <div className="max-w-md space-y-4">
-    <Label>Trạng thái đơn hàng</Label>
+    <Label>Order status</Label>
     <div className="flex flex-wrap items-center gap-3">
       <StatusPill status="pending_payment" />
       <StatusPill status="paid" />
@@ -185,14 +185,14 @@ export const StatusPills: Story = () => (
       <StatusPill status="cancelled" />
     </div>
 
-    <Label>Trong dòng bảng đơn</Label>
+    <Label>Inside an order table row</Label>
     <div className="divide-y rounded-md border">
       {[
-        { code: 'DH-2401', customer: 'Chị Lan · Quán bún', total: '1.250.000₫', status: 'pending_payment' as const },
-        { code: 'DH-2402', customer: 'Anh Dũng · Bếp ăn KCN', total: '3.480.000₫', status: 'paid' as const },
-        { code: 'DH-2403', customer: 'Cô Hồng · Tạp hoá', total: '860.000₫', status: 'packing' as const },
-        { code: 'DH-2404', customer: 'Quán ốc Bảy', total: '2.100.000₫', status: 'sent' as const },
-        { code: 'DH-2405', customer: 'Chị Mai · Cơm tấm', total: '540.000₫', status: 'cancelled' as const },
+        { code: '#2401', customer: 'Green Bowl Cafe', total: '$1,250.00', status: 'pending_payment' as const },
+        { code: '#2402', customer: 'Sunrise Diner', total: '$3,480.00', status: 'paid' as const },
+        { code: '#2403', customer: 'Corner Grocery', total: '$860.00', status: 'packing' as const },
+        { code: '#2404', customer: 'Harbor Seafood', total: '$2,100.00', status: 'sent' as const },
+        { code: '#2405', customer: 'Maple Bistro', total: '$540.00', status: 'cancelled' as const },
       ].map((o) => (
         <div key={o.code} className="flex items-center gap-3 px-3 py-2 text-sm">
           <span className="font-tabular font-semibold">{o.code}</span>
@@ -211,18 +211,18 @@ export const StatusPills: Story = () => (
 
 export const KebabMenuStory: Story = () => (
   <div className="max-w-md space-y-4">
-    <Label>Menu thao tác dòng</Label>
+    <Label>Row actions menu</Label>
     <div className="flex items-center justify-between rounded-md border px-3 py-2 text-sm">
       <div className="flex items-center gap-3">
-        <span className="font-tabular font-semibold">DH-2401</span>
-        <span className="text-muted-foreground">Chị Lan · Quán bún</span>
+        <span className="font-tabular font-semibold">#2401</span>
+        <span className="text-muted-foreground">Green Bowl Cafe</span>
       </div>
       <KebabMenu
         items={[
-          { label: 'Xem', icon: <Eye className="size-4" />, onSelect: () => {} },
-          { label: 'Sửa', icon: <Pencil className="size-4" />, onSelect: () => {} },
+          { label: 'View', icon: <Eye className="size-4" />, onSelect: () => {} },
+          { label: 'Edit', icon: <Pencil className="size-4" />, onSelect: () => {} },
           {
-            label: 'Huỷ đơn',
+            label: 'Cancel order',
             icon: <Trash2 className="size-4" />,
             onSelect: () => {},
             destructive: true,

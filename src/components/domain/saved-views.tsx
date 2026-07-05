@@ -9,15 +9,15 @@ import { KebabMenu } from './kebab-menu';
 
 /**
  * SavedViews — presentational preset/segment tab strip for saved DataTable
- * filter+sort presets ("Chưa thu tiền", "Giao hôm nay"). Persistence/state is
+ * filter+sort presets ("Unpaid", "Delivering today"). Persistence/state is
  * the app's job; this is pure UI.
  *
  * Flat underline treatment (matches tabs.tsx active style — no shadow): active
  * tab = text-foreground + primary bottom-border; inactive = muted. An
- * always-present pseudo-view ("Tất cả") is selected when activeId is
- * undefined/''. Each user view carries a KebabMenu (Đổi tên / Xoá) when the
- * matching callback is provided. "+ Lưu bộ lọc hiện tại" opens a Popover with an
- * inline Input + Lưu button. role="tablist" with roving arrow-key navigation.
+ * always-present pseudo-view ("All") is selected when activeId is
+ * undefined/''. Each user view carries a KebabMenu (Rename / Delete) when the
+ * matching callback is provided. "+ Save current filter" opens a Popover with an
+ * inline Input + Save button. role="tablist" with roving arrow-key navigation.
  */
 export interface SavedView {
   id: string;
@@ -26,10 +26,10 @@ export interface SavedView {
 
 export interface SavedViewsProps {
   views: SavedView[];
-  /** id of the active view; undefined/'' selects the "Tất cả" pseudo-view. */
+  /** id of the active view; undefined/'' selects the "All" pseudo-view. */
   activeId?: string;
   onSelect: (id: string) => void;
-  /** Renders the "+ Lưu" affordance; receives the entered preset name. */
+  /** Renders the "+ Save" affordance; receives the entered preset name. */
   onSaveNew?: (name: string) => void;
   onRename?: (id: string, name: string) => void;
   onDelete?: (id: string) => void;
@@ -49,7 +49,7 @@ const tabClass = (active: boolean) =>
       : 'border-transparent text-muted-foreground hover:text-foreground',
   );
 
-/** A single user view: tab button + kebab (Đổi tên / Xoá). */
+/** A single user view: tab button + kebab (Rename / Delete). */
 const ViewTab = React.forwardRef<
   HTMLButtonElement,
   {
@@ -74,11 +74,11 @@ const ViewTab = React.forwardRef<
 
   const items = [
     onRename && {
-      label: 'Đổi tên',
+      label: 'Rename',
       onSelect: () => setRenameOpen(true),
     },
     onDelete && {
-      label: 'Xoá',
+      label: 'Delete',
       destructive: true,
       onSelect: onDelete,
     },
@@ -123,13 +123,13 @@ const ViewTab = React.forwardRef<
               className="flex flex-col gap-2"
             >
               <label className="text-xs font-medium text-muted-foreground">
-                Đổi tên bộ lọc
+                Rename filter
               </label>
               <Input
                 autoFocus
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                aria-label="Tên bộ lọc"
+                aria-label="Filter name"
               />
               <div className="flex justify-end gap-2">
                 <Button
@@ -138,10 +138,10 @@ const ViewTab = React.forwardRef<
                   variant="ghost"
                   onClick={() => setRenameOpen(false)}
                 >
-                  Huỷ
+                  Cancel
                 </Button>
                 <Button type="submit" size="sm" disabled={!value.trim()}>
-                  Lưu
+                  Save
                 </Button>
               </div>
             </form>
@@ -152,7 +152,7 @@ const ViewTab = React.forwardRef<
   );
 });
 
-/** "+ Lưu bộ lọc hiện tại" affordance — Popover with Input + Lưu. */
+/** "+ Save current filter" affordance — Popover with Input + Save. */
 function SaveNewPopover({ onSaveNew }: { onSaveNew: (name: string) => void }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
@@ -179,7 +179,7 @@ function SaveNewPopover({ onSaveNew }: { onSaveNew: (name: string) => void }) {
           )}
         >
           <Plus className="size-4" />
-          Lưu bộ lọc hiện tại
+          Save current filter
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-64">
@@ -191,14 +191,14 @@ function SaveNewPopover({ onSaveNew }: { onSaveNew: (name: string) => void }) {
           className="flex flex-col gap-2"
         >
           <label className="text-xs font-medium text-muted-foreground">
-            Tên bộ lọc mới
+            New filter name
           </label>
           <Input
             autoFocus
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="Ví dụ: Chưa thu tiền"
-            aria-label="Tên bộ lọc mới"
+            placeholder="e.g. Unpaid"
+            aria-label="New filter name"
           />
           <div className="flex justify-end gap-2">
             <Button
@@ -207,11 +207,11 @@ function SaveNewPopover({ onSaveNew }: { onSaveNew: (name: string) => void }) {
               variant="ghost"
               onClick={() => setOpen(false)}
             >
-              Huỷ
+              Cancel
             </Button>
             <Button type="submit" size="sm" disabled={!value.trim()}>
               <Check className="size-4" />
-              Lưu
+              Save
             </Button>
           </div>
         </form>
@@ -229,7 +229,7 @@ export const SavedViews = React.forwardRef<HTMLDivElement, SavedViewsProps>(
       onSaveNew,
       onRename,
       onDelete,
-      allLabel = 'Tất cả',
+      allLabel = 'All',
       className,
     },
     ref,
@@ -288,7 +288,7 @@ export const SavedViews = React.forwardRef<HTMLDivElement, SavedViewsProps>(
       >
         <div
           role="tablist"
-          aria-label="Bộ lọc đã lưu"
+          aria-label="Saved filters"
           className="flex items-center gap-4 overflow-x-auto"
         >
           <button

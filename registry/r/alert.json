@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert",
+  "type": "registry:ui",
+  "dependencies": [
+    "class-variance-authority",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/alert.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport {\n  Info,\n  CircleCheck,\n  TriangleAlert,\n  CircleX,\n  type LucideIcon,\n} from \"lucide-react\"\n\nimport { cn } from \"../../lib/utils\"\n\n/**\n * Alert — borderless callout: tinted background with icon and text in the same hue (no border).\n * Renders a default icon per variant; pass `icon` to override, or `icon={false}` to hide it.\n */\nconst alertVariants = cva(\n  \"relative flex w-full items-start gap-3 rounded-xl px-4 py-3.5 text-sm\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-muted text-foreground\",\n        info: \"bg-info-bg text-info-text\",\n        success: \"bg-success-bg text-success-text\",\n        warning: \"bg-warning-bg text-warning-text\",\n        destructive: \"bg-destructive-bg text-destructive-text\",\n      },\n    },\n    defaultVariants: { variant: \"default\" },\n  }\n)\n\nconst VARIANT_ICON: Record<\n  NonNullable<VariantProps<typeof alertVariants>[\"variant\"]>,\n  LucideIcon\n> = {\n  default: Info,\n  info: Info,\n  success: CircleCheck,\n  warning: TriangleAlert,\n  destructive: CircleX,\n}\n\nexport interface AlertProps\n  extends React.HTMLAttributes<HTMLDivElement>,\n    VariantProps<typeof alertVariants> {\n  /** Custom icon node; `false` to hide the icon. Defaults to the variant icon. */\n  icon?: React.ReactNode | false\n}\n\nconst Alert = React.forwardRef<HTMLDivElement, AlertProps>(\n  ({ className, variant, icon, children, ...props }, ref) => {\n    const DefaultIcon = VARIANT_ICON[variant ?? \"default\"]\n    return (\n      <div\n        ref={ref}\n        role=\"alert\"\n        className={cn(alertVariants({ variant }), className)}\n        {...props}\n      >\n        {icon !== false ? (\n          <span className=\"mt-px shrink-0 [&>svg]:size-5\" aria-hidden>\n            {icon ?? <DefaultIcon className=\"size-5\" />}\n          </span>\n        ) : null}\n        <div className=\"min-w-0 flex-1\">{children}</div>\n      </div>\n    )\n  }\n)\nAlert.displayName = \"Alert\"\n\nconst AlertTitle = React.forwardRef<\n  HTMLParagraphElement,\n  React.HTMLAttributes<HTMLHeadingElement>\n>(({ className, ...props }, ref) => (\n  <h5\n    ref={ref}\n    className={cn(\"font-semibold leading-snug tracking-tight\", className)}\n    {...props}\n  />\n))\nAlertTitle.displayName = \"AlertTitle\"\n\nconst AlertDescription = React.forwardRef<\n  HTMLParagraphElement,\n  React.HTMLAttributes<HTMLParagraphElement>\n>(({ className, ...props }, ref) => (\n  <div\n    ref={ref}\n    className={cn(\"mt-0.5 opacity-90 [&_p]:leading-relaxed\", className)}\n    {...props}\n  />\n))\nAlertDescription.displayName = \"AlertDescription\"\n\nexport { Alert, AlertTitle, AlertDescription }\n"
+    }
+  ]
+}

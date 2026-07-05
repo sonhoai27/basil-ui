@@ -44,25 +44,25 @@ const Label2 = ({ children }: { children: React.ReactNode }) => (
 export const Alerts: Story = () => (
   <div className="max-w-xl space-y-3">
     <Alert variant="info">
-      <AlertTitle>Đơn mới cần duyệt</AlertTitle>
+      <AlertTitle>New orders need review</AlertTitle>
       <AlertDescription>
-        Có 4 đơn đang chờ thanh toán. Kiểm tra tài khoản ngân hàng trước khi bấm Duyệt.
+        4 orders are awaiting payment. Check the bank account before you approve them.
       </AlertDescription>
     </Alert>
     <Alert variant="success">
-      <AlertTitle>Đã duyệt đơn DH-2401</AlertTitle>
-      <AlertDescription>Telegram đã gửi thông báo cho Kế toán &amp; Kho.</AlertDescription>
+      <AlertTitle>Order ORD-2401 approved</AlertTitle>
+      <AlertDescription>A notification was sent to Accounting &amp; Warehouse.</AlertDescription>
     </Alert>
     <Alert variant="warning">
-      <AlertTitle>Sắp hết hàng</AlertTitle>
-      <AlertDescription>Chả lụa chỉ còn 3 kg trong kho — cân nhắc nhập thêm.</AlertDescription>
+      <AlertTitle>Running low on stock</AlertTitle>
+      <AlertDescription>Only 3 kg of Pork Ham left in the warehouse — consider restocking.</AlertDescription>
     </Alert>
     <Alert variant="destructive">
-      <AlertTitle>Không kết nối được máy chủ</AlertTitle>
-      <AlertDescription>Kiểm tra đường truyền rồi thử lại sau ít phút.</AlertDescription>
+      <AlertTitle>Can't reach the server</AlertTitle>
+      <AlertDescription>Check your connection and try again in a few minutes.</AlertDescription>
     </Alert>
     <Alert>
-      <AlertDescription>Callout mặc định (neutral) — dùng cho ghi chú chung.</AlertDescription>
+      <AlertDescription>Default callout (neutral) — use it for general notes.</AlertDescription>
     </Alert>
   </div>
 );
@@ -71,21 +71,21 @@ export const Toasts: Story = () => (
   <div className="flex flex-wrap gap-3">
     <Toaster />
     <Button
-      onClick={() => toast.success('Đã duyệt đơn DH-2401', { description: 'Đã gửi Kế toán & Kho' })}
+      onClick={() => toast.success('Order ORD-2401 approved', { description: 'Sent to Accounting & Warehouse' })}
     >
-      Toast thành công
+      Success toast
     </Button>
     <Button
       variant="destructive"
-      onClick={() => toast.error('Không huỷ được đơn', { description: 'Đơn đã xuất kho' })}
+      onClick={() => toast.error("Couldn't cancel the order", { description: 'Order already shipped' })}
     >
-      Toast lỗi
+      Error toast
     </Button>
-    <Button variant="outline" onClick={() => toast.info('Đang đồng bộ dữ liệu…')}>
-      Toast info
+    <Button variant="outline" onClick={() => toast.info('Syncing data…')}>
+      Info toast
     </Button>
-    <Button variant="secondary" onClick={() => toast('Đã lưu nháp đơn hàng')}>
-      Toast thường
+    <Button variant="secondary" onClick={() => toast('Order draft saved')}>
+      Default toast
     </Button>
   </div>
 );
@@ -137,7 +137,7 @@ export const Spinners: Story = () => (
     </div>
     <div className="flex items-center gap-2 text-sm text-muted-foreground">
       <Spinner size="sm" />
-      Đang tải đơn hàng…
+      Loading orders…
     </div>
   </div>
 );
@@ -146,16 +146,16 @@ export const EmptyAndError: Story = () => (
   <div className="grid max-w-3xl gap-6 sm:grid-cols-2">
     <div className="rounded-lg border border-border bg-card">
       <EmptyState
-        title="Chưa có đơn nào"
-        description="Đơn hàng mới từ khách sẽ hiển thị ở đây."
+        title="No orders yet"
+        description="New orders from customers will show up here."
         icon={<ShoppingBag size={32} />}
-        action={{ label: 'Tạo đơn thủ công', onClick: () => toast('Mở form tạo đơn') }}
+        action={{ label: 'Create order manually', onClick: () => toast('Opening the order form') }}
       />
     </div>
     <div className="rounded-lg border border-border bg-card">
       <ErrorState
-        description="Không tải được danh sách đơn. Kiểm tra kết nối rồi thử lại."
-        action={{ label: 'Thử lại', onClick: () => toast('Đang tải lại…') }}
+        description="Couldn't load the order list. Check your connection and try again."
+        action={{ label: 'Retry', onClick: () => toast('Reloading…') }}
       />
     </div>
   </div>
@@ -169,24 +169,24 @@ export const ToolbarStory: Story = () => (
         className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground"
         aria-hidden
       />
-      <Input placeholder="Tìm đơn, khách…" className="w-56 pl-8" aria-label="Tìm" />
+      <Input placeholder="Search orders, customers…" className="w-56 pl-8" aria-label="Search" />
     </div>
     <Select defaultValue="all">
-      <SelectTrigger className="w-[160px]" aria-label="Lọc trạng thái">
+      <SelectTrigger className="w-[160px]" aria-label="Filter by status">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">Tất cả trạng thái</SelectItem>
-        <SelectItem value="pending_payment">Chờ thanh toán</SelectItem>
-        <SelectItem value="paid">Đã thanh toán</SelectItem>
-        <SelectItem value="cancelled">Đã huỷ</SelectItem>
+        <SelectItem value="all">All statuses</SelectItem>
+        <SelectItem value="pending_payment">Pending payment</SelectItem>
+        <SelectItem value="paid">Paid</SelectItem>
+        <SelectItem value="cancelled">Cancelled</SelectItem>
       </SelectContent>
     </Select>
     <Button variant="outline" leadingIcon={<FilterIcon size={15} />}>
-      Bộ lọc
+      Filters
     </Button>
     <ToolbarSpacer />
-    <Button leadingIcon={<Plus size={15} />}>Tạo đơn</Button>
+    <Button leadingIcon={<Plus size={15} />}>New order</Button>
   </Toolbar>
 );
 
@@ -201,19 +201,19 @@ export const Brand: Story = () => (
       </div>
     </div>
     <div>
-      <Label2>Wordmark — tone light (nền sáng)</Label2>
+      <Label2>Wordmark — tone light (light surface)</Label2>
       <div className="flex flex-wrap items-center gap-8 rounded-lg border border-border bg-card p-5">
-        <Wordmark app="cms" tone="light" />
-        <Wordmark app="order" tone="light" />
-        <Wordmark app="warehouse" tone="light" />
+        <Wordmark subtitle="Admin" tone="light" />
+        <Wordmark subtitle="Orders" tone="light" />
+        <Wordmark subtitle="Warehouse" tone="light" />
       </div>
     </div>
     <div>
-      <Label2>Wordmark — tone dark (nền sidebar)</Label2>
+      <Label2>Wordmark — tone dark (sidebar surface)</Label2>
       <div className="flex flex-wrap items-center gap-8 rounded-lg bg-sidebar p-5">
-        <Wordmark app="cms" tone="dark" />
-        <Wordmark app="order" tone="dark" />
-        <Wordmark app="warehouse" tone="dark" />
+        <Wordmark subtitle="Admin" tone="dark" />
+        <Wordmark subtitle="Orders" tone="dark" />
+        <Wordmark subtitle="Warehouse" tone="dark" />
       </div>
     </div>
   </div>
@@ -224,32 +224,32 @@ export const SectionAndEntitySheet: Story = () => {
   return (
     <div className="max-w-2xl">
       <div className="rounded-lg border border-border bg-card px-5">
-        <SectionGroup title="Thông tin cửa hàng" description="Hiển thị trên báo giá gửi khách." first>
+        <SectionGroup title="Store information" description="Shown on quotes sent to customers." first>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <Label htmlFor="shop">Tên cửa hàng</Label>
-              <Input id="shop" defaultValue="Mộc Chính" className="mt-1.5" />
+              <Label htmlFor="shop">Store name</Label>
+              <Input id="shop" defaultValue="Basil Foods" className="mt-1.5" />
             </div>
             <div>
               <Label htmlFor="hotline">Hotline</Label>
-              <Input id="hotline" defaultValue="0909 123 456" className="mt-1.5" />
+              <Input id="hotline" defaultValue="(0909) 123 456" className="mt-1.5" />
             </div>
           </div>
         </SectionGroup>
-        <SectionGroup title="Giao hàng" description="Cấu hình phí & khung giờ mặc định.">
-          <div className="text-sm text-muted-foreground">Nội dung mục thứ hai…</div>
+        <SectionGroup title="Delivery" description="Configure default fees & time windows.">
+          <div className="text-sm text-muted-foreground">Second section content…</div>
         </SectionGroup>
       </div>
 
       <div className="mt-6">
         <Label2>EntitySheet — states</Label2>
         <div className="flex flex-wrap gap-3">
-          <Button onClick={() => setMode('normal')}>Mở (bình thường)</Button>
+          <Button onClick={() => setMode('normal')}>Open (normal)</Button>
           <Button variant="outline" onClick={() => setMode('loading')}>
-            Mở (đang tải)
+            Open (loading)
           </Button>
           <Button variant="outline" onClick={() => setMode('error')}>
-            Mở (lỗi)
+            Open (error)
           </Button>
         </div>
       </div>
@@ -257,36 +257,36 @@ export const SectionAndEntitySheet: Story = () => {
       <EntitySheet
         open={mode !== null}
         onOpenChange={(o) => !o && setMode(null)}
-        title="Chị Lan · Quán bún"
-        subtitle="KH-0142"
+        title="Emma Carter · The Noodle Bar"
+        subtitle="CUST-0142"
         loading={mode === 'loading'}
-        error={mode === 'error' ? { description: 'Không tải được hồ sơ khách.', onRetry: () => setMode('normal') } : undefined}
-        helper="Thay đổi sẽ áp dụng cho các đơn mới."
+        error={mode === 'error' ? { description: "Couldn't load the customer profile.", onRetry: () => setMode('normal') } : undefined}
+        helper="Changes apply to new orders."
         primaryActions={
           <>
             <Button variant="outline" onClick={() => setMode(null)}>
-              Huỷ
+              Cancel
             </Button>
-            <Button onClick={() => setMode(null)}>Lưu</Button>
+            <Button onClick={() => setMode(null)}>Save</Button>
           </>
         }
         secondaryActions={
           <Button variant="ghost" size="sm" leadingIcon={<Download size={14} />}>
-            Xuất lịch sử
+            Export history
           </Button>
         }
       >
         <div className="space-y-3 text-sm">
           <div className="flex justify-between border-b border-border py-2">
-            <span className="text-muted-foreground">SĐT</span>
-            <span className="font-tabular">0912 345 678</span>
+            <span className="text-muted-foreground">Phone</span>
+            <span className="font-tabular">(0912) 345 678</span>
           </div>
           <div className="flex justify-between border-b border-border py-2">
-            <span className="text-muted-foreground">Tổng chi</span>
-            <span className="font-tabular font-semibold">28.400.000₫</span>
+            <span className="text-muted-foreground">Total spent</span>
+            <span className="font-tabular font-semibold">$28,400.00</span>
           </div>
           <div className="flex justify-between py-2">
-            <span className="text-muted-foreground">Số đơn</span>
+            <span className="text-muted-foreground">Orders</span>
             <span className="font-tabular">37</span>
           </div>
         </div>

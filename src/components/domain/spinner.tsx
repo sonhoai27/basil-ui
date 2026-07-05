@@ -19,7 +19,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
     <span
       ref={ref}
       role="status"
-      aria-label="Đang tải"
+      aria-label="Loading"
       className={cn("inline-flex text-primary", className)}
       {...props}
     >

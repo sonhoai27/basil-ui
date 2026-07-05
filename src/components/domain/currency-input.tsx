@@ -13,7 +13,7 @@ function digitsOnly(s: string): string {
   return s.replace(/\D+/g, "")
 }
 
-/** Wrapper trông như 1 ô input: viền + focus-ring (field-ring), suffix chiếm chỗ riêng. */
+/** Wrapper that looks like a single input: border + focus-ring (field-ring); the suffix reserves its own space. */
 const fieldCls =
   "flex h-10 w-full items-center gap-1.5 rounded-md border border-input bg-transparent px-3 text-sm transition-colors focus-within:outline-none focus-within:ring-2 focus-within:ring-primary aria-[invalid=true]:border-destructive"
 const innerInputCls =
@@ -201,7 +201,7 @@ const NumberField = React.forwardRef<HTMLInputElement, NumberFieldProps>(
         {steppers && (
           <button
             type="button"
-            aria-label="Giảm"
+            aria-label="Decrease"
             disabled={disabled || atMin}
             onClick={() => bump(-1)}
             className={stepperCls}
@@ -235,7 +235,7 @@ const NumberField = React.forwardRef<HTMLInputElement, NumberFieldProps>(
         {steppers && (
           <button
             type="button"
-            aria-label="Tăng"
+            aria-label="Increase"
             disabled={disabled || atMax}
             onClick={() => bump(1)}
             className={stepperCls}

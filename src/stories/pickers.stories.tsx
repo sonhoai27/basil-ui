@@ -21,7 +21,7 @@ import {
 
 export default { title: 'Pickers' };
 
-/** Nhãn nhỏ, muted đặt trên mỗi nhóm biến thể. */
+/** Small muted label placed above each group of variants. */
 function GroupLabel({ children }: { children: React.ReactNode }) {
   return (
     <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -30,14 +30,14 @@ function GroupLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ── Combobox: chọn khách hàng ────────────────────────────────────────────────
-const KHACH_HANG: ComboboxItem[] = [
-  { value: 'kh-01', label: 'Chị Lan · Quán bún', description: '0912 345 678' },
-  { value: 'kh-02', label: 'Anh Dũng · Tạp hoá Dũng Hà', description: '0987 111 222' },
-  { value: 'kh-03', label: 'Cô Tám · Bếp ăn công nhân', description: '0903 555 090' },
-  { value: 'kh-04', label: 'Chị Hoa · Bún chả Hoa Béo', description: '0938 246 810' },
-  { value: 'kh-05', label: 'Anh Phúc · Nhà hàng Phúc Lộc', description: '0166 777 333' },
-  { value: 'kh-06', label: 'Cô Bảy · Xe bánh mì đầu ngõ', description: '0944 020 020' },
+// ── Combobox: select a customer ──────────────────────────────────────────────
+const CUSTOMERS: ComboboxItem[] = [
+  { value: 'kh-01', label: 'Green Bowl Cafe', description: '(555) 234-5678' },
+  { value: 'kh-02', label: 'Dunn & Hall Grocery', description: '(555) 987-1122' },
+  { value: 'kh-03', label: 'Foundry Staff Canteen', description: '(555) 903-5590' },
+  { value: 'kh-04', label: 'Hazel & Fig Bistro', description: '(555) 938-2468' },
+  { value: 'kh-05', label: 'Lucky Fortune Restaurant', description: '(555) 166-7773' },
+  { value: 'kh-06', label: 'Corner Sandwich Cart', description: '(555) 944-0202' },
 ];
 
 export const ComboboxStory: Story = () => {
@@ -48,32 +48,32 @@ export const ComboboxStory: Story = () => {
   return (
     <div className="max-w-sm space-y-6">
       <div className="space-y-2">
-        <GroupLabel>Chọn khách hàng · allowClear</GroupLabel>
+        <GroupLabel>Select a customer · allowClear</GroupLabel>
         <Combobox
-          items={KHACH_HANG}
+          items={CUSTOMERS}
           value={khachClear}
           onChange={setKhachClear}
           allowClear
-          placeholder="Chọn khách hàng"
-          searchPlaceholder="Tìm theo tên / SĐT..."
-          emptyText="Không tìm thấy khách hàng."
+          placeholder="Select a customer"
+          searchPlaceholder="Search by name / phone..."
+          emptyText="No customers found."
         />
       </div>
 
       <div className="space-y-2">
-        <GroupLabel>Chọn khách hàng · onCreate</GroupLabel>
+        <GroupLabel>Select a customer · onCreate</GroupLabel>
         <Combobox
-          items={KHACH_HANG}
+          items={CUSTOMERS}
           value={khachCreate}
           onChange={setKhachCreate}
-          placeholder="Chọn hoặc tạo khách hàng"
-          searchPlaceholder="Nhập tên khách..."
+          placeholder="Select or create a customer"
+          searchPlaceholder="Type a customer name..."
           onCreate={(q) => setCreated(q)}
-          createLabel={(q) => <>+ Tạo mới &ldquo;{q}&rdquo;</>}
+          createLabel={(q) => <>+ Create &ldquo;{q}&rdquo;</>}
         />
         {created ? (
           <p className="text-xs text-muted-foreground">
-            Đã yêu cầu tạo: <span className="text-foreground">{created}</span>
+            Create requested: <span className="text-foreground">{created}</span>
           </p>
         ) : null}
       </div>
@@ -81,13 +81,13 @@ export const ComboboxStory: Story = () => {
   );
 };
 
-// ── MultiSelect: trạng thái / danh mục ───────────────────────────────────────
-const DANH_MUC: MultiSelectItem[] = [
-  { value: 'cha-lua', label: 'Chả lụa', description: 'Giò lụa truyền thống' },
-  { value: 'nem-chua', label: 'Nem chua', description: 'Đặc sản Thanh Hoá' },
-  { value: 'gio-thu', label: 'Giò thủ', description: 'Giò tai, giò xào' },
-  { value: 'cha-que', label: 'Chả quế', description: 'Chả quế nướng' },
-  { value: 'pate', label: 'Pate gan', description: 'Pate khối / pate hộp' },
+// ── MultiSelect: status / category ───────────────────────────────────────────
+const CATEGORIES: MultiSelectItem[] = [
+  { value: 'cha-lua', label: 'Breads', description: 'Loaves, rolls, baguettes' },
+  { value: 'nem-chua', label: 'Pastries', description: 'Croissants, danishes' },
+  { value: 'gio-thu', label: 'Cold cuts', description: 'Ham, salami, terrine' },
+  { value: 'cha-que', label: 'Cheeses', description: 'Aged and fresh' },
+  { value: 'pate', label: 'Spreads', description: 'Pâté, tapenade' },
 ];
 
 export const MultiSelectStory: Story = () => {
@@ -100,28 +100,28 @@ export const MultiSelectStory: Story = () => {
   return (
     <div className="max-w-sm space-y-6">
       <div className="space-y-2">
-        <GroupLabel>Lọc danh mục · maxDisplay 2</GroupLabel>
+        <GroupLabel>Filter categories · maxDisplay 2</GroupLabel>
         <MultiSelect
-          items={DANH_MUC}
+          items={CATEGORIES}
           value={danhMuc}
           onChange={setDanhMuc}
           maxDisplay={2}
-          placeholder="Chọn danh mục"
-          searchPlaceholder="Tìm danh mục..."
+          placeholder="Select categories"
+          searchPlaceholder="Search categories..."
         />
         <p className="text-xs text-muted-foreground">
-          Đã chọn {danhMuc.length} danh mục
+          {danhMuc.length} categories selected
         </p>
       </div>
 
       <div className="space-y-2">
-        <GroupLabel>Hiển thị tất cả chip (không maxDisplay)</GroupLabel>
+        <GroupLabel>Show all chips (no maxDisplay)</GroupLabel>
         <MultiSelect
-          items={DANH_MUC}
+          items={CATEGORIES}
           value={danhMuc}
           onChange={setDanhMuc}
-          placeholder="Chọn danh mục"
-          searchPlaceholder="Tìm danh mục..."
+          placeholder="Select categories"
+          searchPlaceholder="Search categories..."
         />
       </div>
     </div>
@@ -134,17 +134,17 @@ const FIXED_RANGE: DateRange = {
   to: new Date(2026, 0, 17),
 };
 
-const DON_HANG_PRESETS: DateRangePickerPreset[] = [
+const ORDER_PRESETS: DateRangePickerPreset[] = [
   {
-    label: 'Tuần này',
+    label: 'This week',
     getRange: () => ({ from: new Date(2026, 0, 12), to: new Date(2026, 0, 18) }),
   },
   {
-    label: 'Tháng 1',
+    label: 'January',
     getRange: () => ({ from: new Date(2026, 0, 1), to: new Date(2026, 0, 31) }),
   },
   {
-    label: 'Quý I',
+    label: 'Q1',
     getRange: () => ({ from: new Date(2026, 0, 1), to: new Date(2026, 2, 31) }),
   },
 ];
@@ -158,22 +158,22 @@ export const DateRangeStory: Story = () => {
   return (
     <div className="max-w-md space-y-6">
       <div className="space-y-2">
-        <GroupLabel>Khoảng ngày đơn hàng</GroupLabel>
+        <GroupLabel>Order date range</GroupLabel>
         <DateRangePicker
           value={plain}
           onChange={setPlain}
           numberOfMonths={1}
-          placeholder="Chọn khoảng ngày"
+          placeholder="Select a date range"
         />
       </div>
 
       <div className="space-y-2">
-        <GroupLabel>Có preset tuỳ biến</GroupLabel>
+        <GroupLabel>With custom presets</GroupLabel>
         <DateRangePicker
           value={withPresets}
           onChange={setWithPresets}
-          presets={DON_HANG_PRESETS}
-          placeholder="Chọn khoảng ngày"
+          presets={ORDER_PRESETS}
+          placeholder="Select a date range"
         />
       </div>
     </div>
@@ -181,17 +181,17 @@ export const DateRangeStory: Story = () => {
 };
 
 // ── SegmentedControl ─────────────────────────────────────────────────────────
-const TRANG_THAI: SegmentedControlOption[] = [
-  { value: 'all', label: 'Tất cả' },
-  { value: 'pending', label: 'Chưa xử lý' },
-  { value: 'delivered', label: 'Đã giao' },
+const STATUSES: SegmentedControlOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'pending', label: 'Unprocessed' },
+  { value: 'delivered', label: 'Delivered' },
 ];
 
-const TRANG_THAI_ICON: SegmentedControlOption[] = [
-  { value: 'all', label: 'Tất cả', icon: <ListFilter /> },
-  { value: 'pending', label: 'Chờ thanh toán', icon: <Clock /> },
-  { value: 'paid', label: 'Đã thanh toán', icon: <CheckCircle2 /> },
-  { value: 'cancelled', label: 'Đã huỷ', icon: <XCircle /> },
+const STATUSES_ICON: SegmentedControlOption[] = [
+  { value: 'all', label: 'All', icon: <ListFilter /> },
+  { value: 'pending', label: 'Pending payment', icon: <Clock /> },
+  { value: 'paid', label: 'Paid', icon: <CheckCircle2 /> },
+  { value: 'cancelled', label: 'Cancelled', icon: <XCircle /> },
 ];
 
 export const SegmentedStory: Story = () => {
@@ -202,37 +202,37 @@ export const SegmentedStory: Story = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <GroupLabel>Bộ lọc đơn hàng · md</GroupLabel>
+        <GroupLabel>Order filter · md</GroupLabel>
         <SegmentedControl
-          options={TRANG_THAI}
+          options={STATUSES}
           value={view}
           onChange={setView}
-          ariaLabel="Lọc theo trạng thái đơn"
+          ariaLabel="Filter by order status"
         />
       </div>
 
       <div className="space-y-2">
-        <GroupLabel>Kích thước sm</GroupLabel>
+        <GroupLabel>Size sm</GroupLabel>
         <SegmentedControl
-          options={TRANG_THAI}
+          options={STATUSES}
           value={viewSm}
           onChange={setViewSm}
           size="sm"
-          ariaLabel="Lọc theo trạng thái đơn (nhỏ)"
+          ariaLabel="Filter by order status (small)"
         />
       </div>
 
       <div className="space-y-2">
-        <GroupLabel>Kèm icon</GroupLabel>
+        <GroupLabel>With icons</GroupLabel>
         <SegmentedControl
-          options={TRANG_THAI_ICON}
+          options={STATUSES_ICON}
           value={viewIcon}
           onChange={setViewIcon}
-          ariaLabel="Lọc theo trạng thái thanh toán"
+          ariaLabel="Filter by payment status"
         />
         <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <PackageCheck className="size-3.5" />
-          Đang xem: {TRANG_THAI_ICON.find((o) => o.value === viewIcon)?.label}
+          Viewing: {STATUSES_ICON.find((o) => o.value === viewIcon)?.label}
         </p>
       </div>
     </div>

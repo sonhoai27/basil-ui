@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status-pill",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "badge",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/status-pill.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react';\nimport { Badge, type BadgeProps } from '../ui/badge';\nimport { cn } from '../../lib/utils';\n\n/**\n * Default order lifecycle statuses. StatusPill is opinionated for commerce/POS;\n * override `STATUS_CONFIG` (below) or fork this file to map your own states.\n */\nexport type OrderStatus = 'pending_payment' | 'paid' | 'packing' | 'sent' | 'cancelled';\n\ntype SoftVariant = NonNullable<BadgeProps['variant']>;\n\nconst STATUS_CONFIG: Record<\n  OrderStatus,\n  { label: string; variant: SoftVariant; dot: string }\n> = {\n  pending_payment: { label: 'Chờ thanh toán', variant: 'soft-warning', dot: 'bg-warning' },\n  paid:            { label: 'Đã thanh toán',  variant: 'soft-success', dot: 'bg-success' },\n  packing:         { label: 'Đang đóng',      variant: 'soft-info',    dot: 'bg-info' },\n  sent:            { label: 'Đã gửi',         variant: 'soft-primary', dot: 'bg-primary' },\n  cancelled:       { label: 'Đã huỷ',         variant: 'soft-muted',   dot: 'bg-muted-foreground' },\n};\n\nexport interface StatusPillProps\n  extends Omit<BadgeProps, 'variant' | 'children'> {\n  status: OrderStatus;\n}\n\nexport const StatusPill = React.forwardRef<HTMLDivElement, StatusPillProps>(\n  ({ status, className, ...props }, ref) => {\n    const cfg = STATUS_CONFIG[status];\n    return (\n      <Badge\n        ref={ref}\n        variant={cfg.variant}\n        size=\"sm\"\n        className={cn('w-fit', className)}\n        {...props}\n      >\n        <span className={cn('h-1.5 w-1.5 rounded-full', cfg.dot)} aria-hidden />\n        {cfg.label}\n      </Badge>\n    );\n  },\n);\nStatusPill.displayName = 'StatusPill';\n"
+    }
+  ]
+}

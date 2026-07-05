@@ -12,8 +12,8 @@ const SIZE_CLASS: Record<NonNullable<BrandMarkProps['size']>, { box: string; ico
 };
 
 /**
- * Brand mark — ô vuông primary (banana-leaf green) chứa lá contrast màu trắng.
- * Lá dùng `currentColor` (= text-primary-foreground) → bám token, không còn neon.
+ * Brand mark — a primary-green rounded square holding a white leaf glyph.
+ * The leaf uses `currentColor` (= text-primary-foreground) so it follows the token.
  */
 export function BrandMark({ size = 'md', className }: BrandMarkProps) {
   const { box, icon } = SIZE_CLASS[size];

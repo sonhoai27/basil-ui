@@ -6,8 +6,8 @@ import { cn } from "../../lib/utils"
 import { Button, buttonVariants } from "./button"
 
 /**
- * Calendar — react-day-picker v10 + Tailwind v4. Kích thước ô CỐ ĐỊNH (size-9)
- * thay cho `--cell-size` (cú pháp arbitrary-var v3 không resolve ở v4). Lưới 7 cột đều.
+ * Calendar — react-day-picker v10 + Tailwind v4. Uses a FIXED cell size (size-9)
+ * instead of `--cell-size` (the v3 arbitrary-var syntax does not resolve in v4). Even 7-column grid.
  */
 function Calendar({
   className,

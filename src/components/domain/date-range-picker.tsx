@@ -18,57 +18,57 @@ export type { DateRange }
 
 export interface DateRangePickerPreset {
   label: string
-  /** Trả về khoảng ngày cho preset. */
+  /** Returns the date range for this preset. */
   getRange: () => DateRange
 }
 
 export interface DateRangePickerProps {
-  /** Khoảng ngày đang chọn. */
+  /** Currently selected date range. */
   value?: DateRange
-  /** Gọi khi khoảng ngày thay đổi (undefined khi xoá). */
+  /** Called when the date range changes (undefined when cleared). */
   onChange: (range?: DateRange) => void
   placeholder?: string
-  /** Số tháng hiển thị cạnh nhau (mặc định 2). */
+  /** Number of months shown side by side (default 2). */
   numberOfMonths?: number
   disabled?: boolean
-  /** Ngày sớm nhất được chọn. */
+  /** Earliest selectable date. */
   fromDate?: Date
-  /** Ngày muộn nhất được chọn. */
+  /** Latest selectable date. */
   toDate?: Date
-  /** Căn lề popover so với trigger. */
+  /** Popover alignment relative to the trigger. */
   align?: "start" | "center" | "end"
   className?: string
   /**
-   * Cột preset bên trái. `true` dùng bộ mặc định
-   * (Hôm nay / 7 ngày / 30 ngày / Tháng này), hoặc truyền mảng tuỳ biến.
+   * Preset column on the left. `true` uses the default set
+   * (Today / 7 days / 30 days / This month), or pass a custom array.
    */
   presets?: boolean | DateRangePickerPreset[]
 }
 
 const DEFAULT_PRESETS: DateRangePickerPreset[] = [
   {
-    label: "Hôm nay",
+    label: "Today",
     getRange: () => {
       const today = new Date()
       return { from: today, to: today }
     },
   },
   {
-    label: "7 ngày",
+    label: "7 days",
     getRange: () => {
       const today = new Date()
       return { from: subDays(today, 6), to: today }
     },
   },
   {
-    label: "30 ngày",
+    label: "30 days",
     getRange: () => {
       const today = new Date()
       return { from: subDays(today, 29), to: today }
     },
   },
   {
-    label: "Tháng này",
+    label: "This month",
     getRange: () => {
       const today = new Date()
       return { from: startOfMonth(today), to: endOfMonth(today) }
@@ -89,7 +89,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
     {
       value,
       onChange,
-      placeholder = "Chọn khoảng ngày",
+      placeholder = "Pick a date range",
       numberOfMonths = 2,
       disabled,
       fromDate,
@@ -105,7 +105,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
     const label = formatRange(value)
     const showClear = !disabled && value?.from != null
 
-    // react-day-picker v10: giới hạn khoảng ngày qua matcher `before`/`after`.
+    // react-day-picker v10: constrain the date range via `before`/`after` matchers.
     const disabledMatchers: Matcher[] = []
     if (fromDate) disabledMatchers.push({ before: fromDate })
     if (toDate) disabledMatchers.push({ after: toDate })
@@ -138,7 +138,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
               <span
                 role="button"
                 tabIndex={0}
-                aria-label="Xoá khoảng ngày"
+                aria-label="Clear date range"
                 className="-mr-1 inline-flex shrink-0 items-center justify-center rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                 onClick={(e) => {
                   e.stopPropagation()

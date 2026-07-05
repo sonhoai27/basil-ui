@@ -35,13 +35,13 @@ const ICON_CHIP: Record<TimelineVariant, string> = {
 
 export interface TimelineItemProps
   extends Omit<React.LiHTMLAttributes<HTMLLIElement>, 'title'> {
-  /** Primary label of the entry, e.g. "Đã duyệt". */
+  /** Primary label of the entry, e.g. "Approved". */
   title: React.ReactNode;
   /** Muted, tabular timestamp rendered in a <time> element. */
   timestamp?: string;
   /** Optional secondary detail below the title. */
   description?: React.ReactNode;
-  /** Rendered as "bởi {actor}". */
+  /** Rendered as "by {actor}". */
   actor?: string;
   /** Dot / icon-chip color. */
   variant?: TimelineVariant;
@@ -121,7 +121,7 @@ export const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
           ) : null}
           {actor ? (
             <div className="mt-1 text-xs text-muted-foreground">
-              bởi {actor}
+              by {actor}
             </div>
           ) : null}
         </div>

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "table-helpers",
+  "type": "registry:ui",
+  "dependencies": [
+    "@tanstack/react-table",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "kebab-menu",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/table-helpers.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react';\nimport type { Column } from '@tanstack/react-table';\nimport { ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react';\n\nimport { cn } from '../../lib/utils';\nimport { KebabMenu, type KebabMenuItem } from './kebab-menu';\n\nexport interface DataTableColumnHeaderProps<TData, TValue>\n  extends React.HTMLAttributes<HTMLDivElement> {\n  column: Column<TData, TValue>;\n  title: string;\n}\n\n/**\n * Sortable header cell for a @tanstack/react-table `ColumnDef.header`.\n * Renders a ghost sort-toggle button when the column is sortable, otherwise\n * plain header text. The arrow icon reflects the current sort direction.\n */\nexport function DataTableColumnHeader<TData, TValue>({\n  column,\n  title,\n  className,\n  ...props\n}: DataTableColumnHeaderProps<TData, TValue>) {\n  if (!column.getCanSort()) {\n    return (\n      <div\n        className={cn(\n          'text-xs font-medium uppercase tracking-wide text-muted-foreground',\n          className,\n        )}\n        {...props}\n      >\n        {title}\n      </div>\n    );\n  }\n\n  const sorted = column.getIsSorted();\n\n  return (\n    <div className={cn('flex items-center', className)} {...props}>\n      <button\n        type=\"button\"\n        onClick={column.getToggleSortingHandler()}\n        className={cn(\n          '-ml-1 inline-flex items-center gap-1 rounded-md px-1 py-0.5',\n          'text-xs font-medium uppercase tracking-wide text-muted-foreground',\n          'transition-colors hover:text-foreground',\n          'data-[sorted=true]:text-foreground',\n        )}\n        data-sorted={sorted ? 'true' : 'false'}\n      >\n        <span>{title}</span>\n        {sorted === 'asc' ? (\n          <ChevronUp className=\"size-4\" />\n        ) : sorted === 'desc' ? (\n          <ChevronDown className=\"size-4\" />\n        ) : (\n          <ArrowUpDown className=\"size-4 opacity-50\" />\n        )}\n      </button>\n    </div>\n  );\n}\n\nexport interface DataTableRowAction {\n  label: string;\n  icon?: React.ReactNode;\n  onSelect: () => void;\n  destructive?: boolean;\n}\n\nexport interface DataTableRowActionsProps {\n  actions: DataTableRowAction[];\n}\n\n/**\n * Row-level overflow menu for a @tanstack/react-table row. Renders a kebab\n * button (aligned end) listing the given actions; destructive items are\n * styled with `text-destructive`.\n */\nexport function DataTableRowActions({ actions }: DataTableRowActionsProps) {\n  return <KebabMenu items={actions as KebabMenuItem[]} align=\"end\" />;\n}\n"
+    }
+  ]
+}

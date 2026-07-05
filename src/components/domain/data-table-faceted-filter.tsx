@@ -23,15 +23,15 @@ export interface FacetedFilterOption {
 }
 
 export interface DataTableFacetedFilterProps<TData> {
-  /** Cột từ `table.getColumn(id)` (dùng render-prop toolbar của DataTable). */
+  /** Column from `table.getColumn(id)` (use the DataTable toolbar render prop). */
   column?: Column<TData, unknown>;
   title: string;
   options: FacetedFilterOption[];
 }
 
 /**
- * Bộ lọc facet cho một cột (nhiều lựa chọn) — chip lọc + số lượng mỗi giá trị.
- * Cột cần filterFn nhận mảng, ví dụ:
+ * Faceted filter for a single column (multi-select) — filter chips + a count per value.
+ * The column needs a filterFn that accepts an array, e.g.:
  *   filterFn: (row, id, val) => (val as string[]).includes(row.getValue(id))
  */
 export function DataTableFacetedFilter<TData>({
@@ -56,7 +56,7 @@ export function DataTableFacetedFilter<TData>({
               <div className="hidden gap-1 lg:flex">
                 {selectedValues.size > 2 ? (
                   <Badge variant="soft-primary" size="sm" className="font-tabular">
-                    {selectedValues.size} đã chọn
+                    {selectedValues.size} selected
                   </Badge>
                 ) : (
                   options
@@ -76,7 +76,7 @@ export function DataTableFacetedFilter<TData>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>Không có kết quả.</CommandEmpty>
+            <CommandEmpty>No results.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -124,7 +124,7 @@ export function DataTableFacetedFilter<TData>({
                     onSelect={() => column?.setFilterValue(undefined)}
                     className="justify-center text-center"
                   >
-                    Xoá bộ lọc
+                    Clear filters
                   </CommandItem>
                 </CommandGroup>
               </>

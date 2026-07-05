@@ -18,9 +18,9 @@ export default { title: 'Table · Advanced' };
 /* Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-/** vi-VN thousands grouping + ₫: 1250000 → "1.250.000 ₫". */
-function formatVnd(n: number): string {
-  return `${new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 0 }).format(n)} ₫`;
+/** en-US currency formatting: 1250 → "$1,250.00". */
+function formatUsd(n: number): string {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
 }
 
 /* ------------------------------------------------------------------ */
@@ -28,10 +28,10 @@ function formatVnd(n: number): string {
 /* ------------------------------------------------------------------ */
 
 const STATUS_OPTIONS = [
-  { label: 'Chờ thanh toán', value: 'pending_payment' },
-  { label: 'Đã thanh toán', value: 'paid' },
-  { label: 'Đang đóng', value: 'packing' },
-  { label: 'Đã gửi', value: 'sent' },
+  { label: 'Pending payment', value: 'pending_payment' },
+  { label: 'Paid', value: 'paid' },
+  { label: 'Packing', value: 'packing' },
+  { label: 'Sent', value: 'sent' },
 ];
 
 function Readout({ label, value }: { label: string; value: React.ReactNode }) {
@@ -62,55 +62,55 @@ function DemoCard({
 }
 
 export const EditableCellStory: Story = () => {
-  const [note, setNote] = React.useState<string>('Giao trước 9h sáng');
+  const [note, setNote] = React.useState<string>('Deliver before 9am');
   const [qty, setQty] = React.useState<number>(12);
-  const [price, setPrice] = React.useState<number>(185000);
+  const [price, setPrice] = React.useState<number>(18.5);
   const [status, setStatus] = React.useState<string>('paid');
 
   return (
     <div className="flex max-w-4xl flex-wrap gap-4">
-      <DemoCard title="Ghi chú (text)" hint="Bấm để sửa · Enter lưu · Esc huỷ">
+      <DemoCard title="Note (text)" hint="Click to edit · Enter saves · Esc cancels">
         <EditableCell
           value={note}
           type="text"
-          placeholder="Thêm ghi chú…"
-          ariaLabel="Ghi chú đơn"
+          placeholder="Add a note…"
+          ariaLabel="Order note"
           onSave={(v) => setNote(String(v))}
         />
-        <Readout label="Đã lưu" value={note || '—'} />
+        <Readout label="Saved" value={note || '—'} />
       </DemoCard>
 
-      <DemoCard title="Số lượng (number)" hint="Chỉ nhận chữ số · canh phải">
+      <DemoCard title="Quantity (number)" hint="Digits only · right-aligned">
         <EditableCell
           value={qty}
           type="number"
           align="right"
-          ariaLabel="Số lượng"
+          ariaLabel="Quantity"
           onSave={(v) => setQty(Number(v))}
         />
-        <Readout label="Đã lưu" value={qty} />
+        <Readout label="Saved" value={qty} />
       </DemoCard>
 
-      <DemoCard title="Đơn giá (currency)" hint="Định dạng ₫ khi đọc">
+      <DemoCard title="Unit price (currency)" hint="Formatted as $ when read">
         <EditableCell
           value={price}
           type="currency"
-          ariaLabel="Đơn giá"
+          ariaLabel="Unit price"
           onSave={(v) => setPrice(Number(v))}
         />
-        <Readout label="Đã lưu" value={formatVnd(price)} />
+        <Readout label="Saved" value={formatUsd(price)} />
       </DemoCard>
 
-      <DemoCard title="Trạng thái (select)" hint="Bấm để mở danh sách">
+      <DemoCard title="Status (select)" hint="Click to open the list">
         <EditableCell
           value={status}
           type="select"
           options={STATUS_OPTIONS}
-          ariaLabel="Trạng thái đơn"
+          ariaLabel="Order status"
           onSave={(v) => setStatus(String(v))}
         />
         <Readout
-          label="Đã lưu"
+          label="Saved"
           value={STATUS_OPTIONS.find((o) => o.value === status)?.label ?? status}
         />
       </DemoCard>
@@ -119,7 +119,7 @@ export const EditableCellStory: Story = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* 2 · InlineEditTable — sửa SL/giá ngay trên bảng, thành tiền tự tính */
+/* 2 · InlineEditTable — edit qty/price inline, total auto-computes    */
 /* ------------------------------------------------------------------ */
 
 interface LineItem {
@@ -131,12 +131,12 @@ interface LineItem {
 }
 
 const INITIAL_LINES: LineItem[] = [
-  { id: 'sp-01', product: 'Nước mắm Nam Ngư 500ml', unit: 'chai', qty: 24, price: 32000 },
-  { id: 'sp-02', product: 'Dầu ăn Tường An 1L', unit: 'chai', qty: 12, price: 48000 },
-  { id: 'sp-03', product: 'Đường trắng Biên Hoà 1kg', unit: 'gói', qty: 30, price: 24500 },
-  { id: 'sp-04', product: 'Bột ngọt Ajinomoto 400g', unit: 'gói', qty: 18, price: 41000 },
-  { id: 'sp-05', product: 'Gạo ST25 túi 5kg', unit: 'túi', qty: 10, price: 165000 },
-  { id: 'sp-06', product: 'Mì Hảo Hảo thùng 30 gói', unit: 'thùng', qty: 6, price: 108000 },
+  { id: 'sp-01', product: 'Fish Sauce 500ml', unit: 'bottle', qty: 24, price: 3.2 },
+  { id: 'sp-02', product: 'Cooking Oil 1L', unit: 'bottle', qty: 12, price: 4.8 },
+  { id: 'sp-03', product: 'White Sugar 1kg', unit: 'pack', qty: 30, price: 2.45 },
+  { id: 'sp-04', product: 'MSG 400g', unit: 'pack', qty: 18, price: 4.1 },
+  { id: 'sp-05', product: 'Premium Rice 5kg', unit: 'bag', qty: 10, price: 16.5 },
+  { id: 'sp-06', product: 'Instant Noodles, case of 30', unit: 'case', qty: 6, price: 10.8 },
 ];
 
 export const InlineEditTable: Story = () => {
@@ -155,47 +155,47 @@ export const InlineEditTable: Story = () => {
     () => [
       {
         accessorKey: 'product',
-        header: 'Sản phẩm',
+        header: 'Product',
         cell: ({ row }) => (
           <div className="flex flex-col">
             <span className="text-foreground">{row.original.product}</span>
             <span className="text-xs text-muted-foreground">
-              Đơn vị: {row.original.unit}
+              Unit: {row.original.unit}
             </span>
           </div>
         ),
       },
       {
         accessorKey: 'qty',
-        header: () => <div className="text-right">Số lượng</div>,
+        header: () => <div className="text-right">Quantity</div>,
         cell: ({ row }) => (
           <EditableCell
             value={row.original.qty}
             type="number"
             align="right"
-            ariaLabel={`Số lượng ${row.original.product}`}
+            ariaLabel={`Quantity for ${row.original.product}`}
             onSave={(v) => patch(row.original.id, { qty: Number(v) })}
           />
         ),
       },
       {
         accessorKey: 'price',
-        header: () => <div className="text-right">Đơn giá</div>,
+        header: () => <div className="text-right">Unit price</div>,
         cell: ({ row }) => (
           <EditableCell
             value={row.original.price}
             type="currency"
-            ariaLabel={`Đơn giá ${row.original.product}`}
+            ariaLabel={`Unit price for ${row.original.product}`}
             onSave={(v) => patch(row.original.id, { price: Number(v) })}
           />
         ),
       },
       {
         id: 'lineTotal',
-        header: () => <div className="text-right">Thành tiền</div>,
+        header: () => <div className="text-right">Line total</div>,
         cell: ({ row }) => (
           <div className="text-right font-tabular font-medium tabular-nums text-foreground">
-            {formatVnd(row.original.qty * row.original.price)}
+            {formatUsd(row.original.qty * row.original.price)}
           </div>
         ),
       },
@@ -208,19 +208,19 @@ export const InlineEditTable: Story = () => {
   return (
     <div className="max-w-3xl">
       <p className="mb-3 text-sm text-muted-foreground">
-        Bấm vào ô <strong>Số lượng</strong> hoặc <strong>Đơn giá</strong> để sửa —
-        cột <strong>Thành tiền</strong> tự tính lại.
+        Click a <strong>Quantity</strong> or <strong>Unit price</strong> cell to edit —
+        the <strong>Line total</strong> column recomputes automatically.
       </p>
       <DataTable
         columns={columns}
         data={rows}
         getRowId={(r) => r.id}
-        aria-label="Chi tiết đơn hàng"
+        aria-label="Order line items"
       />
       <div className="mt-3 flex justify-end text-sm">
-        <span className="text-muted-foreground">Tổng cộng:&nbsp;</span>
+        <span className="text-muted-foreground">Grand total:&nbsp;</span>
         <span className="font-tabular font-semibold text-foreground">
-          {formatVnd(grandTotal)}
+          {formatUsd(grandTotal)}
         </span>
       </div>
     </div>
@@ -228,7 +228,7 @@ export const InlineEditTable: Story = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* 3 · ResizableColumns — kéo giãn độ rộng cột                         */
+/* 3 · ResizableColumns — drag to resize column width                  */
 /* ------------------------------------------------------------------ */
 
 type OrderStatus = 'pending_payment' | 'paid' | 'packing' | 'sent';
@@ -242,13 +242,13 @@ interface OrderRow {
 }
 
 const RESIZE_ORDERS: OrderRow[] = [
-  { code: 'DH-2401', customer: 'Chị Lan · Quán bún', channel: 'Zalo', total: 1250000, status: 'pending_payment' },
-  { code: 'DH-2402', customer: 'Anh Dũng · Bếp ăn KCN Sóng Thần', channel: 'Điện thoại', total: 3480000, status: 'paid' },
-  { code: 'DH-2403', customer: 'Cô Bảy · Tạp hoá', channel: 'Zalo', total: 640000, status: 'packing' },
-  { code: 'DH-2404', customer: 'Chị Hoa · Nhà hàng Sen', channel: 'Trực tiếp', total: 7920000, status: 'sent' },
-  { code: 'DH-2405', customer: 'Anh Tài · Quán nhậu Bờ Kè', channel: 'Zalo', total: 520000, status: 'pending_payment' },
-  { code: 'DH-2406', customer: 'Chị Mai · Bún đậu', channel: 'Điện thoại', total: 2150000, status: 'paid' },
-  { code: 'DH-2407', customer: 'Chú Ba · Cơm tấm', channel: 'Zalo', total: 1680000, status: 'packing' },
+  { code: 'ORD-2401', customer: 'Emma Carter · The Noodle Bar', channel: 'Chat', total: 1250, status: 'pending_payment' },
+  { code: 'ORD-2402', customer: 'Daniel Reed · Riverside Industrial Canteen', channel: 'Phone', total: 3480, status: 'paid' },
+  { code: 'ORD-2403', customer: 'Betty Shaw · Corner Store', channel: 'Chat', total: 640, status: 'packing' },
+  { code: 'ORD-2404', customer: 'Hannah Lotus · Lotus Restaurant', channel: 'In person', total: 7920, status: 'sent' },
+  { code: 'ORD-2405', customer: 'Tony Rivers · Riverside Tavern', channel: 'Chat', total: 520, status: 'pending_payment' },
+  { code: 'ORD-2406', customer: 'May Nguyen · Bun Dau Diner', channel: 'Phone', total: 2150, status: 'paid' },
+  { code: 'ORD-2407', customer: 'Ben Cole · Broken Rice House', channel: 'Chat', total: 1680, status: 'packing' },
 ];
 
 export const ResizableColumns: Story = () => {
@@ -256,7 +256,7 @@ export const ResizableColumns: Story = () => {
     () => [
       {
         accessorKey: 'code',
-        header: 'Mã đơn',
+        header: 'Order #',
         size: 90,
         minSize: 70,
         cell: ({ row }) => (
@@ -267,7 +267,7 @@ export const ResizableColumns: Story = () => {
       },
       {
         accessorKey: 'customer',
-        header: 'Khách hàng',
+        header: 'Customer',
         size: 200,
         minSize: 120,
         maxSize: 320,
@@ -280,18 +280,18 @@ export const ResizableColumns: Story = () => {
       },
       {
         accessorKey: 'total',
-        header: () => <div className="text-right">Tổng tiền</div>,
+        header: () => <div className="text-right">Total</div>,
         size: 140,
         minSize: 110,
         cell: ({ row }) => (
           <div className="text-right font-tabular tabular-nums text-foreground">
-            {formatVnd(row.original.total)}
+            {formatUsd(row.original.total)}
           </div>
         ),
       },
       {
         accessorKey: 'status',
-        header: 'Trạng thái',
+        header: 'Status',
         size: 120,
         minSize: 100,
         cell: ({ row }) => <StatusPill status={row.original.status} />,
@@ -303,42 +303,42 @@ export const ResizableColumns: Story = () => {
   return (
     <div className="max-w-3xl">
       <p className="mb-3 text-sm text-muted-foreground">
-        Rê chuột tới mép phải mỗi tiêu đề cột để thấy tay kéo — kéo để chỉnh độ rộng.
+        Hover the right edge of each column header to reveal the drag handle — drag to resize.
       </p>
       <DataTable
         columns={columns}
         data={RESIZE_ORDERS}
         enableColumnResizing
         getRowId={(r) => r.code}
-        aria-label="Đơn hàng (kéo giãn cột)"
+        aria-label="Orders (resizable columns)"
       />
     </div>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/* 4 · SavedViewsStory — strip nối vào DataTable qua state/appliedView */
+/* 4 · SavedViewsStory — strip wired to DataTable via state/appliedView */
 /* ------------------------------------------------------------------ */
 
 const SEED_VIEWS: SavedView[] = [
   {
     id: 'v-unpaid',
-    name: 'Chưa thu tiền',
+    name: 'Unpaid',
   },
   {
-    id: 'v-zalo',
-    name: 'Đơn Zalo',
+    id: 'v-chat',
+    name: 'Chat orders',
   },
 ];
 
-// Preset snapshots gắn với các view seed ở trên.
+// Preset snapshots bound to the seed views above.
 const SEED_STATE: Record<string, DataTableViewState> = {
   'v-unpaid': {
-    globalFilter: 'Chờ thanh toán',
+    globalFilter: 'Pending payment',
     sorting: [{ id: 'total', desc: true }],
   },
-  'v-zalo': {
-    globalFilter: 'Zalo',
+  'v-chat': {
+    globalFilter: 'Chat',
     sorting: [{ id: 'code', desc: false }],
   },
 };
@@ -352,27 +352,27 @@ interface SvOrderRow {
 }
 
 const SV_ORDERS: SvOrderRow[] = [
-  { code: 'DH-2401', customer: 'Chị Lan · Quán bún', channel: 'Zalo', total: 1250000, status: 'Chờ thanh toán' },
-  { code: 'DH-2402', customer: 'Anh Dũng · Bếp ăn KCN', channel: 'Điện thoại', total: 3480000, status: 'Đã thanh toán' },
-  { code: 'DH-2403', customer: 'Cô Bảy · Tạp hoá', channel: 'Zalo', total: 640000, status: 'Đang đóng' },
-  { code: 'DH-2404', customer: 'Chị Hoa · Nhà hàng Sen', channel: 'Trực tiếp', total: 7920000, status: 'Đã gửi' },
-  { code: 'DH-2405', customer: 'Anh Tài · Quán nhậu', channel: 'Zalo', total: 520000, status: 'Chờ thanh toán' },
-  { code: 'DH-2406', customer: 'Chị Mai · Bún đậu', channel: 'Điện thoại', total: 2150000, status: 'Chờ thanh toán' },
-  { code: 'DH-2407', customer: 'Chú Ba · Cơm tấm', channel: 'Zalo', total: 1680000, status: 'Đã thanh toán' },
-  { code: 'DH-2408', customer: 'Chị Thu · Quán phở', channel: 'Trực tiếp', total: 4320000, status: 'Đã gửi' },
+  { code: 'ORD-2401', customer: 'Emma Carter · The Noodle Bar', channel: 'Chat', total: 1250, status: 'Pending payment' },
+  { code: 'ORD-2402', customer: 'Daniel Reed · Industrial Canteen', channel: 'Phone', total: 3480, status: 'Paid' },
+  { code: 'ORD-2403', customer: 'Betty Shaw · Corner Store', channel: 'Chat', total: 640, status: 'Packing' },
+  { code: 'ORD-2404', customer: 'Hannah Lotus · Lotus Restaurant', channel: 'In person', total: 7920, status: 'Sent' },
+  { code: 'ORD-2405', customer: 'Tony Rivers · The Tavern', channel: 'Chat', total: 520, status: 'Pending payment' },
+  { code: 'ORD-2406', customer: 'May Nguyen · Bun Dau Diner', channel: 'Phone', total: 2150, status: 'Pending payment' },
+  { code: 'ORD-2407', customer: 'Ben Cole · Broken Rice House', channel: 'Chat', total: 1680, status: 'Paid' },
+  { code: 'ORD-2408', customer: 'Sophie Tran · Pho Kitchen', channel: 'In person', total: 4320, status: 'Sent' },
 ];
 
 export const SavedViewsStory: Story = () => {
   const [views, setViews] = React.useState<SavedView[]>(SEED_VIEWS);
-  // Bảng tra id → snapshot; các view do người dùng tạo mới được thêm vào đây.
+  // Lookup id → snapshot; views the user creates get added here.
   const [viewState, setViewState] = React.useState<Record<string, DataTableViewState>>(
     SEED_STATE,
   );
   const [activeId, setActiveId] = React.useState<string>('');
 
-  // Snapshot trạng thái bảng hiện tại (để lưu thành view mới).
+  // Snapshot of the current table state (to save as a new view).
   const snapshotRef = React.useRef<DataTableViewState>({});
-  // appliedView đổi tham chiếu → DataTable áp lại trạng thái.
+  // Changing appliedView's reference makes DataTable re-apply the state.
   const [appliedView, setAppliedView] = React.useState<DataTableViewState | undefined>(
     undefined,
   );
@@ -380,7 +380,7 @@ export const SavedViewsStory: Story = () => {
   const applyView = (id: string) => {
     setActiveId(id);
     if (!id) {
-      // "Tất cả" → xoá lọc/sort.
+      // "All" → clear filters/sorting.
       setAppliedView({ globalFilter: '', sorting: [], columnFilters: [] });
       return;
     }
@@ -412,7 +412,7 @@ export const SavedViewsStory: Story = () => {
     () => [
       {
         accessorKey: 'code',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Mã đơn" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Order #" />,
         cell: ({ row }) => (
           <span className="font-tabular font-medium text-foreground">
             {row.original.code}
@@ -422,7 +422,7 @@ export const SavedViewsStory: Story = () => {
       {
         accessorKey: 'customer',
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Khách hàng" />
+          <DataTableColumnHeader column={column} title="Customer" />
         ),
         cell: ({ row }) => (
           <div className="flex flex-col">
@@ -434,17 +434,17 @@ export const SavedViewsStory: Story = () => {
       {
         accessorKey: 'total',
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Tổng tiền" className="justify-end" />
+          <DataTableColumnHeader column={column} title="Total" className="justify-end" />
         ),
         cell: ({ row }) => (
           <div className="text-right font-tabular tabular-nums text-foreground">
-            {formatVnd(row.original.total)}
+            {formatUsd(row.original.total)}
           </div>
         ),
       },
       {
         accessorKey: 'status',
-        header: 'Trạng thái',
+        header: 'Status',
         cell: ({ row }) => (
           <span className="text-sm text-muted-foreground">{row.original.status}</span>
         ),
@@ -464,24 +464,24 @@ export const SavedViewsStory: Story = () => {
           setViews((prev) => prev.map((v) => (v.id === id ? { ...v, name } : v)))
         }
         onDelete={deleteView}
-        allLabel="Tất cả"
+        allLabel="All"
         className="mb-3"
       />
       <DataTable
         columns={columns}
         data={SV_ORDERS}
         searchable
-        searchPlaceholder="Tìm đơn, khách, trạng thái…"
+        searchPlaceholder="Search orders, customers, status…"
         getRowId={(r) => r.code}
         appliedView={appliedView}
         onStateChange={(state) => {
           snapshotRef.current = state;
         }}
-        aria-label="Đơn hàng (saved views)"
+        aria-label="Orders (saved views)"
       />
       <p className="mt-3 text-xs text-muted-foreground">
-        Tìm kiếm + sắp xếp, rồi bấm <strong>“+ Lưu bộ lọc hiện tại”</strong> để lưu thành
-        view mới. Chọn <strong>“Tất cả”</strong> để bỏ lọc.
+        Search + sort, then click <strong>“+ Save current filters”</strong> to save it as a new
+        view. Choose <strong>“All”</strong> to clear the filters.
       </p>
     </div>
   );

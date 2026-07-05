@@ -12,7 +12,7 @@ export function VatBadge({ className }: { className?: string }) {
 export function OutOfStockBadge({ className }: { className?: string }) {
   return (
     <Badge variant="soft-destructive" size="sm" className={cn('font-medium', className)} role="status">
-      Tạm hết
+      Out of stock
     </Badge>
   );
 }

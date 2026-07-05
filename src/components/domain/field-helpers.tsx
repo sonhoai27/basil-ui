@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cn } from '../../lib/utils';
 
-/** Render dưới input — caption muted hoặc destructive khi error */
+/** Renders below an input — a muted caption, or destructive when in error state. */
 export function FieldHint({
   children,
   error,
@@ -17,7 +17,7 @@ export function FieldHint({
   );
 }
 
-/** Dot indicator cho field bắt buộc — đặt cạnh shadcn Label */
+/** Dot indicator for a required field — place next to a shadcn Label. */
 export function RequiredHint() {
   return (
     <span

@@ -38,7 +38,7 @@ import { cn } from '../../lib/utils';
 
 type Density = 'comfortable' | 'compact';
 
-/** Ảnh chụp trạng thái bảng để lưu/áp dụng saved view. */
+/** Snapshot of table state used to save/apply a saved view. */
 export interface DataTableViewState {
   sorting?: SortingState;
   columnFilters?: ColumnFiltersState;
@@ -57,73 +57,73 @@ export interface DataTableProps<TData> {
   emptyAction?: { label: string; onClick: () => void };
   pageSize?: number;
   initialSorting?: SortingState;
-  /** Click cả dòng (mở chi tiết). Bỏ qua khi bấm vào button/checkbox/menu trong dòng. */
+  /** Click the whole row (open detail). Ignored when clicking a button/checkbox/menu inside the row. */
   onRowClick?: (row: TData) => void;
   getRowId?: (row: TData) => string;
-  /** Bật cột checkbox chọn dòng. */
+  /** Enable the row-selection checkbox column. */
   enableRowSelection?: boolean;
-  /** Render thanh hành động hàng loạt khi có dòng được chọn. */
+  /** Render the bulk-actions bar when rows are selected. */
   bulkActions?: (selected: TData[], clear: () => void) => React.ReactNode;
-  /** Toolbar trên bảng — ReactNode, hoặc hàm nhận `table` để render faceted filter / search tuỳ biến. */
+  /** Toolbar above the table — a ReactNode, or a function receiving `table` to render a custom faceted filter / search. */
   toolbar?: React.ReactNode | ((table: TanTable<TData>) => React.ReactNode);
-  /** Caption ẩn (screen-reader) mô tả bảng. */
+  /** Hidden (screen-reader) caption describing the table. */
   caption?: string;
-  /** Nhãn a11y cho bảng khi không dùng caption. */
+  /** a11y label for the table when no caption is used. */
   'aria-label'?: string;
 
   /* --- Depth --- */
-  /** Mật độ dòng ban đầu. */
+  /** Initial row density. */
   density?: Density;
-  /** Hiện nút chuyển mật độ Thoáng/Gọn. */
+  /** Show the Comfortable/Compact density toggle. */
   densityToggle?: boolean;
-  /** Chiều cao tối đa vùng bảng (bật cuộn dọc). Header sẽ dính khi cuộn. */
+  /** Max height of the table area (enables vertical scroll). The header sticks while scrolling. */
   maxHeight?: number | string;
-  /** Ghim header khi cuộn dọc (mặc định bật khi có maxHeight). */
+  /** Pin the header on vertical scroll (defaults on when maxHeight is set). */
   stickyHeader?: boolean;
-  /** Ghim cột đầu (mã đơn/khách) khi cuộn ngang. Gồm cả cột chọn nếu bật. */
+  /** Pin the first column (order/customer id) on horizontal scroll. Includes the select column if enabled. */
   pinFirstColumn?: boolean;
-  /** Bật nút "Cột" để ẩn/hiện cột. Dùng column.meta.label hoặc header string làm nhãn. */
+  /** Enable the "Columns" button to show/hide columns. Uses column.meta.label or the header string as the label. */
   enableColumnVisibility?: boolean;
-  /** Bật ô tìm kiếm chung (lọc client). Truyền chuỗi để đổi placeholder. */
+  /** Enable the global search box (client-side filter). Pass a string to change the placeholder. */
   searchable?: boolean;
   searchPlaceholder?: string;
-  /** Hiện ô chọn số dòng/trang, ví dụ [15, 30, 50]. */
+  /** Show the rows-per-page selector, e.g. [15, 30, 50]. */
   pageSizeOptions?: number[];
-  /** Tổng số kết quả (hiển thị "N kết quả"). Với server-side, truyền tổng thật. */
+  /** Total number of results (shown as "N results"). For server-side, pass the true total. */
   rowCount?: number;
-  /** Số trang tổng do server cung cấp → bật chế độ phân trang server (manual). */
+  /** Total page count provided by the server → enables manual (server-side) pagination. */
   pageCount?: number;
-  /** Gọi khi trang/kích thước trang đổi (dùng cho fetch server-side). */
+  /** Called when the page/page size changes (use for server-side fetches). */
   onPaginationChange?: (state: PaginationState) => void;
 
-  /* --- Trạng thái rỗng do lọc --- */
-  /** App tự báo đang lọc (server-side) để hiện empty-đã-lọc thay vì empty thật. */
+  /* --- Filtered-empty state --- */
+  /** App reports filtering itself (server-side) to show the filtered-empty state instead of the true empty. */
   isFiltered?: boolean;
   filteredEmptyTitle?: string;
   filteredEmptyDescription?: string;
-  /** Xoá bộ lọc từ trạng thái empty-đã-lọc (server-side). Search/faceted nội bộ tự xoá. */
+  /** Clear filters from the filtered-empty state (server-side). Built-in search/faceted filters clear themselves. */
   onClearFilters?: () => void;
 
-  /* --- Chọn tất cả xuyên trang (server-side) --- */
-  /** Gọi khi bấm "Chọn tất cả N" lúc phân trang server. */
+  /* --- Select all across pages (server-side) --- */
+  /** Called when "Select all N" is clicked during server-side pagination. */
   onSelectAllAcrossPages?: () => void;
 
-  /* --- Kéo giãn cột --- */
-  /** Cho kéo giãn độ rộng cột (dùng column.size / minSize / maxSize trong def). */
+  /* --- Column resizing --- */
+  /** Allow resizing column widths (uses column.size / minSize / maxSize in the def). */
   enableColumnResizing?: boolean;
 
   /* --- Saved views --- */
-  /** Giá trị khởi tạo (seed) cho bộ lọc/ẩn cột/tìm kiếm — dùng với saved views. */
+  /** Seed values for filters/hidden columns/search — used with saved views. */
   initialColumnFilters?: ColumnFiltersState;
   initialColumnVisibility?: VisibilityState;
   initialGlobalFilter?: string;
-  /** Emit trạng thái (sorting/filters/visibility/search) mỗi khi đổi — để app snapshot lưu view. */
+  /** Emit state (sorting/filters/visibility/search) on every change — so the app can snapshot a view. */
   onStateChange?: (state: DataTableViewState) => void;
-  /** Áp một saved view: khi đối tượng này đổi tham chiếu, bảng áp lại trạng thái. */
+  /** Apply a saved view: when this object's reference changes, the table re-applies the state. */
   appliedView?: DataTableViewState;
 }
 
-/** Nhãn cột cho menu ẩn/hiện: column.meta.label → header string → id. */
+/** Column label for the show/hide menu: column.meta.label → header string → id. */
 function columnLabel<TData>(col: { id: string; columnDef: ColumnDef<TData, unknown> }): string {
   const meta = col.columnDef.meta as { label?: string } | undefined;
   if (meta?.label) return meta.label;
@@ -138,7 +138,7 @@ export function DataTable<TData>({
   isLoading,
   isError,
   onRetry,
-  emptyTitle = 'Không có dữ liệu',
+  emptyTitle = 'No data',
   emptyDescription,
   emptyAction,
   pageSize = 15,
@@ -186,7 +186,7 @@ export function DataTable<TData>({
   const [pagination, setPagination] = React.useState<PaginationState>({ pageIndex: 0, pageSize });
   const [densityState, setDensityState] = React.useState<Density>(density);
 
-  // Áp saved view khi tham chiếu `appliedView` đổi (app điều khiển thời điểm).
+  // Apply the saved view when the `appliedView` reference changes (the app controls timing).
   const appliedRef = React.useRef(appliedView);
   React.useEffect(() => {
     if (appliedView && appliedView !== appliedRef.current) {
@@ -199,7 +199,7 @@ export function DataTable<TData>({
     }
   }, [appliedView]);
 
-  // Emit trạng thái để app snapshot (lưu view).
+  // Emit state so the app can snapshot (save the view).
   React.useEffect(() => {
     onStateChange?.({ sorting, columnFilters, globalFilter, columnVisibility });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -217,7 +217,7 @@ export function DataTable<TData>({
             table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
-          aria-label="Chọn tất cả"
+          aria-label="Select all"
         />
       ),
       cell: ({ row }) => (
@@ -225,7 +225,7 @@ export function DataTable<TData>({
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(v) => row.toggleSelected(!!v)}
-            aria-label="Chọn dòng"
+            aria-label="Select row"
           />
         </span>
       ),
@@ -275,7 +275,7 @@ export function DataTable<TData>({
     onRowClick(original);
   }
 
-  // --- Pinning (CSS sticky với offset cố định — cột chọn = w-12/48px) ---
+  // --- Pinning (CSS sticky with a fixed offset — select column = w-12/48px) ---
   const pinCount = pinFirstColumn ? (enableRowSelection ? 2 : 1) : 0;
   function pinProps(index: number, isHeader: boolean): { className?: string; style?: React.CSSProperties } {
     if (index >= pinCount) return {};
@@ -286,7 +286,7 @@ export function DataTable<TData>({
         index === 0 ? 'left-0' : 'left-12',
         enableRowSelection && index === 0 && 'w-12',
         isLast && 'border-r border-border',
-        // theo trạng thái dòng để cột ghim không "trơ" khi hover/chọn
+        // follow the row state so the pinned column doesn't look detached on hover/select
         !isHeader && 'group-hover:bg-accent group-data-[state=selected]:bg-primary-subtle',
       ),
       style: { zIndex: isHeader ? 11 : 2 },
@@ -353,9 +353,9 @@ export function DataTable<TData>({
                 <Input
                   value={globalFilter}
                   onChange={(e) => setGlobalFilter(e.target.value)}
-                  placeholder={searchPlaceholder ?? 'Tìm kiếm…'}
+                  placeholder={searchPlaceholder ?? 'Search…'}
                   className="w-full pl-8 sm:w-64"
-                  aria-label="Tìm kiếm"
+                  aria-label="Search"
                 />
               </div>
             ) : null}
@@ -364,12 +364,12 @@ export function DataTable<TData>({
             {densityToggle ? (
               <SegmentedControl
                 size="sm"
-                ariaLabel="Mật độ hiển thị"
+                ariaLabel="Display density"
                 value={densityState}
                 onChange={(v) => setDensityState(v as Density)}
                 options={[
-                  { value: 'comfortable', label: 'Thoáng' },
-                  { value: 'compact', label: 'Gọn' },
+                  { value: 'comfortable', label: 'Comfortable' },
+                  { value: 'compact', label: 'Compact' },
                 ]}
               />
             ) : null}
@@ -377,11 +377,11 @@ export function DataTable<TData>({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" leadingIcon={<SlidersHorizontal size={14} />}>
-                    Cột
+                    Columns
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuLabel>Hiện cột</DropdownMenuLabel>
+                  <DropdownMenuLabel>Show columns</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {hidableColumns.map((col) => (
                     <DropdownMenuCheckboxItem
@@ -404,16 +404,16 @@ export function DataTable<TData>({
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-primary-subtle px-4 py-2.5">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm font-medium text-primary">
-              {allSelected ? `Đã chọn tất cả ${totalFiltered}` : `Đã chọn ${selectedRows.length}`}
+              {allSelected ? `All ${totalFiltered} selected` : `${selectedRows.length} selected`}
             </span>
             {!allSelected && allPageSelected && moreBeyondPage && !manualPagination ? (
               <Button variant="link" size="sm" onClick={() => table.toggleAllRowsSelected(true)}>
-                Chọn tất cả {totalFiltered}
+                Select all {totalFiltered}
               </Button>
             ) : null}
             {!allSelected && allPageSelected && manualPagination && onSelectAllAcrossPages ? (
               <Button variant="link" size="sm" onClick={onSelectAllAcrossPages}>
-                Chọn tất cả {rowCount}
+                Select all {rowCount}
               </Button>
             ) : null}
           </div>
@@ -424,8 +424,8 @@ export function DataTable<TData>({
       <div className="overflow-hidden rounded-lg border border-border bg-card">
         {isError ? (
           <ErrorState
-            description="Không tải được dữ liệu. Kiểm tra kết nối rồi thử lại."
-            action={onRetry ? { label: 'Thử lại', onClick: onRetry } : undefined}
+            description="Couldn't load the data. Check your connection and try again."
+            action={onRetry ? { label: 'Retry', onClick: onRetry } : undefined}
           />
         ) : isLoading ? (
             <Table aria-label={ariaLabel ?? caption} aria-busy className={densityCls} style={tableStyle} containerStyle={scrollStyle}>
@@ -460,9 +460,9 @@ export function DataTable<TData>({
         ) : rows.length === 0 ? (
           showFilteredEmpty ? (
             <EmptyState
-              title={filteredEmptyTitle ?? 'Không tìm thấy kết quả phù hợp'}
-              description={filteredEmptyDescription ?? 'Thử đổi từ khoá hoặc bỏ bớt bộ lọc.'}
-              action={canClear ? { label: 'Xoá bộ lọc', onClick: clearFilters } : undefined}
+              title={filteredEmptyTitle ?? 'No matching results'}
+              description={filteredEmptyDescription ?? 'Try changing your search or removing some filters.'}
+              action={canClear ? { label: 'Clear filters', onClick: clearFilters } : undefined}
             />
           ) : (
             <EmptyState title={emptyTitle} description={emptyDescription} action={emptyAction} />
@@ -503,10 +503,10 @@ export function DataTable<TData>({
                               onTouchStart={h.getResizeHandler()}
                               aria-hidden
                               data-resizing={h.column.getIsResizing() ? '' : undefined}
-                              title="Kéo để giãn cột"
+                              title="Drag to resize column"
                               className="group/rz absolute right-0 top-0 z-[1] flex h-full w-3 cursor-col-resize touch-none select-none justify-end"
                             >
-                              {/* Vạch chia luôn hiển thị → biết cột kéo được; đậm + xanh khi hover/kéo */}
+                              {/* Divider always visible → signals the column is resizable; thicker + green on hover/drag */}
                               <span className="h-full w-px bg-border-strong transition-all group-hover/rz:w-[3px] group-hover/rz:bg-primary group-data-[resizing]/rz:w-[3px] group-data-[resizing]/rz:bg-primary" />
                             </span>
                           ) : null}
@@ -543,16 +543,16 @@ export function DataTable<TData>({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-4">
             {rowCount !== undefined ? (
-              <span className="font-tabular text-xs text-muted-foreground">{rowCount} kết quả</span>
+              <span className="font-tabular text-xs text-muted-foreground">{rowCount} results</span>
             ) : null}
             {pageSizeOptions ? (
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Số dòng</span>
+                <span className="text-xs text-muted-foreground">Rows</span>
                 <Select
                   value={String(pagination.pageSize)}
                   onValueChange={(v) => table.setPageSize(Number(v))}
                 >
-                  <SelectTrigger className="h-8 w-[74px]" aria-label="Số dòng mỗi trang">
+                  <SelectTrigger className="h-8 w-[74px]" aria-label="Rows per page">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

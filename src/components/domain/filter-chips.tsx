@@ -3,26 +3,26 @@ import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 export interface FilterChip {
-  /** Khoá duy nhất để xoá. */
+  /** Unique key used for removal. */
   id: string;
-  /** Nhãn tiêu chí, ví dụ "Trạng thái". */
+  /** Criterion label, e.g. "Status". */
   label: string;
-  /** Giá trị đang lọc, ví dụ "Chờ thanh toán". */
+  /** The active filter value, e.g. "Pending payment". */
   value?: string;
 }
 
 export interface FilterChipsProps extends React.HTMLAttributes<HTMLDivElement> {
   filters: FilterChip[];
   onRemove: (id: string) => void;
-  /** Hiện "Xoá tất cả" khi có ≥ 2 chip (mặc định). */
+  /** Shows "Clear all" when there are ≥ 2 chips (default). */
   onClearAll?: () => void;
-  /** Tổng số kết quả sau lọc (hiển thị "· N kết quả"). */
+  /** Total number of results after filtering (renders "· N results"). */
   resultCount?: number;
 }
 
 /**
- * Hàng chip bộ lọc đang áp dụng — mỗi chip xoá được, kèm "Xoá tất cả".
- * Đặt ngay dưới toolbar/search để bộ lọc luôn hiển thị (không lọc ẩn).
+ * A row of applied filter chips — each chip is removable, with a "Clear all".
+ * Place it just below the toolbar/search so filters stay visible (no hidden filtering).
  */
 export const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(
   ({ filters, onRemove, onClearAll, resultCount, className, ...props }, ref) => {
@@ -33,7 +33,7 @@ export const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(
         className={cn('flex flex-wrap items-center gap-2', className)}
         {...props}
       >
-        <span className="text-xs font-medium text-muted-foreground">Đang lọc:</span>
+        <span className="text-xs font-medium text-muted-foreground">Filtering:</span>
         {filters.map((f) => (
           <span
             key={f.id}
@@ -44,7 +44,7 @@ export const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(
             <button
               type="button"
               onClick={() => onRemove(f.id)}
-              aria-label={`Bỏ lọc ${f.label}`}
+              aria-label={`Remove ${f.label} filter`}
               className="inline-flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X size={12} aria-hidden />
@@ -57,11 +57,11 @@ export const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(
             onClick={onClearAll}
             className="text-xs font-semibold text-primary transition-colors hover:text-primary-hover"
           >
-            Xoá tất cả
+            Clear all
           </button>
         ) : null}
         {resultCount !== undefined ? (
-          <span className="font-tabular text-xs text-muted-foreground">· {resultCount} kết quả</span>
+          <span className="font-tabular text-xs text-muted-foreground">· {resultCount} results</span>
         ) : null}
       </div>
     );

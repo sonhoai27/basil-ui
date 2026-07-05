@@ -45,10 +45,10 @@ function Swatch({
 export const Colors: Story = () => (
   <div className="max-w-5xl space-y-8 p-2">
     <div>
-      <h2 className="mb-1 text-lg font-bold text-foreground">Bảng màu — Mộc Chính</h2>
+      <h2 className="mb-1 text-lg font-bold text-foreground">Color palette</h2>
       <p className="text-sm text-muted-foreground">
-        Nguồn chân lý: <code>src/styles/globals.css</code> (@theme). Light-only, không hardcode HEX
-        ngoài file token.
+        Source of truth: <code>src/styles/globals.css</code> (@theme). Light-only, no hardcoded HEX
+        outside the token file.
       </p>
     </div>
 
@@ -106,12 +106,12 @@ export const Colors: Story = () => (
       <div className="space-y-5">
         {/* success */}
         <div className="flex flex-wrap items-start gap-4">
-          <Swatch className="bg-success" token="bg-success" note="#10b981 · Đã thanh toán" />
+          <Swatch className="bg-success" token="bg-success" note="#10b981 · Paid" />
           <Swatch className="bg-success-bg" token="bg-success-bg" note="#d1fae5" border />
           <div className="w-44 space-y-1.5">
             <div className="flex h-16 items-center justify-center rounded-lg bg-success-bg">
               <span className="rounded-sm bg-success-bg px-2 py-0.5 text-sm font-medium text-success-text">
-                Đã thanh toán
+                Paid
               </span>
             </div>
             <code className="text-xs font-semibold text-foreground">text-success-text</code>
@@ -121,12 +121,12 @@ export const Colors: Story = () => (
 
         {/* warning */}
         <div className="flex flex-wrap items-start gap-4">
-          <Swatch className="bg-warning" token="bg-warning" note="#f59e0b · Chờ thanh toán" />
+          <Swatch className="bg-warning" token="bg-warning" note="#f59e0b · Pending payment" />
           <Swatch className="bg-warning-bg" token="bg-warning-bg" note="#fef3c7" border />
           <div className="w-44 space-y-1.5">
             <div className="flex h-16 items-center justify-center rounded-lg bg-warning-bg">
               <span className="rounded-sm bg-warning-bg px-2 py-0.5 text-sm font-medium text-warning-text">
-                Chờ thanh toán
+                Pending payment
               </span>
             </div>
             <code className="text-xs font-semibold text-foreground">text-warning-text</code>
@@ -136,12 +136,12 @@ export const Colors: Story = () => (
 
         {/* info */}
         <div className="flex flex-wrap items-start gap-4">
-          <Swatch className="bg-info" token="bg-info" note="#3b82f6 · Đang giao" />
+          <Swatch className="bg-info" token="bg-info" note="#3b82f6 · Shipping" />
           <Swatch className="bg-info-bg" token="bg-info-bg" note="#dbeafe" border />
           <div className="w-44 space-y-1.5">
             <div className="flex h-16 items-center justify-center rounded-lg bg-info-bg">
               <span className="rounded-sm bg-info-bg px-2 py-0.5 text-sm font-medium text-info-text">
-                Đang giao
+                Shipping
               </span>
             </div>
             <code className="text-xs font-semibold text-foreground">text-info-text</code>
@@ -154,13 +154,13 @@ export const Colors: Story = () => (
           <Swatch
             className="bg-destructive"
             token="bg-destructive"
-            note="#ef4444 · Đã huỷ / xoá"
+            note="#ef4444 · Cancelled / delete"
           />
           <Swatch className="bg-destructive-bg" token="bg-destructive-bg" note="#fee2e2" border />
           <div className="w-44 space-y-1.5">
             <div className="flex h-16 items-center justify-center rounded-lg bg-destructive-bg">
               <span className="rounded-sm bg-destructive-bg px-2 py-0.5 text-sm font-medium text-destructive-text">
-                Đã huỷ
+                Cancelled
               </span>
             </div>
             <code className="text-xs font-semibold text-foreground">text-destructive-text</code>
@@ -177,10 +177,10 @@ export const Colors: Story = () => (
         <div className="w-56 space-y-1.5">
           <div className="space-y-1 rounded-lg bg-sidebar p-3">
             <div className="rounded-md bg-sidebar-accent px-3 py-2 text-sm font-medium text-sidebar-accent-foreground">
-              Đơn hàng
+              Orders
             </div>
-            <div className="px-3 py-2 text-sm text-sidebar-foreground">Khách hàng</div>
-            <div className="px-3 py-2 text-sm text-sidebar-foreground">Công nợ</div>
+            <div className="px-3 py-2 text-sm text-sidebar-foreground">Customers</div>
+            <div className="px-3 py-2 text-sm text-sidebar-foreground">Receivables</div>
           </div>
           <code className="text-xs font-semibold text-foreground">bg-sidebar</code>
           <p className="text-xs text-muted-foreground">#1b3a1f · nav shell</p>
@@ -211,46 +211,46 @@ export const Colors: Story = () => (
 export const Typography: Story = () => (
   <div className="max-w-3xl space-y-8 p-2">
     <div>
-      <h2 className="mb-1 text-lg font-bold text-foreground">Kiểu chữ — Nunito Variable</h2>
+      <h2 className="mb-1 text-lg font-bold text-foreground">Typography — Nunito Variable</h2>
       <p className="text-sm text-muted-foreground">
-        <code>--font-sans: 'Nunito Variable'</code>. Đầy đủ dấu tiếng Việt.
+        <code>--font-sans: 'Nunito Variable'</code>. Full extended-Latin support.
       </p>
     </div>
 
     {/* Type scale */}
     <section className="space-y-4">
-      <GroupLabel>Thang tiêu đề & thân</GroupLabel>
+      <GroupLabel>Heading &amp; body scale</GroupLabel>
       <div className="space-y-3 border-l-2 border-border pl-4">
         <div>
-          <p className="text-3xl font-bold text-foreground">Quản lý đơn hàng sỉ</p>
+          <p className="text-3xl font-bold text-foreground">Wholesale order management</p>
           <code className="text-xs text-muted-foreground">text-3xl font-bold</code>
         </div>
         <div>
-          <p className="text-2xl font-bold text-foreground">Chả lụa &amp; nem chua</p>
+          <p className="text-2xl font-bold text-foreground">Pastries &amp; cold cuts</p>
           <code className="text-xs text-muted-foreground">text-2xl font-bold</code>
         </div>
         <div>
-          <p className="text-xl font-semibold text-foreground">Công nợ khách hàng</p>
+          <p className="text-xl font-semibold text-foreground">Customer receivables</p>
           <code className="text-xs text-muted-foreground">text-xl font-semibold</code>
         </div>
         <div>
-          <p className="text-lg font-semibold text-foreground">Chi tiết phiếu nhập kho</p>
+          <p className="text-lg font-semibold text-foreground">Stock intake details</p>
           <code className="text-xs text-muted-foreground">text-lg font-semibold</code>
         </div>
         <div>
           <p className="text-base text-foreground">
-            Đơn DH-2401 của Chị Lan · Quán bún, giao trước 8h sáng thứ Hai.
+            Order #2401 for Green Bowl Cafe, deliver before 8:00 AM on Monday.
           </p>
           <code className="text-xs text-muted-foreground">text-base (body)</code>
         </div>
         <div>
           <p className="text-sm text-muted-foreground">
-            Ghi chú: ưu tiên hàng tươi, gọi trước khi giao 15 phút.
+            Note: prioritize fresh stock, call 15 minutes before delivery.
           </p>
           <code className="text-xs text-muted-foreground">text-sm text-muted-foreground</code>
         </div>
         <div>
-          <p className="text-xs text-muted-foreground">Cập nhật lúc 05/07/2026 · 07:42</p>
+          <p className="text-xs text-muted-foreground">Updated 2026-07-05 · 07:42</p>
           <code className="text-xs text-muted-foreground">text-xs</code>
         </div>
       </div>
@@ -258,35 +258,35 @@ export const Typography: Story = () => (
 
     {/* Weights */}
     <section className="space-y-3">
-      <GroupLabel>Độ đậm (Nunito)</GroupLabel>
+      <GroupLabel>Weights (Nunito)</GroupLabel>
       <div className="flex flex-wrap gap-6">
-        <p className="text-lg font-normal text-foreground">Nem chua · 400</p>
-        <p className="text-lg font-medium text-foreground">Nem chua · 500</p>
-        <p className="text-lg font-semibold text-foreground">Nem chua · 600</p>
-        <p className="text-lg font-bold text-foreground">Nem chua · 700</p>
+        <p className="text-lg font-normal text-foreground">Sunrise Diner · 400</p>
+        <p className="text-lg font-medium text-foreground">Sunrise Diner · 500</p>
+        <p className="text-lg font-semibold text-foreground">Sunrise Diner · 600</p>
+        <p className="text-lg font-bold text-foreground">Sunrise Diner · 700</p>
       </div>
     </section>
 
     {/* Tabular numbers */}
     <section className="space-y-3">
-      <GroupLabel>.font-tabular — số tiền / số lượng thẳng cột</GroupLabel>
+      <GroupLabel>.font-tabular — column-aligned money / quantities</GroupLabel>
       <div className="max-w-md space-y-4 rounded-lg border border-border bg-card p-4">
         <div>
-          <p className="mb-1 text-xs text-muted-foreground">Không tabular (lệch cột):</p>
+          <p className="mb-1 text-xs text-muted-foreground">Without tabular (misaligned columns):</p>
           <div className="space-y-0.5 text-right text-base text-foreground">
-            <p>1.250.000₫</p>
-            <p>980.000₫</p>
-            <p>1.111.111₫</p>
+            <p>$1,250.00</p>
+            <p>$980.00</p>
+            <p>$1,111.11</p>
           </div>
         </div>
         <div>
           <p className="mb-1 text-xs text-muted-foreground">
-            <code>font-tabular</code> (thẳng cột — dùng cho tiền/đếm):
+            <code>font-tabular</code> (column-aligned — use for money/counts):
           </p>
           <div className="space-y-0.5 text-right text-base font-tabular text-foreground">
-            <p>1.250.000₫</p>
-            <p>980.000₫</p>
-            <p>1.111.111₫</p>
+            <p>$1,250.00</p>
+            <p>$980.00</p>
+            <p>$1,111.11</p>
           </div>
         </div>
       </div>
@@ -301,15 +301,15 @@ export const Typography: Story = () => (
 export const RadiusAndElevation: Story = () => (
   <div className="max-w-4xl space-y-8 p-2">
     <div>
-      <h2 className="mb-1 text-lg font-bold text-foreground">Bo góc &amp; đổ bóng</h2>
+      <h2 className="mb-1 text-lg font-bold text-foreground">Radius &amp; elevation</h2>
       <p className="text-sm text-muted-foreground">
-        Bề mặt inline = phẳng + hairline (KHÔNG shadow). Shadow chỉ cho overlay nổi.
+        Inline surfaces = flat + hairline (NO shadow). Shadow is only for floating overlays.
       </p>
     </div>
 
     {/* Radius */}
     <section className="space-y-3">
-      <GroupLabel>Bo góc (radius)</GroupLabel>
+      <GroupLabel>Radius</GroupLabel>
       <div className="flex flex-wrap gap-4">
         <div className="w-40 space-y-1.5">
           <div className="flex h-20 items-center justify-center rounded-sm border border-border-strong bg-card text-sm text-muted-foreground">
@@ -344,36 +344,36 @@ export const RadiusAndElevation: Story = () => (
 
     {/* Elevation */}
     <section className="space-y-3">
-      <GroupLabel>Đổ bóng — CHỈ cho overlay (dropdown / dialog / toast)</GroupLabel>
+      <GroupLabel>Shadow — ONLY for overlays (dropdown / dialog / toast)</GroupLabel>
       <div className="flex flex-wrap gap-6 rounded-lg bg-background p-6">
         <div className="w-52 space-y-2">
           <div className="rounded-lg bg-popover p-4 text-sm text-popover-foreground shadow-popover">
-            <p className="font-medium">Menu thao tác</p>
-            <p className="text-muted-foreground">Sửa · Nhân bản · Xoá</p>
+            <p className="font-medium">Actions menu</p>
+            <p className="text-muted-foreground">Edit · Duplicate · Delete</p>
           </div>
           <code className="text-xs font-semibold text-foreground">shadow-popover</code>
           <p className="text-xs text-muted-foreground">dropdown, popover</p>
         </div>
         <div className="w-52 space-y-2">
           <div className="rounded-xl bg-card p-4 text-sm text-card-foreground shadow-modal">
-            <p className="font-medium">Xác nhận huỷ đơn?</p>
-            <p className="text-muted-foreground">DH-2401 · Chị Lan</p>
+            <p className="font-medium">Cancel this order?</p>
+            <p className="text-muted-foreground">#2401 · Green Bowl Cafe</p>
           </div>
           <code className="text-xs font-semibold text-foreground">shadow-modal</code>
           <p className="text-xs text-muted-foreground">dialog, sheet</p>
         </div>
         <div className="w-52 space-y-2">
           <div className="rounded-lg bg-card p-4 text-sm text-card-foreground shadow-toast">
-            <p className="font-medium text-success-text">Đã lưu đơn hàng</p>
-            <p className="text-muted-foreground">DH-2402 · 1.250.000₫</p>
+            <p className="font-medium text-success-text">Order saved</p>
+            <p className="text-muted-foreground">#2402 · $1,250.00</p>
           </div>
           <code className="text-xs font-semibold text-foreground">shadow-toast</code>
           <p className="text-xs text-muted-foreground">toast (sonner)</p>
         </div>
       </div>
       <div className="rounded-md bg-warning-bg px-3 py-2 text-sm text-warning-text">
-        Lưu ý: shadow chỉ dùng cho lớp nổi. Bề mặt inline (card, table, alert, input) luôn phẳng +
-        hairline <code>border-border</code>.
+        Note: shadow is only for floating layers. Inline surfaces (card, table, alert, input) are
+        always flat + hairline <code>border-border</code>.
       </div>
     </section>
   </div>
@@ -398,16 +398,16 @@ export const Spacing: Story = () => {
   return (
     <div className="max-w-3xl space-y-8 p-2">
       <div>
-        <h2 className="mb-1 text-lg font-bold text-foreground">Khoảng cách (spacing)</h2>
+        <h2 className="mb-1 text-lg font-bold text-foreground">Spacing</h2>
         <p className="text-sm text-muted-foreground">
-          Thang 4px của Tailwind. Dùng cho <code>gap-*</code>, <code>p-*</code>, <code>m-*</code>,{' '}
+          Tailwind&rsquo;s 4px scale. Used for <code>gap-*</code>, <code>p-*</code>, <code>m-*</code>,{' '}
           <code>space-y-*</code>.
         </p>
       </div>
 
       {/* Scale ruler */}
       <section className="space-y-2">
-        <GroupLabel>Thang cơ bản</GroupLabel>
+        <GroupLabel>Base scale</GroupLabel>
         <div className="space-y-2">
           {steps.map((s) => (
             <div key={s.label} className="flex items-center gap-3">
@@ -421,33 +421,33 @@ export const Spacing: Story = () => {
 
       {/* Common patterns */}
       <section className="space-y-3">
-        <GroupLabel>Ứng dụng thường gặp</GroupLabel>
+        <GroupLabel>Common patterns</GroupLabel>
 
         <div className="space-y-1.5">
-          <code className="text-xs text-muted-foreground">gap-3 — hàng nút / chip</code>
+          <code className="text-xs text-muted-foreground">gap-3 — button / chip row</code>
           <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-3">
             <span className="rounded-md bg-primary px-3 py-1.5 text-sm text-primary-foreground">
-              Tạo đơn
+              New order
             </span>
             <span className="rounded-md border border-border-strong bg-card px-3 py-1.5 text-sm text-foreground">
-              Xuất Excel
+              Export
             </span>
             <span className="rounded-sm bg-success-bg px-2 py-0.5 text-sm text-success-text">
-              Đã thanh toán
+              Paid
             </span>
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <code className="text-xs text-muted-foreground">p-4 + space-y-4 — thân card</code>
+          <code className="text-xs text-muted-foreground">p-4 + space-y-4 — card body</code>
           <div className="max-w-md space-y-4 rounded-lg border border-border bg-card p-4">
             <div>
-              <p className="text-sm font-semibold text-foreground">DH-2401 · Chị Lan · Quán bún</p>
-              <p className="text-sm text-muted-foreground">Giao thứ Hai · 08:00</p>
+              <p className="text-sm font-semibold text-foreground">#2401 · Green Bowl Cafe</p>
+              <p className="text-sm text-muted-foreground">Deliver Monday · 08:00</p>
             </div>
             <div className="flex items-center justify-between border-t border-border pt-4">
-              <span className="text-sm text-muted-foreground">Tổng cộng</span>
-              <span className="text-base font-bold font-tabular text-foreground">1.250.000₫</span>
+              <span className="text-sm text-muted-foreground">Total</span>
+              <span className="text-base font-bold font-tabular text-foreground">$1,250.00</span>
             </div>
           </div>
         </div>

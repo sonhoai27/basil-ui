@@ -29,8 +29,9 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
-  // Trượt bằng TRANSITION (transform + opacity) — chạy & dừng đúng translate(0) mà không phụ thuộc
-  // keyframe của tw-animate-css (bị kẹt ở v4). Radix set data-state open/closed để transition.
+  // Slide via TRANSITION (transform + opacity) — starts and settles exactly at translate(0)
+  // without relying on tw-animate-css keyframes (stuck on v4). Radix toggles data-state
+  // open/closed to drive the transition.
   "fixed z-50 flex flex-col gap-4 border border-border bg-background p-5 shadow-modal transition-transform duration-300 ease-out will-change-transform data-[state=closed]:duration-200",
   {
     variants: {

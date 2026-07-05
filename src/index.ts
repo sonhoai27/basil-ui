@@ -35,10 +35,10 @@ export * from './components/ui/tabs';
 export * from './components/ui/textarea';
 export * from './components/ui/tooltip';
 
-// Domain — chỉ những thứ shadcn KHÔNG có hoặc Mộc Chính-specific
+// Domain — chỉ những thứ shadcn KHÔNG có hoặc Basil-specific
 export { Button, type ButtonProps } from './components/domain/button'; // thin wrapper, only isLoading/leadingIcon/trailingIcon/fullWidth ergonomic props
 export * from './components/domain/field-helpers'; // FieldHint + RequiredHint
-export * from './components/domain/mocchinh-badges'; // VatBadge, OutOfStockBadge
+export * from './components/domain/domain-badges'; // VatBadge, OutOfStockBadge
 export * from './components/domain/status-pill';
 export * from './components/domain/empty-state';
 export * from './components/domain/kpi-card';

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cn",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/cn.ts",
+      "type": "registry:ui",
+      "content": "// Backward-compat re-export\nexport { cn } from './utils';\n"
+    }
+  ]
+}

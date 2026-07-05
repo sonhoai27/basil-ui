@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "quantity-stepper",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/quantity-stepper.tsx",
+      "type": "registry:ui",
+      "content": "import { Minus as MinusIcon, Plus as PlusIcon } from 'lucide-react';\nimport { cn } from '../../lib/utils';\n\nexport interface QuantityStepperProps {\n  value: number;\n  min?: number;\n  max?: number;\n  step?: number;\n  onChange: (value: number) => void;\n  disabled?: boolean;\n  size?: 'sm' | 'md';\n  className?: string;\n}\n\nexport function QuantityStepper({\n  value,\n  min = 0,\n  max = 9999,\n  step = 1,\n  onChange,\n  disabled,\n  size = 'md',\n  className,\n}: QuantityStepperProps) {\n  const btn =\n    size === 'sm'\n      ? 'h-8 w-8 [&_svg]:size-3.5'\n      : 'h-10 w-10 [&_svg]:size-4';\n  const display =\n    size === 'sm' ? 'min-w-[1.75rem] text-sm' : 'min-w-[2rem] text-base';\n\n  return (\n    <div\n      className={cn(\n        'inline-flex items-center gap-1 rounded-lg border border-input bg-card',\n        disabled && 'pointer-events-none opacity-50',\n        className,\n      )}\n    >\n      <button\n        type=\"button\"\n        aria-label=\"Decrease quantity\"\n        onClick={() => onChange(Math.max(min, value - step))}\n        disabled={value <= min}\n        className={cn(\n          'flex items-center justify-center text-foreground transition-colors',\n          'hover:bg-muted disabled:pointer-events-none disabled:text-muted-foreground',\n          'rounded-l-lg',\n          btn,\n        )}\n      >\n        <MinusIcon aria-hidden />\n      </button>\n      <span\n        className={cn(\n          'select-none text-center font-tabular font-semibold tabular-nums text-foreground',\n          display,\n        )}\n        aria-live=\"polite\"\n      >\n        {value}\n      </span>\n      <button\n        type=\"button\"\n        aria-label=\"Increase quantity\"\n        onClick={() => onChange(Math.min(max, value + step))}\n        disabled={value >= max}\n        className={cn(\n          'flex items-center justify-center text-foreground transition-colors',\n          'hover:bg-muted disabled:pointer-events-none disabled:text-muted-foreground',\n          'rounded-r-lg',\n          btn,\n        )}\n      >\n        <PlusIcon aria-hidden />\n      </button>\n    </div>\n  );\n}\n"
+    }
+  ]
+}

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { cn } from '../../lib/utils';
 
 /**
- * SegmentedControl — toggle single-select (order-queue view: Tất cả / Chưa xử lý / Đã giao).
- * Track bg-muted p-1 rounded-lg; option active nhận bg-card + border-border phẳng (no shadow).
- * role="radiogroup" + role="radio"; arrows di chuyển lựa chọn. Dựa vào global focus outline.
+ * SegmentedControl — single-select toggle (e.g. an order-queue view: All / Pending / Delivered).
+ * Track is bg-muted p-1 rounded-lg; the active option gets a flat bg-card + border-border (no shadow).
+ * role="radiogroup" + role="radio"; arrow keys move the selection. Relies on the global focus outline.
  */
 export interface SegmentedControlOption {
   value: string;

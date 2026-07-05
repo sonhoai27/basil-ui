@@ -34,35 +34,35 @@ export const CurrencyStory: Story = () => {
   return (
     <div className="max-w-sm space-y-8">
       <div className="space-y-2">
-        <Label>Trống — nhập tiền hàng</Label>
+        <Label>Empty — enter an amount</Label>
         <CurrencyInput
           value={empty}
           onChange={setEmpty}
           placeholder="0"
-          aria-label="Tiền hàng"
+          aria-label="Amount"
         />
-        <Readout label="Giá trị thô" value={empty === undefined ? 'undefined' : String(empty)} />
+        <Readout label="Raw value" value={empty === undefined ? 'undefined' : String(empty)} />
       </div>
 
       <div className="space-y-2">
-        <Label>Có sẵn 1.250.000₫</Label>
+        <Label>Preset $1,250.00</Label>
         <CurrencyInput
           value={preset}
           onChange={setPreset}
-          aria-label="Tổng đơn"
+          aria-label="Order total"
         />
-        <Readout label="Giá trị thô" value={preset === undefined ? 'undefined' : String(preset)} />
+        <Readout label="Raw value" value={preset === undefined ? 'undefined' : String(preset)} />
       </div>
 
       <div className="space-y-2">
-        <Label>Vô hiệu hoá</Label>
+        <Label>Disabled</Label>
         <CurrencyInput
           value={890000}
           onChange={() => {}}
           disabled
-          aria-label="Đã chốt"
+          aria-label="Locked total"
         />
-        <Readout label="Giá trị thô" value="890000" />
+        <Readout label="Raw value" value="890000" />
       </div>
     </div>
   );
@@ -79,28 +79,28 @@ export const NumberFieldStory: Story = () => {
   return (
     <div className="max-w-sm space-y-8">
       <div className="space-y-2">
-        <Label>Số lượng Chả lụa (kg) — có nút −/+</Label>
+        <Label>Flour quantity (kg) — with −/+ buttons</Label>
         <NumberField
           value={qty}
           onChange={setQty}
           min={0}
           steppers
           suffix="kg"
-          aria-label="Số lượng"
+          aria-label="Quantity"
         />
-        <Readout label="Giá trị thô" value={qty === undefined ? 'undefined' : String(qty)} />
+        <Readout label="Raw value" value={qty === undefined ? 'undefined' : String(qty)} />
       </div>
 
       <div className="space-y-2">
-        <Label>Không có nút bấm</Label>
+        <Label>Without steppers</Label>
         <NumberField
           value={plain}
           onChange={setPlain}
           min={0}
-          placeholder="Số thùng"
-          aria-label="Số thùng"
+          placeholder="Number of cases"
+          aria-label="Number of cases"
         />
-        <Readout label="Giá trị thô" value={plain === undefined ? 'undefined' : String(plain)} />
+        <Readout label="Raw value" value={plain === undefined ? 'undefined' : String(plain)} />
       </div>
     </div>
   );
@@ -117,15 +117,15 @@ export const InputOTPStory: Story = () => {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <Label>Mã xác thực — 6 ô</Label>
+        <Label>Verification code — 6 digits</Label>
         <InputOTP length={6} value={code} onChange={setCode} />
-        <Readout label="Mã đã nhập" value={code === '' ? '(trống)' : code} />
+        <Readout label="Entered code" value={code === '' ? '(empty)' : code} />
       </div>
 
       <div className="space-y-2">
-        <Label>Mã PIN kho — 4 ô</Label>
-        <InputOTP length={4} value={pin} onChange={setPin} ariaLabel="Mã PIN" />
-        <Readout label="Mã đã nhập" value={pin === '' ? '(trống)' : pin} />
+        <Label>Warehouse PIN — 4 digits</Label>
+        <InputOTP length={4} value={pin} onChange={setPin} ariaLabel="PIN code" />
+        <Readout label="Entered code" value={pin === '' ? '(empty)' : pin} />
       </div>
     </div>
   );
@@ -140,15 +140,15 @@ export const FileUploadStory: Story = () => {
 
   return (
     <div className="max-w-md space-y-3">
-      <Label>Ảnh chứng từ giao hàng — ảnh, tối đa 5MB</Label>
+      <Label>Delivery proof photos — images, up to 5 MB</Label>
       <FileUpload
         value={files}
         onChange={setFiles}
         accept="image/*"
         maxSizeMB={5}
-        hint="Chỉ nhận ảnh (jpg, png…), mỗi ảnh tối đa 5 MB"
+        hint="Images only (jpg, png…), each up to 5 MB"
       />
-      <Readout label="Số file đã chọn" value={String(files.length)} />
+      <Readout label="Files selected" value={String(files.length)} />
     </div>
   );
 };

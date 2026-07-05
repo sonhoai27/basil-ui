@@ -15,7 +15,7 @@ import {
 export default { title: 'DataTable · Depth' };
 
 /* ------------------------------------------------------------------ */
-/* Shared orders fixture — ~12 dòng đơn hàng thật của Mộc Chính        */
+/* Shared orders fixture — ~12 realistic order rows                    */
 /* ------------------------------------------------------------------ */
 
 type OrderStatus = 'pending_payment' | 'paid' | 'packing' | 'sent' | 'cancelled';
@@ -32,46 +32,47 @@ interface OrderRow {
 }
 
 const STATUS_LABEL: Record<OrderStatus, string> = {
-  pending_payment: 'Chờ thanh toán',
-  paid: 'Đã thanh toán',
-  packing: 'Đang đóng',
-  sent: 'Đã gửi',
-  cancelled: 'Đã huỷ',
+  pending_payment: 'Pending payment',
+  paid: 'Paid',
+  packing: 'Packing',
+  sent: 'Sent',
+  cancelled: 'Cancelled',
 };
 
 const ORDERS: OrderRow[] = [
-  { code: 'DH-2401', customer: 'Chị Lan · Quán bún',    channel: 'Zalo',       items: 6,  total: '1.250.000₫', totalRaw: 1250000, status: 'pending_payment', createdAt: '05/07 08:12' },
-  { code: 'DH-2402', customer: 'Anh Dũng · Bếp ăn KCN', channel: 'Điện thoại', items: 12, total: '3.480.000₫', totalRaw: 3480000, status: 'paid',            createdAt: '05/07 09:40' },
-  { code: 'DH-2403', customer: 'Cô Bảy · Tạp hoá',      channel: 'Zalo',       items: 4,  total: '640.000₫',   totalRaw: 640000,  status: 'packing',         createdAt: '04/07 16:22' },
-  { code: 'DH-2404', customer: 'Chị Hoa · Nhà hàng Sen', channel: 'Trực tiếp', items: 21, total: '7.920.000₫', totalRaw: 7920000, status: 'sent',            createdAt: '04/07 11:05' },
-  { code: 'DH-2405', customer: 'Anh Tài · Quán nhậu',   channel: 'Zalo',       items: 3,  total: '520.000₫',   totalRaw: 520000,  status: 'cancelled',       createdAt: '03/07 19:48' },
-  { code: 'DH-2406', customer: 'Chị Mai · Bún đậu',     channel: 'Điện thoại', items: 9,  total: '2.150.000₫', totalRaw: 2150000, status: 'pending_payment', createdAt: '03/07 07:30' },
-  { code: 'DH-2407', customer: 'Chú Ba · Cơm tấm',      channel: 'Zalo',       items: 7,  total: '1.680.000₫', totalRaw: 1680000, status: 'paid',            createdAt: '02/07 10:15' },
-  { code: 'DH-2408', customer: 'Chị Thu · Quán phở',    channel: 'Trực tiếp',  items: 15, total: '4.320.000₫', totalRaw: 4320000, status: 'sent',            createdAt: '02/07 08:50' },
-  { code: 'DH-2409', customer: 'Anh Nam · Quán nhậu 2', channel: 'Điện thoại', items: 5,  total: '990.000₫',   totalRaw: 990000,  status: 'packing',         createdAt: '01/07 17:33' },
-  { code: 'DH-2410', customer: 'Cô Tám · Bánh cuốn',    channel: 'Zalo',       items: 8,  total: '1.840.000₫', totalRaw: 1840000, status: 'paid',            createdAt: '01/07 09:02' },
-  { code: 'DH-2411', customer: 'Chị Yến · Bếp trường',  channel: 'Trực tiếp',  items: 30, total: '9.560.000₫', totalRaw: 9560000, status: 'pending_payment', createdAt: '30/06 14:20' },
-  { code: 'DH-2412', customer: 'Anh Phú · Quán ốc',     channel: 'Zalo',       items: 4,  total: '760.000₫',   totalRaw: 760000,  status: 'cancelled',       createdAt: '30/06 20:11' },
+  { code: 'ORD-2401', customer: 'Emma Carter · The Noodle Bar',     channel: 'Chat',      items: 6,  total: '$1,250.00', totalRaw: 1250000, status: 'pending_payment', createdAt: 'Jul 05, 08:12' },
+  { code: 'ORD-2402', customer: 'Daniel Reed · Industrial Canteen', channel: 'Phone',     items: 12, total: '$3,480.00', totalRaw: 3480000, status: 'paid',            createdAt: 'Jul 05, 09:40' },
+  { code: 'ORD-2403', customer: 'Betty Shaw · Corner Store',        channel: 'Chat',      items: 4,  total: '$640.00',   totalRaw: 640000,  status: 'packing',         createdAt: 'Jul 04, 16:22' },
+  { code: 'ORD-2404', customer: 'Hannah Lotus · Lotus Restaurant',  channel: 'In person', items: 21, total: '$7,920.00', totalRaw: 7920000, status: 'sent',            createdAt: 'Jul 04, 11:05' },
+  { code: 'ORD-2405', customer: 'Tony Rivers · The Tavern',         channel: 'Chat',      items: 3,  total: '$520.00',   totalRaw: 520000,  status: 'cancelled',       createdAt: 'Jul 03, 19:48' },
+  { code: 'ORD-2406', customer: 'May Nguyen · Bun Dau Diner',       channel: 'Phone',     items: 9,  total: '$2,150.00', totalRaw: 2150000, status: 'pending_payment', createdAt: 'Jul 03, 07:30' },
+  { code: 'ORD-2407', customer: 'Ben Cole · Broken Rice House',     channel: 'Chat',      items: 7,  total: '$1,680.00', totalRaw: 1680000, status: 'paid',            createdAt: 'Jul 02, 10:15' },
+  { code: 'ORD-2408', customer: 'Sophie Tran · Pho Kitchen',        channel: 'In person', items: 15, total: '$4,320.00', totalRaw: 4320000, status: 'sent',            createdAt: 'Jul 02, 08:50' },
+  { code: 'ORD-2409', customer: 'Nathan Pham · The Tavern 2',       channel: 'Phone',     items: 5,  total: '$990.00',   totalRaw: 990000,  status: 'packing',         createdAt: 'Jul 01, 17:33' },
+  { code: 'ORD-2410', customer: 'Tammy Vo · Rice Roll Stall',       channel: 'Chat',      items: 8,  total: '$1,840.00', totalRaw: 1840000, status: 'paid',            createdAt: 'Jul 01, 09:02' },
+  { code: 'ORD-2411', customer: 'Yvonne Le · School Kitchen',       channel: 'In person', items: 30, total: '$9,560.00', totalRaw: 9560000, status: 'pending_payment', createdAt: 'Jun 30, 14:20' },
+  { code: 'ORD-2412', customer: 'Peter Ngo · Seafood Shack',        channel: 'Chat',      items: 4,  total: '$760.00',   totalRaw: 760000,  status: 'cancelled',       createdAt: 'Jun 30, 20:11' },
 ];
 
 /* ------------------------------------------------------------------ */
-/* Columns — meta.label trên cột ẩn được, header sort, StatusPill      */
+/* Columns — meta.label for toggleable columns, sortable header,       */
+/* StatusPill                                                          */
 /* ------------------------------------------------------------------ */
 
 function orderColumns(): ColumnDef<OrderRow, unknown>[] {
   return [
     {
       accessorKey: 'code',
-      meta: { label: 'Mã đơn' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Mã đơn" />,
+      meta: { label: 'Order #' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Order #" />,
       cell: ({ row }) => (
         <span className="font-tabular font-medium text-foreground">{row.original.code}</span>
       ),
     },
     {
       accessorKey: 'customer',
-      meta: { label: 'Khách hàng' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Khách hàng" />,
+      meta: { label: 'Customer' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
       cell: ({ row }) => (
         <div className="flex flex-col">
           <span className="text-foreground">{row.original.customer}</span>
@@ -81,17 +82,17 @@ function orderColumns(): ColumnDef<OrderRow, unknown>[] {
     },
     {
       accessorKey: 'items',
-      meta: { label: 'SL mặt hàng' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="SL mặt hàng" />,
+      meta: { label: 'Items' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Items" />,
       cell: ({ row }) => (
         <span className="font-tabular tabular-nums text-muted-foreground">{row.original.items}</span>
       ),
     },
     {
       accessorKey: 'totalRaw',
-      meta: { label: 'Thành tiền' },
+      meta: { label: 'Total' },
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Thành tiền" className="justify-end" />
+        <DataTableColumnHeader column={column} title="Total" className="justify-end" />
       ),
       cell: ({ row }) => (
         <div className="text-right font-tabular font-medium tabular-nums text-foreground">
@@ -101,14 +102,14 @@ function orderColumns(): ColumnDef<OrderRow, unknown>[] {
     },
     {
       accessorKey: 'status',
-      meta: { label: 'Trạng thái' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái" />,
+      meta: { label: 'Status' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
       cell: ({ row }) => <StatusPill status={row.original.status} />,
     },
     {
       accessorKey: 'createdAt',
-      meta: { label: 'Tạo lúc' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Tạo lúc" />,
+      meta: { label: 'Created' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Created" />,
       cell: ({ row }) => (
         <span className="font-tabular text-xs text-muted-foreground">{row.original.createdAt}</span>
       ),
@@ -134,17 +135,17 @@ export const DensityAndColumns: Story = () => {
         pageSizeOptions={[5, 10, 20]}
         rowCount={ORDERS.length}
         initialSorting={[{ id: 'totalRaw', desc: true }]}
-        aria-label="Đơn hàng (mật độ gọn)"
+        aria-label="Orders (compact density)"
       />
       <p className="mt-3 text-xs text-muted-foreground">
-        Mật độ gọn (compact) · nút “Cột” ẩn/hiện cột · đổi số dòng mỗi trang 5 / 10 / 20.
+        Compact density · the “Columns” button toggles visibility · change rows per page 5 / 10 / 20.
       </p>
     </div>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/* Sticky header — cuộn dọc trong maxHeight, header dính              */
+/* Sticky header — vertical scroll within maxHeight, header stays      */
 /* ------------------------------------------------------------------ */
 
 export const StickyHeader: Story = () => {
@@ -157,38 +158,38 @@ export const StickyHeader: Story = () => {
         getRowId={(r) => r.code}
         maxHeight={320}
         pageSize={20}
-        aria-label="Đơn hàng (header dính khi cuộn)"
+        aria-label="Orders (sticky header on scroll)"
       />
       <p className="mt-3 text-xs text-muted-foreground">
-        Cuộn danh sách trong khung cao 320px — hàng tiêu đề luôn ghim trên cùng.
+        Scroll the list inside the 320px-tall frame — the header row stays pinned to the top.
       </p>
     </div>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/* CSV export — toolbar với nút “Xuất CSV”                            */
+/* CSV export — toolbar with an “Export CSV” button                    */
 /* ------------------------------------------------------------------ */
 
 export const WithCsvExport: Story = () => {
   const columns = React.useMemo(orderColumns, []);
   const handleExport = React.useCallback(() => {
-    downloadCsv<OrderRow>('don-hang', ORDERS, [
-      { header: 'Mã đơn', value: (r) => r.code },
-      { header: 'Khách hàng', value: (r) => r.customer },
-      { header: 'Kênh', value: (r) => r.channel },
-      { header: 'SL mặt hàng', value: (r) => r.items },
-      { header: 'Thành tiền', value: (r) => r.totalRaw },
-      { header: 'Trạng thái', value: (r) => STATUS_LABEL[r.status] },
-      { header: 'Tạo lúc', value: (r) => r.createdAt },
+    downloadCsv<OrderRow>('orders', ORDERS, [
+      { header: 'Order #', value: (r) => r.code },
+      { header: 'Customer', value: (r) => r.customer },
+      { header: 'Channel', value: (r) => r.channel },
+      { header: 'Items', value: (r) => r.items },
+      { header: 'Total', value: (r) => r.totalRaw },
+      { header: 'Status', value: (r) => STATUS_LABEL[r.status] },
+      { header: 'Created', value: (r) => r.createdAt },
     ]);
   }, []);
 
   const toolbar = (
     <div className="flex items-center justify-between gap-3">
       <div className="leading-tight">
-        <div className="text-sm font-medium text-foreground">Đơn hàng gần đây</div>
-        <div className="text-xs text-muted-foreground">{ORDERS.length} đơn · tải về file Excel</div>
+        <div className="text-sm font-medium text-foreground">Recent orders</div>
+        <div className="text-xs text-muted-foreground">{ORDERS.length} orders · download as Excel</div>
       </div>
       <Button
         variant="outline"
@@ -196,7 +197,7 @@ export const WithCsvExport: Story = () => {
         leadingIcon={<Download className="size-4" />}
         onClick={handleExport}
       >
-        Xuất CSV
+        Export CSV
       </Button>
     </div>
   );
@@ -210,15 +211,15 @@ export const WithCsvExport: Story = () => {
         toolbar={toolbar}
         pageSize={20}
         rowCount={ORDERS.length}
-        aria-label="Đơn hàng (có xuất CSV)"
+        aria-label="Orders (with CSV export)"
       />
     </div>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/* Wide dataset — pin cột đầu, tìm kiếm chung, faceted filter,        */
-/* mật độ, chọn dòng + chọn-tất-cả-xuyên-trang                        */
+/* Wide dataset — pin first column, global search, faceted filter,     */
+/* density, row selection + select-all-across-pages                    */
 /* ------------------------------------------------------------------ */
 
 interface WideOrderRow extends OrderRow {
@@ -230,20 +231,20 @@ interface WideOrderRow extends OrderRow {
 }
 
 const WIDE_ORDERS: WideOrderRow[] = [
-  { code: 'DH-2401', customer: 'Chị Lan · Quán bún',    channel: 'Zalo',       items: 6,  total: '1.250.000₫', totalRaw: 1250000, status: 'pending_payment', createdAt: '05/07 08:12', salesperson: 'Ngọc',  district: 'Q. Gò Vấp',     paymentMethod: 'Chuyển khoản', note: 'Giao trước 10h',        deliveryAt: '05/07 09:30' },
-  { code: 'DH-2402', customer: 'Anh Dũng · Bếp ăn KCN', channel: 'Điện thoại', items: 12, total: '3.480.000₫', totalRaw: 3480000, status: 'paid',            createdAt: '05/07 09:40', salesperson: 'Hùng',  district: 'H. Bình Chánh',  paymentMethod: 'Tiền mặt',     note: 'Xuất hoá đơn VAT',      deliveryAt: '05/07 14:00' },
-  { code: 'DH-2403', customer: 'Cô Bảy · Tạp hoá',      channel: 'Zalo',       items: 4,  total: '640.000₫',   totalRaw: 640000,  status: 'packing',         createdAt: '04/07 16:22', salesperson: 'Ngọc',  district: 'Q. Tân Bình',    paymentMethod: 'COD',          note: 'Gọi trước khi giao',    deliveryAt: '05/07 08:00' },
-  { code: 'DH-2404', customer: 'Chị Hoa · Nhà hàng Sen', channel: 'Trực tiếp', items: 21, total: '7.920.000₫', totalRaw: 7920000, status: 'sent',            createdAt: '04/07 11:05', salesperson: 'Trang', district: 'Q.1',            paymentMethod: 'Chuyển khoản', note: 'Đơn định kỳ tuần',      deliveryAt: '04/07 15:30' },
-  { code: 'DH-2405', customer: 'Anh Tài · Quán nhậu',   channel: 'Zalo',       items: 3,  total: '520.000₫',   totalRaw: 520000,  status: 'cancelled',       createdAt: '03/07 19:48', salesperson: 'Hùng',  district: 'Q. Bình Thạnh',  paymentMethod: 'COD',          note: 'Khách huỷ do trùng',    deliveryAt: '—' },
-  { code: 'DH-2406', customer: 'Chị Mai · Bún đậu',     channel: 'Điện thoại', items: 9,  total: '2.150.000₫', totalRaw: 2150000, status: 'pending_payment', createdAt: '03/07 07:30', salesperson: 'Trang', district: 'Q. Phú Nhuận',   paymentMethod: 'Chuyển khoản', note: 'Chờ chuyển cọc',        deliveryAt: '03/07 11:00' },
-  { code: 'DH-2407', customer: 'Chú Ba · Cơm tấm',      channel: 'Zalo',       items: 7,  total: '1.680.000₫', totalRaw: 1680000, status: 'paid',            createdAt: '02/07 10:15', salesperson: 'Ngọc',  district: 'Q.12',           paymentMethod: 'Tiền mặt',     note: 'Giao kèm hoá đơn',      deliveryAt: '02/07 13:00' },
-  { code: 'DH-2408', customer: 'Chị Thu · Quán phở',    channel: 'Trực tiếp',  items: 15, total: '4.320.000₫', totalRaw: 4320000, status: 'sent',            createdAt: '02/07 08:50', salesperson: 'Hùng',  district: 'TP. Thủ Đức',    paymentMethod: 'Chuyển khoản', note: 'Đã gửi qua tài xế Nam',  deliveryAt: '02/07 12:15' },
-  { code: 'DH-2409', customer: 'Anh Nam · Quán nhậu 2', channel: 'Điện thoại', items: 5,  total: '990.000₫',   totalRaw: 990000,  status: 'packing',         createdAt: '01/07 17:33', salesperson: 'Trang', district: 'Q. Tân Phú',     paymentMethod: 'COD',          note: 'Đóng thêm đá khô',      deliveryAt: '02/07 07:30' },
-  { code: 'DH-2410', customer: 'Cô Tám · Bánh cuốn',    channel: 'Zalo',       items: 8,  total: '1.840.000₫', totalRaw: 1840000, status: 'paid',            createdAt: '01/07 09:02', salesperson: 'Ngọc',  district: 'Q. Gò Vấp',     paymentMethod: 'Chuyển khoản', note: 'Khách quen ưu tiên',    deliveryAt: '01/07 11:30' },
-  { code: 'DH-2411', customer: 'Chị Yến · Bếp trường',  channel: 'Trực tiếp',  items: 30, total: '9.560.000₫', totalRaw: 9560000, status: 'pending_payment', createdAt: '30/06 14:20', salesperson: 'Trang', district: 'H. Hóc Môn',     paymentMethod: 'Chuyển khoản', note: 'Đơn lớn, chia 2 chuyến', deliveryAt: '01/07 06:30' },
-  { code: 'DH-2412', customer: 'Anh Phú · Quán ốc',     channel: 'Zalo',       items: 4,  total: '760.000₫',   totalRaw: 760000,  status: 'cancelled',       createdAt: '30/06 20:11', salesperson: 'Hùng',  district: 'Q.4',            paymentMethod: 'COD',          note: 'Hết hàng, hẹn đơn sau',  deliveryAt: '—' },
-  { code: 'DH-2413', customer: 'Chị Vân · Lẩu dê',      channel: 'Điện thoại', items: 11, total: '2.980.000₫', totalRaw: 2980000, status: 'paid',            createdAt: '29/06 15:47', salesperson: 'Ngọc',  district: 'Q. Bình Tân',    paymentMethod: 'Chuyển khoản', note: 'Giao chiều mai',        deliveryAt: '30/06 16:00' },
-  { code: 'DH-2414', customer: 'Anh Khoa · Buffet ốc',  channel: 'Trực tiếp',  items: 18, total: '5.240.000₫', totalRaw: 5240000, status: 'sent',            createdAt: '29/06 09:18', salesperson: 'Trang', district: 'TP. Thủ Đức',    paymentMethod: 'Chuyển khoản', note: 'Kèm khuyến mãi tháng',   deliveryAt: '29/06 13:45' },
+  { code: 'ORD-2401', customer: 'Emma Carter · The Noodle Bar',     channel: 'Chat',      items: 6,  total: '$1,250.00', totalRaw: 1250000, status: 'pending_payment', createdAt: 'Jul 05, 08:12', salesperson: 'Grace',  district: 'North District',   paymentMethod: 'Bank transfer', note: 'Deliver before 10am',      deliveryAt: 'Jul 05, 09:30' },
+  { code: 'ORD-2402', customer: 'Daniel Reed · Industrial Canteen', channel: 'Phone',     items: 12, total: '$3,480.00', totalRaw: 3480000, status: 'paid',            createdAt: 'Jul 05, 09:40', salesperson: 'Henry',  district: 'South County',     paymentMethod: 'Cash',          note: 'Issue a VAT invoice',      deliveryAt: 'Jul 05, 14:00' },
+  { code: 'ORD-2403', customer: 'Betty Shaw · Corner Store',        channel: 'Chat',      items: 4,  total: '$640.00',   totalRaw: 640000,  status: 'packing',         createdAt: 'Jul 04, 16:22', salesperson: 'Grace',  district: 'Airport District', paymentMethod: 'COD',           note: 'Call before delivery',     deliveryAt: 'Jul 05, 08:00' },
+  { code: 'ORD-2404', customer: 'Hannah Lotus · Lotus Restaurant',  channel: 'In person', items: 21, total: '$7,920.00', totalRaw: 7920000, status: 'sent',            createdAt: 'Jul 04, 11:05', salesperson: 'Tracy',  district: 'District 1',       paymentMethod: 'Bank transfer', note: 'Weekly recurring order',   deliveryAt: 'Jul 04, 15:30' },
+  { code: 'ORD-2405', customer: 'Tony Rivers · The Tavern',         channel: 'Chat',      items: 3,  total: '$520.00',   totalRaw: 520000,  status: 'cancelled',       createdAt: 'Jul 03, 19:48', salesperson: 'Henry',  district: 'Riverside',        paymentMethod: 'COD',           note: 'Customer cancelled (dup)', deliveryAt: '—' },
+  { code: 'ORD-2406', customer: 'May Nguyen · Bun Dau Diner',       channel: 'Phone',     items: 9,  total: '$2,150.00', totalRaw: 2150000, status: 'pending_payment', createdAt: 'Jul 03, 07:30', salesperson: 'Tracy',  district: 'West End',         paymentMethod: 'Bank transfer', note: 'Awaiting deposit',         deliveryAt: 'Jul 03, 11:00' },
+  { code: 'ORD-2407', customer: 'Ben Cole · Broken Rice House',     channel: 'Chat',      items: 7,  total: '$1,680.00', totalRaw: 1680000, status: 'paid',            createdAt: 'Jul 02, 10:15', salesperson: 'Grace',  district: 'District 12',      paymentMethod: 'Cash',          note: 'Deliver with invoice',     deliveryAt: 'Jul 02, 13:00' },
+  { code: 'ORD-2408', customer: 'Sophie Tran · Pho Kitchen',        channel: 'In person', items: 15, total: '$4,320.00', totalRaw: 4320000, status: 'sent',            createdAt: 'Jul 02, 08:50', salesperson: 'Henry',  district: 'Eastside',         paymentMethod: 'Bank transfer', note: 'Sent with driver Nathan',  deliveryAt: 'Jul 02, 12:15' },
+  { code: 'ORD-2409', customer: 'Nathan Pham · The Tavern 2',       channel: 'Phone',     items: 5,  total: '$990.00',   totalRaw: 990000,  status: 'packing',         createdAt: 'Jul 01, 17:33', salesperson: 'Tracy',  district: 'Midtown',          paymentMethod: 'COD',           note: 'Pack extra dry ice',       deliveryAt: 'Jul 02, 07:30' },
+  { code: 'ORD-2410', customer: 'Tammy Vo · Rice Roll Stall',       channel: 'Chat',      items: 8,  total: '$1,840.00', totalRaw: 1840000, status: 'paid',            createdAt: 'Jul 01, 09:02', salesperson: 'Grace',  district: 'North District',   paymentMethod: 'Bank transfer', note: 'Priority regular customer', deliveryAt: 'Jul 01, 11:30' },
+  { code: 'ORD-2411', customer: 'Yvonne Le · School Kitchen',       channel: 'In person', items: 30, total: '$9,560.00', totalRaw: 9560000, status: 'pending_payment', createdAt: 'Jun 30, 14:20', salesperson: 'Tracy',  district: 'Hillcrest',        paymentMethod: 'Bank transfer', note: 'Large order, split in two', deliveryAt: 'Jul 01, 06:30' },
+  { code: 'ORD-2412', customer: 'Peter Ngo · Seafood Shack',        channel: 'Chat',      items: 4,  total: '$760.00',   totalRaw: 760000,  status: 'cancelled',       createdAt: 'Jun 30, 20:11', salesperson: 'Henry',  district: 'District 4',       paymentMethod: 'COD',           note: 'Out of stock, reorder later', deliveryAt: '—' },
+  { code: 'ORD-2413', customer: 'Vera Dang · Goat Hotpot',          channel: 'Phone',     items: 11, total: '$2,980.00', totalRaw: 2980000, status: 'paid',            createdAt: 'Jun 29, 15:47', salesperson: 'Grace',  district: 'Lakeside',         paymentMethod: 'Bank transfer', note: 'Deliver tomorrow afternoon', deliveryAt: 'Jun 30, 16:00' },
+  { code: 'ORD-2414', customer: 'Kyle Nguyen · Seafood Buffet',     channel: 'In person', items: 18, total: '$5,240.00', totalRaw: 5240000, status: 'sent',            createdAt: 'Jun 29, 09:18', salesperson: 'Tracy',  district: 'Eastside',         paymentMethod: 'Bank transfer', note: 'Includes monthly promo',   deliveryAt: 'Jun 29, 13:45' },
 ];
 
 const STATUS_OPTIONS = (Object.keys(STATUS_LABEL) as OrderStatus[]).map((value) => ({
@@ -255,8 +256,8 @@ function wideOrderColumns(): ColumnDef<WideOrderRow, unknown>[] {
   return [
     {
       accessorKey: 'code',
-      meta: { label: 'Mã đơn' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Mã đơn" />,
+      meta: { label: 'Order #' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Order #" />,
       cell: ({ row }) => (
         <span className="font-tabular font-medium text-foreground whitespace-nowrap">
           {row.original.code}
@@ -265,8 +266,8 @@ function wideOrderColumns(): ColumnDef<WideOrderRow, unknown>[] {
     },
     {
       accessorKey: 'customer',
-      meta: { label: 'Khách hàng' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Khách hàng" />,
+      meta: { label: 'Customer' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
       cell: ({ row }) => (
         <div className="flex flex-col whitespace-nowrap">
           <span className="text-foreground">{row.original.customer}</span>
@@ -276,33 +277,33 @@ function wideOrderColumns(): ColumnDef<WideOrderRow, unknown>[] {
     },
     {
       accessorKey: 'salesperson',
-      meta: { label: 'Nhân viên' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Nhân viên" />,
+      meta: { label: 'Salesperson' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Salesperson" />,
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-muted-foreground">{row.original.salesperson}</span>
       ),
     },
     {
       accessorKey: 'district',
-      meta: { label: 'Khu vực' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Khu vực" />,
+      meta: { label: 'Area' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Area" />,
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-muted-foreground">{row.original.district}</span>
       ),
     },
     {
       accessorKey: 'items',
-      meta: { label: 'SL mặt hàng' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="SL mặt hàng" />,
+      meta: { label: 'Items' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Items" />,
       cell: ({ row }) => (
         <span className="font-tabular tabular-nums text-muted-foreground">{row.original.items}</span>
       ),
     },
     {
       accessorKey: 'totalRaw',
-      meta: { label: 'Thành tiền' },
+      meta: { label: 'Total' },
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Thành tiền" className="justify-end" />
+        <DataTableColumnHeader column={column} title="Total" className="justify-end" />
       ),
       cell: ({ row }) => (
         <div className="text-right font-tabular font-medium tabular-nums text-foreground whitespace-nowrap">
@@ -312,32 +313,32 @@ function wideOrderColumns(): ColumnDef<WideOrderRow, unknown>[] {
     },
     {
       accessorKey: 'paymentMethod',
-      meta: { label: 'Thanh toán' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Thanh toán" />,
+      meta: { label: 'Payment' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Payment" />,
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-muted-foreground">{row.original.paymentMethod}</span>
       ),
     },
     {
       accessorKey: 'status',
-      meta: { label: 'Trạng thái' },
-      // Faceted filter cần filterFn nhận mảng giá trị đã chọn.
+      meta: { label: 'Status' },
+      // The faceted filter needs a filterFn that receives the selected values array.
       filterFn: (row, id, val) => (val as string[]).includes(row.getValue(id)),
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
       cell: ({ row }) => <StatusPill status={row.original.status} />,
     },
     {
       accessorKey: 'note',
-      meta: { label: 'Ghi chú' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />,
+      meta: { label: 'Note' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Note" />,
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-muted-foreground">{row.original.note}</span>
       ),
     },
     {
       accessorKey: 'deliveryAt',
-      meta: { label: 'Hẹn giao' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Hẹn giao" />,
+      meta: { label: 'Delivery slot' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Delivery slot" />,
       cell: ({ row }) => (
         <span className="font-tabular whitespace-nowrap text-xs text-muted-foreground">
           {row.original.deliveryAt}
@@ -346,8 +347,8 @@ function wideOrderColumns(): ColumnDef<WideOrderRow, unknown>[] {
     },
     {
       accessorKey: 'createdAt',
-      meta: { label: 'Tạo lúc' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Tạo lúc" />,
+      meta: { label: 'Created' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Created" />,
       cell: ({ row }) => (
         <span className="font-tabular whitespace-nowrap text-xs text-muted-foreground">
           {row.original.createdAt}
@@ -367,7 +368,7 @@ export const PinnedSearchFaceted: Story = () => {
         getRowId={(r) => r.code}
         pinFirstColumn
         searchable
-        searchPlaceholder="Tìm mã đơn, khách, ghi chú…"
+        searchPlaceholder="Search order #, customer, note…"
         densityToggle
         enableRowSelection
         pageSize={5}
@@ -376,33 +377,34 @@ export const PinnedSearchFaceted: Story = () => {
         toolbar={(table) => (
           <DataTableFacetedFilter
             column={table.getColumn('status')!}
-            title="Trạng thái"
+            title="Status"
             options={STATUS_OPTIONS}
           />
         )}
         bulkActions={(selected, clear) => (
           <>
             <Button variant="outline" size="sm" onClick={clear}>
-              Bỏ chọn
+              Clear selection
             </Button>
             <Button variant="default" size="sm">
-              In {selected.length} phiếu giao
+              Print {selected.length} packing slips
             </Button>
           </>
         )}
-        aria-label="Đơn hàng (nhiều cột, ghim cột đầu)"
+        aria-label="Orders (many columns, pinned first column)"
       />
       <p className="mt-3 text-xs text-muted-foreground">
-        Bảng rộng — cuộn ngang để thấy cột <strong>Mã đơn</strong> (và ô chọn) ghim bên trái. Ô tìm
-        kiếm lọc client, nút <strong>Thoáng/Gọn</strong> đổi mật độ, chip <strong>Trạng thái</strong>{' '}
-        lọc theo facet. Chọn hết một trang (5 dòng) để hiện nút “Chọn tất cả {WIDE_ORDERS.length}”.
+        Wide table — scroll horizontally to see the <strong>Order #</strong> column (and the checkbox)
+        pinned on the left. The search box filters client-side, the <strong>Cozy/Compact</strong>{' '}
+        button toggles density, and the <strong>Status</strong> chip filters by facet. Select a full
+        page (5 rows) to reveal the “Select all {WIDE_ORDERS.length}” button.
       </p>
     </div>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/* Filtered-empty — gõ từ khoá không khớp → trạng thái “Xoá bộ lọc”   */
+/* Filtered-empty — type a non-matching term → “Clear filters” state   */
 /* ------------------------------------------------------------------ */
 
 export const FilteredEmpty: Story = () => {
@@ -414,13 +416,13 @@ export const FilteredEmpty: Story = () => {
         data={ORDERS.slice(0, 5)}
         getRowId={(r) => r.code}
         searchable
-        searchPlaceholder="Tìm mã đơn hoặc khách…"
+        searchPlaceholder="Search order # or customer…"
         pageSize={5}
-        aria-label="Đơn hàng (trạng thái rỗng khi lọc)"
+        aria-label="Orders (empty state when filtered)"
       />
       <p className="mt-3 text-xs text-muted-foreground">
-        Gõ một từ khoá không có trong danh sách (ví dụ <code>“xyz”</code>) để thấy trạng thái rỗng
-        do lọc với nút <strong>Xoá bộ lọc</strong> — khác với empty “Không có dữ liệu”.
+        Type a keyword that isn't in the list (e.g. <code>“xyz”</code>) to see the filtered-empty
+        state with a <strong>Clear filters</strong> button — distinct from the “No data” empty state.
       </p>
     </div>
   );

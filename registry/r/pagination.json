@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pagination",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "domain-button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/pagination.tsx",
+      "type": "registry:ui",
+      "content": "import { ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from 'lucide-react';\nimport { Button } from './button';\nimport { cn } from '../../lib/utils';\n\nexport interface PaginationProps {\n  page: number;\n  pageCount: number;\n  onPageChange: (page: number) => void;\n  className?: string;\n}\n\nexport function Pagination({ page, pageCount, onPageChange, className }: PaginationProps) {\n  return (\n    <nav\n      role=\"navigation\"\n      aria-label=\"Pagination\"\n      className={cn('flex items-center justify-between gap-3', className)}\n    >\n      <Button\n        variant=\"outline\"\n        size=\"sm\"\n        leadingIcon={<ChevronLeftIcon size={14} aria-hidden />}\n        onClick={() => onPageChange(Math.max(1, page - 1))}\n        disabled={page <= 1}\n      >\n        Previous\n      </Button>\n      <span aria-live=\"polite\" className=\"font-tabular text-xs text-muted-foreground\">\n        Page <strong className=\"text-foreground\">{page}</strong> / {pageCount}\n      </span>\n      <Button\n        variant=\"outline\"\n        size=\"sm\"\n        trailingIcon={<ChevronRightIcon size={14} aria-hidden />}\n        onClick={() => onPageChange(Math.min(pageCount, page + 1))}\n        disabled={page >= pageCount}\n      >\n        Next\n      </Button>\n    </nav>\n  );\n}\n"
+    }
+  ]
+}

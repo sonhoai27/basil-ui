@@ -13,8 +13,8 @@ import {
 } from "./sheet"
 
 /**
- * Drawer — panel trượt từ CẠNH màn hình (mặc định bên phải), KHÔNG phải bottom sheet.
- * Dựng trên Sheet (Radix Dialog) để tin cậy; đổi `side` để trượt từ cạnh khác.
+ * Drawer — a panel that slides in from a screen EDGE (defaults to the right), NOT a bottom sheet.
+ * Built on Sheet (Radix Dialog) for reliability; change `side` to slide in from a different edge.
  */
 const Drawer = Sheet
 const DrawerTrigger = SheetTrigger

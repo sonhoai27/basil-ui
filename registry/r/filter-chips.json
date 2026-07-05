@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "filter-chips",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/filter-chips.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react';\nimport { X } from 'lucide-react';\nimport { cn } from '../../lib/utils';\n\nexport interface FilterChip {\n  /** Unique key used for removal. */\n  id: string;\n  /** Criterion label, e.g. \"Status\". */\n  label: string;\n  /** The active filter value, e.g. \"Pending payment\". */\n  value?: string;\n}\n\nexport interface FilterChipsProps extends React.HTMLAttributes<HTMLDivElement> {\n  filters: FilterChip[];\n  onRemove: (id: string) => void;\n  /** Shows \"Clear all\" when there are ≥ 2 chips (default). */\n  onClearAll?: () => void;\n  /** Total number of results after filtering (renders \"· N results\"). */\n  resultCount?: number;\n}\n\n/**\n * A row of applied filter chips — each chip is removable, with a \"Clear all\".\n * Place it just below the toolbar/search so filters stay visible (no hidden filtering).\n */\nexport const FilterChips = React.forwardRef<HTMLDivElement, FilterChipsProps>(\n  ({ filters, onRemove, onClearAll, resultCount, className, ...props }, ref) => {\n    if (filters.length === 0) return null;\n    return (\n      <div\n        ref={ref}\n        className={cn('flex flex-wrap items-center gap-2', className)}\n        {...props}\n      >\n        <span className=\"text-xs font-medium text-muted-foreground\">Filtering:</span>\n        {filters.map((f) => (\n          <span\n            key={f.id}\n            className=\"inline-flex items-center gap-1.5 rounded-full border border-border bg-card py-1 pl-2.5 pr-1 text-xs\"\n          >\n            <span className=\"text-muted-foreground\">{f.label}:</span>\n            <span className=\"font-medium text-foreground\">{f.value}</span>\n            <button\n              type=\"button\"\n              onClick={() => onRemove(f.id)}\n              aria-label={`Remove ${f.label} filter`}\n              className=\"inline-flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground\"\n            >\n              <X size={12} aria-hidden />\n            </button>\n          </span>\n        ))}\n        {onClearAll && filters.length >= 2 ? (\n          <button\n            type=\"button\"\n            onClick={onClearAll}\n            className=\"text-xs font-semibold text-primary transition-colors hover:text-primary-hover\"\n          >\n            Clear all\n          </button>\n        ) : null}\n        {resultCount !== undefined ? (\n          <span className=\"font-tabular text-xs text-muted-foreground\">· {resultCount} results</span>\n        ) : null}\n      </div>\n    );\n  },\n);\nFilterChips.displayName = 'FilterChips';\n"
+    }
+  ]
+}

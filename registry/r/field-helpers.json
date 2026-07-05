@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "field-helpers",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/field-helpers.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react';\nimport { cn } from '../../lib/utils';\n\n/** Renders below an input — a muted caption, or destructive when in error state. */\nexport function FieldHint({\n  children,\n  error,\n}: {\n  children?: React.ReactNode;\n  error?: boolean;\n}) {\n  if (!children) return null;\n  return (\n    <p className={cn('mt-1 text-xs', error ? 'text-destructive' : 'text-muted-foreground')}>\n      {children}\n    </p>\n  );\n}\n\n/** Dot indicator for a required field — place next to a shadcn Label. */\nexport function RequiredHint() {\n  return (\n    <span\n      className=\"ml-1 inline-block h-1.5 w-1.5 rounded-full bg-muted-foreground align-middle\"\n      aria-hidden\n    />\n  );\n}\n"
+    }
+  ]
+}

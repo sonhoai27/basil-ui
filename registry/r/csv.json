@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "csv",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/csv.ts",
+      "type": "registry:ui",
+      "content": "/**\n * CSV export helper — chuẩn Excel + tiếng Việt (BOM UTF-8, phân tách bằng dấu phẩy).\n * Không phải \"feature app\": đây là tiện ích để bảng dữ liệu xuất ra file.\n */\n\nexport interface CsvColumn<T> {\n  /** Tiêu đề cột trong file. */\n  header: string;\n  /** Lấy giá trị ô từ một dòng. */\n  value: (row: T) => string | number | null | undefined;\n}\n\n/** Bọc 1 ô CSV: escape dấu \", xuống dòng, dấu phẩy bằng cách đặt trong ngoặc kép. */\nfunction csvCell(v: string | number | null | undefined): string {\n  const s = v === null || v === undefined ? '' : String(v);\n  if (/[\",\\r\\n]/.test(s)) return `\"${s.replace(/\"/g, '\"\"')}\"`;\n  return s;\n}\n\n/** Sinh chuỗi CSV từ danh sách dòng + định nghĩa cột. */\nexport function toCsv<T>(rows: T[], columns: CsvColumn<T>[]): string {\n  const head = columns.map((c) => csvCell(c.header)).join(',');\n  const body = rows.map((row) => columns.map((c) => csvCell(c.value(row))).join(',')).join('\\r\\n');\n  return body ? `${head}\\r\\n${body}` : head;\n}\n\n/**\n * Xuất và tải file .csv. Thêm BOM UTF-8 để Excel đọc đúng dấu tiếng Việt.\n * No-op ngoài môi trường trình duyệt (SSR-safe).\n */\nexport function downloadCsv<T>(filename: string, rows: T[], columns: CsvColumn<T>[]): void {\n  if (typeof document === 'undefined') return;\n  const csv = toCsv(rows, columns);\n  const blob = new Blob(['﻿', csv], { type: 'text/csv;charset=utf-8;' });\n  const url = URL.createObjectURL(blob);\n  const a = document.createElement('a');\n  a.href = url;\n  a.download = filename.endsWith('.csv') ? filename : `${filename}.csv`;\n  document.body.appendChild(a);\n  a.click();\n  document.body.removeChild(a);\n  URL.revokeObjectURL(url);\n}\n"
+    }
+  ]
+}

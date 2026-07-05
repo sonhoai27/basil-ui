@@ -31,11 +31,11 @@ export interface ComboboxProps {
   emptyText?: string
   disabled?: boolean
   className?: string
-  /** Cho phép xoá lựa chọn hiện tại bằng nút × trên trigger. */
+  /** Allow clearing the current selection via the × button on the trigger. */
   allowClear?: boolean
-  /** Gọi khi người dùng chọn dòng "Tạo mới" (không có kết quả khớp chính xác). */
+  /** Called when the user picks the "Create new" row (no exact match found). */
   onCreate?: (query: string) => void
-  /** Nhãn của dòng tạo mới; nhận query hiện tại. Mặc định: + Tạo mới "{query}". */
+  /** Label for the create row; receives the current query. Default: + Create "{query}". */
   createLabel?: (query: string) => React.ReactNode
 }
 
@@ -45,9 +45,9 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       items,
       value,
       onChange,
-      placeholder = "Chọn...",
-      searchPlaceholder = "Tìm kiếm...",
-      emptyText = "Không có kết quả.",
+      placeholder = "Select...",
+      searchPlaceholder = "Search...",
+      emptyText = "No results.",
       disabled,
       className,
       allowClear,
@@ -76,7 +76,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
     const showClear = Boolean(allowClear) && !disabled && value != null
 
-    // Reset query khi đóng để lần mở sau bắt đầu sạch.
+    // Reset the query on close so the next open starts clean.
     const handleOpenChange = (next: boolean) => {
       setOpen(next)
       if (!next) setQuery("")
@@ -115,7 +115,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               <span
                 role="button"
                 tabIndex={0}
-                aria-label="Xoá lựa chọn"
+                aria-label="Clear selection"
                 className="-mr-1 inline-flex shrink-0 items-center justify-center rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                 onClick={(e) => {
                   e.stopPropagation()
@@ -198,7 +198,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                       {createLabel ? (
                         createLabel(trimmed)
                       ) : (
-                        <>Tạo mới &ldquo;{trimmed}&rdquo;</>
+                        <>Create &ldquo;{trimmed}&rdquo;</>
                       )}
                     </span>
                   </CommandItem>

@@ -17,7 +17,7 @@ const badgeVariants = cva(
         outline: "border border-border bg-card text-foreground",
         caption:
           "border-transparent bg-primary text-primary-foreground font-semibold uppercase tracking-wider hover:bg-primary/90",
-        // Soft/tinted variants — dùng cặp token -bg/-text (order-tool triads)
+        // Soft/tinted variants — use the paired -bg/-text tokens
         "soft-primary":  "border-transparent bg-primary-subtle text-primary",
         "soft-success":  "border-transparent bg-success-bg text-success-text",
         "soft-warning":  "border-transparent bg-warning-bg text-warning-text",

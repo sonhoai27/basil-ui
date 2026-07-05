@@ -12,9 +12,9 @@ import {
 import { cn } from "../../lib/utils"
 
 /**
- * Banner — thông báo cấp trang, full-width, dismissible (khác Alert inline).
- * Borderless tint (bg-{hue}-bg text-{hue}-text) như Alert nhưng trải ngang:
- * icon + nội dung bên trái, `action` bên phải, nút × khi có `onDismiss`.
+ * Banner — page-level, full-width, dismissible notice (unlike the inline Alert).
+ * Borderless tint (bg-{hue}-bg text-{hue}-text) like Alert but laid out horizontally:
+ * icon + content on the left, `action` on the right, and a × button when `onDismiss` is set.
  */
 const bannerVariants = cva(
   "relative flex w-full items-start gap-3 rounded-lg px-4 py-3 text-sm",
@@ -44,13 +44,13 @@ const VARIANT_ICON: Record<
 export interface BannerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
     VariantProps<typeof bannerVariants> {
-  /** Tiêu đề đậm (tuỳ chọn). */
+  /** Bold title (optional). */
   title?: React.ReactNode
-  /** Node icon tuỳ ý; `false` để ẩn. Mặc định: icon theo variant. */
+  /** Custom icon node; `false` to hide it. Defaults to the variant icon. */
   icon?: React.ReactNode | false
-  /** Slot hành động bên phải (button/link). */
+  /** Action slot on the right (button/link). */
   action?: React.ReactNode
-  /** Có handler → render nút × để đóng. */
+  /** When a handler is provided, renders a × button to dismiss. */
   onDismiss?: () => void
 }
 
@@ -94,7 +94,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
           <button
             type="button"
             onClick={onDismiss}
-            aria-label="Đóng"
+            aria-label="Dismiss"
             className="-mr-1 -mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md text-current opacity-70 transition-opacity hover:opacity-100"
           >
             <X className="size-4" aria-hidden />

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "description-list",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/description-list.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react';\nimport { cn } from '../../lib/utils';\n\n/**\n * DescriptionList — key/value detail display cho read view (order/customer detail).\n * Compound: <DescriptionList> render <dl>; <DescriptionItem> render 1 hàng (dt + dd).\n * Hairline giữa các hàng khi `divided`. `columns={2}` cho grid responsive.\n */\nexport interface DescriptionListProps\n  extends React.HTMLAttributes<HTMLDListElement> {\n  /** Số cột (responsive grid). Mặc định 1. */\n  columns?: 1 | 2;\n  /** Hairline border-border giữa các hàng. */\n  divided?: boolean;\n}\n\nconst DescriptionListContext = React.createContext<{ divided: boolean }>({\n  divided: false,\n});\n\nexport const DescriptionList = React.forwardRef<\n  HTMLDListElement,\n  DescriptionListProps\n>(({ columns = 1, divided = false, className, children, ...props }, ref) => {\n  return (\n    <DescriptionListContext.Provider value={{ divided }}>\n      <dl\n        ref={ref}\n        className={cn(\n          'grid grid-cols-1 gap-x-6',\n          columns === 2 && 'sm:grid-cols-2',\n          divided ? 'gap-y-0' : 'gap-y-3',\n          className,\n        )}\n        {...props}\n      >\n        {children}\n      </dl>\n    </DescriptionListContext.Provider>\n  );\n});\nDescriptionList.displayName = 'DescriptionList';\n\nexport interface DescriptionItemProps\n  extends React.HTMLAttributes<HTMLDivElement> {\n  /** Nhãn (dt). */\n  term: React.ReactNode;\n  /** Giá trị hiển thị dạng số → dùng tabular. */\n  numeric?: boolean;\n}\n\nexport const DescriptionItem = React.forwardRef<\n  HTMLDivElement,\n  DescriptionItemProps\n>(({ term, numeric, className, children, ...props }, ref) => {\n  const { divided } = React.useContext(DescriptionListContext);\n  return (\n    <div\n      ref={ref}\n      className={cn(\n        'flex items-start gap-4',\n        divided &&\n          'border-b border-border py-3 first:pt-0 last:border-b-0 last:pb-0',\n        className,\n      )}\n      {...props}\n    >\n      <dt className=\"w-32 shrink-0 text-sm text-muted-foreground\">{term}</dt>\n      <dd\n        className={cn(\n          'min-w-0 flex-1 text-sm text-foreground',\n          numeric && 'font-tabular tabular-nums',\n        )}\n      >\n        {children}\n      </dd>\n    </div>\n  );\n});\nDescriptionItem.displayName = 'DescriptionItem';\n"
+    }
+  ]
+}

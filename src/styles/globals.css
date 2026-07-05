@@ -1,22 +1,22 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-/* Font Nunito được import qua JS (packages/ui/src/index.ts) để Vite bundle .woff2 đúng. */
+/* Nunito is opt-in — load it yourself (see the README) or override --font-sans. */
 
-/* Quét class ở UI package + cả 3 app (globals.css dùng chung cho mọi app). */
+/* Class scanning: Basil's own source (local dev/storybook) + the compiled output
+   (where consumers pick up Basil's classes). Consumers should ALSO add their own
+   app paths, e.g. `@source './src';` in their stylesheet. */
 @source '..';
-@source '../../../../apps/web-customer/src';
-@source '../../../../apps/web-admin/src';
-@source '../../../../apps/web-warehouse/src';
+@source '../../dist';
 
 /* ============================================================================
-   Mộc Chính — Design tokens (Tailwind v4 CSS-first, align order-tool LANG-VONG)
-   @theme sinh utility trực tiếp: bg-*, text-*, border-*, ring-*, rounded-*, shadow-*.
-   Giữ NGUYÊN tên semantic của shadcn (primary/muted/accent/card/sidebar…) để
-   component không phải viết lại; chỉ đổi GIÁ TRỊ sang palette order-tool.
-   Light-only (không dark mode). KHÔNG hardcode HEX ngoài file này.
+   Basil — Design tokens (Tailwind v4, CSS-first)
+   @theme generates utilities directly: bg-*, text-*, border-*, ring-*, rounded-*, shadow-*.
+   Keeps shadcn's semantic names (primary/muted/accent/card/sidebar…) so components
+   don't need rewriting; only the VALUES are Basil's palette.
+   Light-only (no dark mode). Do NOT hardcode hex outside this file.
    ============================================================================ */
 @theme {
-  /* --- Brand (banana-leaf green) --- */
+  /* --- Brand (leaf green) --- */
   --color-primary: #1b5e20; /* CTA, nav active, brand */
   --color-primary-hover: #2e7d32; /* button primary hover */
   --color-primary-subtle: #e8f5e9; /* row/chip hover, KPI hero, focus ring bg */
@@ -34,31 +34,31 @@
   --color-secondary: #f3f4f6;
   --color-secondary-foreground: #1f2937;
   --color-muted: #f3f4f6;
-  --color-muted-foreground: #616872; /* WCAG AA: 4.5:1 trên muted (cả pill "Đã huỷ") */
-  --color-accent: #e8f5e9; /* green-tint hover surface (order-tool signature) */
+  --color-muted-foreground: #616872; /* WCAG AA: 4.5:1 on muted (incl. the "cancelled" pill) */
+  --color-accent: #e8f5e9; /* green-tint hover surface */
   --color-accent-foreground: #1b5e20;
 
   /* --- Borders / inputs / ring --- */
-  /* Hairline ấm, ~1 bậc lệch nền #FAFAF7 (kiểu Vercel/Linear). Bề mặt inline chỉ đeo
-     đúng 1 viền này, KHÔNG shadow. */
+  /* Warm hairline, ~1 step off the #FAFAF7 background (Vercel/Linear-style).
+     Inline surfaces wear only this border, NO shadow. */
   --color-border: #e8e8e3;
   --color-border-strong: #d6d6cf;
-  --color-input: #918f86; /* viền ô nhập đậm hơn hairline: đạt non-text 3:1 (WCAG 1.4.11) */
+  --color-input: #918f86; /* input border darker than the hairline: meets non-text 3:1 (WCAG 1.4.11) */
   --color-ring: #1b5e20;
 
   /* --- Semantic status (base + tinted bg/text pair) --- */
-  --color-destructive: #dc2626; /* đậm hơn red-500: chữ trắng trên nút đạt 4.5:1 */
+  --color-destructive: #dc2626; /* darker than red-500: white text on the button meets 4.5:1 */
   --color-destructive-foreground: #ffffff;
   --color-destructive-bg: #fee2e2;
   --color-destructive-text: #991b1b;
 
-  --color-success: #10b981; /* cố ý khác primary-green (anti-drift) */
+  --color-success: #10b981; /* intentionally different from primary green (anti-drift) */
   --color-success-foreground: #ffffff;
   --color-success-bg: #d1fae5;
   --color-success-text: #065f46;
 
   --color-warning: #f59e0b;
-  --color-warning-foreground: #451a03; /* đủ tương phản (>4.5) trên nền amber solid */
+  --color-warning-foreground: #451a03; /* enough contrast (>4.5) on solid amber */
   --color-warning-bg: #fef3c7;
   --color-warning-text: #92400e;
 
@@ -67,7 +67,7 @@
   --color-info-bg: #dbeafe;
   --color-info-text: #1e40af;
 
-  /* --- Sidebar chrome (dark banana-leaf, đậm hơn primary) --- */
+  /* --- Sidebar chrome (dark leaf-green, darker than primary) --- */
   --color-sidebar: #1b3a1f;
   --color-sidebar-foreground: #e8f5e9; /* cream */
   --color-sidebar-primary: #e8f5e9;
@@ -77,13 +77,13 @@
   --color-sidebar-border: rgba(255, 255, 255, 0.1);
   --color-sidebar-ring: #4cb01c;
 
-  /* --- Corner radius (siết cho "sắc/pro", không có 16px inline) --- */
+  /* --- Corner radius (tight for a crisp/pro feel; no 16px inline) --- */
   --radius-sm: 6px; /* chips, badges */
   --radius-md: 8px; /* buttons, inputs — CONTROL radius */
   --radius-lg: 10px; /* cards, panels, tables, alerts — THE card radius */
   --radius-xl: 12px; /* modals (dialog/sheet) */
 
-  /* --- Shadows: CHỈ cho overlay nổi (dropdown/dialog/toast). Bề mặt inline = phẳng + hairline. --- */
+  /* --- Shadows: ONLY for floating overlays (dropdown/dialog/toast). Inline surfaces = flat + hairline. --- */
   --shadow-popover: 0 4px 12px rgba(24, 24, 20, 0.1), 0 0 0 1px rgba(24, 24, 20, 0.05);
   --shadow-modal: 0 12px 32px rgba(24, 24, 20, 0.16), 0 0 0 1px rgba(24, 24, 20, 0.05);
   --shadow-toast: 0 4px 12px rgba(24, 24, 20, 0.1);
@@ -117,7 +117,7 @@
   html {
     color-scheme: light;
   }
-  /* v4 mặc định border-color = currentColor → ép về token border như v3. */
+  /* v4 defaults border-color to currentColor → pin it back to the border token (v3 behavior). */
   * {
     @apply border-border;
   }
@@ -125,15 +125,16 @@
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
-    /* Tablet/mobile: bỏ delay 300ms double-tap-zoom. */
+    /* Tablet/mobile: remove the 300ms double-tap-zoom delay. */
     touch-action: manipulation;
   }
 }
 
-/* MỘT kiểu focus duy nhất: outline 2px cho control thường (button/link/tab/switch…).
-   PHẢI đặt trong @layer base — nếu để unlayered, CSS unlayered của v4 thắng mọi @layer utilities
-   nên utility `outline-none` của input/select bị vô hiệu → focus bị DOUBLE (outline + ring).
-   Trong @layer base: input dùng `focus-visible:outline-none` (layer utilities) ghi đè → CHỈ còn ring. */
+/* ONE focus style: a 2px outline for regular controls (button/link/tab/switch…).
+   MUST live in @layer base — if left unlayered, v4's unlayered CSS beats every
+   @layer utilities, so the `outline-none` utility on inputs/selects is voided →
+   focus DOUBLES (outline + ring). Inside @layer base, an input's
+   `focus-visible:outline-none` (layer utilities) wins → only the ring remains. */
 @layer base {
   :focus:not(:focus-visible) {
     outline: none;
@@ -144,7 +145,7 @@
   }
 }
 
-/* Tôn trọng "giảm chuyển động" của hệ điều hành. */
+/* Respect the OS "reduce motion" setting. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -156,7 +157,7 @@
   }
 }
 
-/* Số tiền / đếm: chữ số đều cột (tabular numerics). */
+/* Money / counts: column-aligned digits (tabular numerics). */
 @utility font-tabular {
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
@@ -166,8 +167,7 @@
   font-feature-settings: 'tnum';
 }
 
-/* Header thương hiệu dạng frosted (customer/warehouse mobile) — bám token
-   --color-primary nên đổi màu brand là tự cập nhật, không hardcode HEX. */
+/* Frosted brand header — bound to --color-primary so it follows the brand color; no hardcoded hex. */
 @utility brand-header {
   background: color-mix(in srgb, var(--color-primary) 92%, transparent);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);

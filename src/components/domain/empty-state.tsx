@@ -14,7 +14,7 @@ interface StateShellProps {
   className?: string;
 }
 
-/** Layout dùng chung cho EmptyState + ErrorState — icon + title + description + CTA. */
+/** Shared layout for EmptyState + ErrorState — icon + title + description + CTA. */
 const StateShell = React.forwardRef<HTMLDivElement, StateShellProps>(
   ({ role, icon, iconClassName, title, titleClassName, description, action, className }, ref) => {
     return (
@@ -77,9 +77,9 @@ export interface ErrorStateProps {
   className?: string;
 }
 
-/** Trạng thái lỗi — icon cảnh báo destructive + CTA thử lại. */
+/** Error state — destructive warning icon + retry CTA. */
 export const ErrorState = React.forwardRef<HTMLDivElement, ErrorStateProps>(
-  ({ title = 'Đã có lỗi xảy ra', description, icon, action, className }, ref) => {
+  ({ title = 'Something went wrong', description, icon, action, className }, ref) => {
     return (
       <StateShell
         ref={ref}

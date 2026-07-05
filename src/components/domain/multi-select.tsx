@@ -30,7 +30,7 @@ export interface MultiSelectProps {
   placeholder?: string
   searchPlaceholder?: string
   emptyText?: string
-  /** Số chip hiển thị tối đa trước khi gộp thành "+N". */
+  /** Maximum number of chips to show before collapsing the rest into "+N". */
   maxDisplay?: number
   disabled?: boolean
   className?: string
@@ -42,9 +42,9 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
       items,
       value,
       onChange,
-      placeholder = "Chọn...",
-      searchPlaceholder = "Tìm kiếm...",
-      emptyText = "Không có kết quả.",
+      placeholder = "Select...",
+      searchPlaceholder = "Search...",
+      emptyText = "No results.",
       maxDisplay,
       disabled,
       className,
@@ -107,7 +107,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                     <span
                       role="button"
                       tabIndex={0}
-                      aria-label={`Xoá ${item.label}`}
+                      aria-label={`Remove ${item.label}`}
                       className="inline-flex shrink-0 items-center justify-center rounded-full p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                       onClick={(e) => {
                         e.stopPropagation()

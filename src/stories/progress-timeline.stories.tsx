@@ -14,46 +14,46 @@ import {
 export default { title: 'Progress & History' };
 
 /* ------------------------------------------------------------------ */
-/* Timeline — lịch sử trạng thái đơn hàng                              */
+/* Timeline — order status history                                    */
 /* ------------------------------------------------------------------ */
 
 export const TimelineStory: Story = () => (
   <div className="max-w-lg p-6">
     <p className="mb-4 text-sm font-semibold text-foreground">
-      Đơn DH-2412 · Lịch sử xử lý
+      Order ORD-2412 · Processing history
     </p>
     <Timeline>
       <TimelineItem
         variant="muted"
         icon={FileText}
-        title="Đã tạo đơn"
-        timestamp="05/07 · 08:12"
-        description="4 mặt hàng · 2.480.000₫"
-        actor="Chị Lan (Sale)"
+        title="Order created"
+        timestamp="Jul 05 · 08:12"
+        description="4 items · $2,480.00"
+        actor="Emma Carter (Sales)"
       />
       <TimelineItem
         variant="info"
-        title="Đã duyệt"
-        timestamp="05/07 · 09:05"
-        description="Duyệt công nợ trong hạn mức 5.000.000₫"
+        title="Approved"
+        timestamp="Jul 05 · 09:05"
+        description="Credit approved within the $5,000.00 limit"
       />
       <TimelineItem
         variant="warning"
-        title="Đang đóng gói"
-        timestamp="05/07 · 10:20"
-        description="Kho Bình Tân đóng 8/12 món"
+        title="Packing"
+        timestamp="Jul 05 · 10:20"
+        description="East Side warehouse packed 8/12 items"
       />
       <TimelineItem
         variant="success"
-        title="Đã xuất kho"
-        timestamp="05/07 · 11:40"
-        description="Bàn giao cho tài xế Nhà xe Phương Trang"
+        title="Shipped from warehouse"
+        timestamp="Jul 05 · 11:40"
+        description="Handed to the Express Lines driver"
       />
       <TimelineItem
         variant="primary"
-        title="Đang giao"
-        timestamp="05/07 · 13:15"
-        description="Dự kiến giao trước 17:00 hôm nay"
+        title="Out for delivery"
+        timestamp="Jul 05 · 13:15"
+        description="Expected before 17:00 today"
         isLast
       />
     </Timeline>
@@ -61,20 +61,20 @@ export const TimelineStory: Story = () => (
 );
 
 /* ------------------------------------------------------------------ */
-/* Progress — thanh tiến độ                                            */
+/* Progress — progress bar                                            */
 /* ------------------------------------------------------------------ */
 
 export const ProgressStory: Story = () => (
   <div className="flex max-w-md flex-col gap-8 p-6">
     <div className="flex flex-col gap-4">
-      <p className="text-sm font-semibold text-foreground">Giá trị · md</p>
+      <p className="text-sm font-semibold text-foreground">Value · md</p>
       <Progress value={25} showValue />
       <Progress value={60} showValue />
       <Progress value={100} variant="success" showValue />
     </div>
 
     <div className="flex flex-col gap-4">
-      <p className="text-sm font-semibold text-foreground">4 biến thể · sm</p>
+      <p className="text-sm font-semibold text-foreground">4 variants · sm</p>
       <Progress value={45} variant="default" size="sm" />
       <Progress value={70} variant="success" size="sm" />
       <Progress value={55} variant="warning" size="sm" />
@@ -82,32 +82,32 @@ export const ProgressStory: Story = () => (
     </div>
 
     <div className="flex flex-col gap-4">
-      <p className="text-sm font-semibold text-foreground">Có nhãn</p>
+      <p className="text-sm font-semibold text-foreground">With label</p>
       <Progress
         value={8}
         max={12}
         variant="warning"
         showValue
-        label="Đang đóng gói 8/12 món"
+        label="Packing 8/12 items"
       />
     </div>
 
     <div className="flex flex-col gap-4">
-      <p className="text-sm font-semibold text-foreground">Không xác định</p>
-      <Progress indeterminate showValue label="Đang đồng bộ tồn kho" />
+      <p className="text-sm font-semibold text-foreground">Indeterminate</p>
+      <Progress indeterminate showValue label="Syncing inventory" />
     </div>
   </div>
 );
 
 /* ------------------------------------------------------------------ */
-/* Stepper — luồng tạo đơn                                             */
+/* Stepper — order creation flow                                      */
 /* ------------------------------------------------------------------ */
 
 const ORDER_STEPS: StepperStep[] = [
-  { label: 'Chọn khách', description: 'Chị Lan · Quán bún' },
-  { label: 'Thêm sản phẩm', description: '4 mặt hàng' },
-  { label: 'Giao hàng', description: 'Ship COD' },
-  { label: 'Xác nhận', description: 'Duyệt & tạo đơn' },
+  { label: 'Choose customer', description: 'Emma Carter · The Noodle Bar' },
+  { label: 'Add products', description: '4 items' },
+  { label: 'Delivery', description: 'COD shipping' },
+  { label: 'Confirm', description: 'Approve & create order' },
 ];
 
 export const StepperStory: Story = () => {
@@ -117,21 +117,21 @@ export const StepperStory: Story = () => {
     <div className="flex flex-col gap-12 p-6">
       <div className="flex max-w-2xl flex-col gap-4">
         <p className="text-sm font-semibold text-foreground">
-          Ngang · bước 2 (Thêm sản phẩm)
+          Horizontal · step 2 (Add products)
         </p>
         <Stepper steps={ORDER_STEPS} current={1} orientation="horizontal" />
       </div>
 
       <div className="flex max-w-xs flex-col gap-4">
         <p className="text-sm font-semibold text-foreground">
-          Dọc · bước 3 (Giao hàng)
+          Vertical · step 3 (Delivery)
         </p>
         <Stepper steps={ORDER_STEPS} current={2} orientation="vertical" />
       </div>
 
       <div className="flex max-w-2xl flex-col gap-4">
         <p className="text-sm font-semibold text-foreground">
-          Điều hướng · bấm bước đã hoàn tất (hiện tại: {ORDER_STEPS[current]?.label})
+          Navigable · click a completed step (current: {ORDER_STEPS[current]?.label})
         </p>
         <Stepper
           steps={ORDER_STEPS}
@@ -145,17 +145,17 @@ export const StepperStory: Story = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* Sparkline — xu hướng doanh thu                                      */
+/* Sparkline — revenue trend                                          */
 /* ------------------------------------------------------------------ */
 
-// Doanh thu 12 ngày gần nhất (triệu đồng).
+// Revenue over the last 12 days (in thousands).
 const REVENUE = [18, 21, 19, 24, 22, 27, 31, 28, 34, 33, 38, 42];
 const REVENUE_DOWN = [42, 40, 43, 38, 36, 37, 31, 29, 27, 24, 22, 19];
 
 export const SparklineStory: Story = () => (
   <div className="flex flex-col gap-10 p-6">
     <div className="flex flex-col gap-4">
-      <p className="text-sm font-semibold text-foreground">Biến thể · có vùng nền</p>
+      <p className="text-sm font-semibold text-foreground">Variants · with area fill</p>
       <div className="flex flex-wrap items-center gap-6">
         <Sparkline data={REVENUE} variant="primary" width={140} height={40} />
         <Sparkline data={REVENUE} variant="success" width={140} height={40} />
@@ -166,7 +166,7 @@ export const SparklineStory: Story = () => (
 
     <div className="flex flex-col gap-4">
       <p className="text-sm font-semibold text-foreground">
-        Chỉ đường · không vùng nền, không điểm cuối
+        Line only · no area fill, no endpoint
       </p>
       <div className="flex flex-wrap items-center gap-6">
         <Sparkline
@@ -189,22 +189,22 @@ export const SparklineStory: Story = () => (
 
     <div className="flex flex-col gap-4">
       <p className="text-sm font-semibold text-foreground">
-        KpiCard · prop sparkline
+        KpiCard · sparkline prop
       </p>
       <div className="grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
         <KpiCard
-          label="Doanh thu 12 ngày"
-          value="42,0tr"
-          hint="So với kỳ trước"
+          label="Revenue, 12 days"
+          value="$42.0K"
+          hint="vs. previous period"
           trend={{ value: 18, positive: true }}
           icon={<TrendingUp className="h-5 w-5" />}
           tone="success"
           sparkline={REVENUE}
         />
         <KpiCard
-          label="Công nợ quá hạn"
-          value="19,0tr"
-          hint="So với kỳ trước"
+          label="Overdue balance"
+          value="$19.0K"
+          hint="vs. previous period"
           trend={{ value: 12, positive: false }}
           icon={<TrendingDown className="h-5 w-5" />}
           tone="warning"

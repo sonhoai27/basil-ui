@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/spinner.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\"\nimport { Loader2 } from \"lucide-react\"\n\nimport { cn } from \"../../lib/utils\"\n\nconst sizeMap = {\n  sm: 16,\n  md: 20,\n  lg: 28,\n} as const\n\nexport interface SpinnerProps\n  extends React.HTMLAttributes<HTMLSpanElement> {\n  size?: keyof typeof sizeMap\n}\n\nconst Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(\n  ({ className, size = \"md\", ...props }, ref) => (\n    <span\n      ref={ref}\n      role=\"status\"\n      aria-label=\"Đang tải\"\n      className={cn(\"inline-flex text-primary\", className)}\n      {...props}\n    >\n      <Loader2 className=\"animate-spin\" size={sizeMap[size]} aria-hidden=\"true\" />\n    </span>\n  )\n)\nSpinner.displayName = \"Spinner\"\n\nexport { Spinner }\n"
+    }
+  ]
+}

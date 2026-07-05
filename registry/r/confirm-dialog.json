@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "confirm-dialog",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "alert-dialog"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/confirm-dialog.tsx",
+      "type": "registry:ui",
+      "content": "import {\n  AlertDialog,\n  AlertDialogAction,\n  AlertDialogCancel,\n  AlertDialogContent,\n  AlertDialogDescription,\n  AlertDialogFooter,\n  AlertDialogHeader,\n  AlertDialogTitle,\n} from '../ui/alert-dialog';\n\nexport interface ConfirmDialogProps {\n  open: boolean;\n  onOpenChange: (open: boolean) => void;\n  title: string;\n  description?: string;\n  confirmLabel?: string;\n  cancelLabel?: string;\n  destructive?: boolean;\n  isLoading?: boolean;\n  onConfirm: () => void | Promise<void>;\n}\n\nexport function ConfirmDialog({\n  open,\n  onOpenChange,\n  title,\n  description,\n  confirmLabel = 'Confirm',\n  cancelLabel = 'Cancel',\n  destructive,\n  isLoading,\n  onConfirm,\n}: ConfirmDialogProps) {\n  return (\n    <AlertDialog open={open} onOpenChange={onOpenChange}>\n      <AlertDialogContent>\n        <AlertDialogHeader>\n          <AlertDialogTitle>{title}</AlertDialogTitle>\n          {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}\n        </AlertDialogHeader>\n        <AlertDialogFooter>\n          <AlertDialogCancel disabled={isLoading}>{cancelLabel}</AlertDialogCancel>\n          <AlertDialogAction\n            disabled={isLoading}\n            onClick={() => void onConfirm()}\n            variant={destructive ? 'destructive' : undefined}\n          >\n            {confirmLabel}\n          </AlertDialogAction>\n        </AlertDialogFooter>\n      </AlertDialogContent>\n    </AlertDialog>\n  );\n}\n"
+    }
+  ]
+}

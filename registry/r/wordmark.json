@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wordmark",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "brand-mark",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/wordmark.tsx",
+      "type": "registry:ui",
+      "content": "import { BrandMark, type BrandMarkProps } from './brand-mark';\nimport { cn } from '../../lib/utils';\n\nexport interface WordmarkProps {\n  /** Brand name shown next to the mark. */\n  name?: string;\n  /** Optional subtitle under the name (e.g. the product or app area). */\n  subtitle?: string;\n  /** Color tone: `light` on light surfaces, `dark` on dark chrome (e.g. a sidebar). */\n  tone?: 'dark' | 'light';\n  size?: BrandMarkProps['size'];\n  className?: string;\n}\n\n/**\n * Brand lockup — {@link BrandMark} + a name and optional subtitle.\n * Generic by design: pass your own `name` / `subtitle` (defaults to \"Basil\").\n */\nexport function Wordmark({\n  name = 'Basil',\n  subtitle,\n  tone = 'light',\n  size = 'md',\n  className,\n}: WordmarkProps) {\n  const titleColor = tone === 'dark' ? 'text-sidebar-foreground' : 'text-foreground';\n  const subColor = tone === 'dark' ? 'text-sidebar-foreground/60' : 'text-muted-foreground';\n  return (\n    <span className={cn('inline-flex items-center gap-2.5', className)}>\n      <BrandMark size={size} />\n      <span className=\"flex flex-col leading-tight\">\n        <span className={cn('text-sm font-semibold', titleColor)}>{name}</span>\n        {subtitle ? (\n          <span className={cn('text-[11px] font-medium', subColor)}>{subtitle}</span>\n        ) : null}\n      </span>\n    </span>\n  );\n}\n"
+    }
+  ]
+}

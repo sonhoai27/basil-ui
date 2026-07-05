@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "domain-button",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/button.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react';\nimport { Loader2 as SpinnerIcon } from 'lucide-react';\nimport {\n  Button as ShadcnButton,\n  buttonVariants,\n  type ButtonProps as ShadcnButtonProps,\n} from '../ui/button';\nimport { cn } from '../../lib/utils';\n\n/**\n * Thin pass-through over shadcn Button.\n * Visuals come 100% from the shadcn cva. The wrapper ONLY adds 4 ergonomic props; it does NOT override visuals.\n *\n * shadcn Button has:  variant (default/destructive/outline/secondary/ghost/link) + size (default/sm/lg/icon)\n * Wrapper adds:       isLoading + leadingIcon + trailingIcon + fullWidth\n */\nexport interface ButtonProps extends ShadcnButtonProps {\n  isLoading?: boolean;\n  leadingIcon?: React.ReactNode;\n  trailingIcon?: React.ReactNode;\n  fullWidth?: boolean;\n}\n\nexport const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(\n  (\n    { isLoading, leadingIcon, trailingIcon, fullWidth, disabled, className, children, ...props },\n    ref,\n  ) => (\n    <ShadcnButton\n      ref={ref}\n      disabled={disabled || isLoading}\n      aria-busy={isLoading || undefined}\n      className={cn(fullWidth && 'w-full', className)}\n      {...props}\n    >\n      {isLoading ? (\n        <SpinnerIcon className=\"animate-spin\" aria-hidden />\n      ) : (\n        leadingIcon\n      )}\n      {children}\n      {!isLoading && trailingIcon}\n    </ShadcnButton>\n  ),\n);\nButton.displayName = 'Button';\n\nexport { buttonVariants };\n"
+    }
+  ]
+}

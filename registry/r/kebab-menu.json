@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kebab-menu",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "dropdown-menu",
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/kebab-menu.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react';\nimport { MoreHorizontal } from 'lucide-react';\n\nimport { cn } from '../../lib/utils';\nimport {\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n} from '../ui/dropdown-menu';\n\nexport interface KebabMenuItem {\n  label: string;\n  icon?: React.ReactNode;\n  onSelect: () => void;\n  destructive?: boolean;\n}\n\nexport interface KebabMenuProps {\n  items: KebabMenuItem[];\n  align?: 'start' | 'center' | 'end';\n}\n\n/**\n * Standalone reusable \"more\" menu — a kebab icon-button that opens a\n * DropdownMenu listing the given actions. Use anywhere a row/card/section\n * needs an overflow menu.\n */\nexport function KebabMenu({ items, align = 'end' }: KebabMenuProps) {\n  return (\n    <DropdownMenu>\n      <DropdownMenuTrigger\n        aria-label=\"Open menu\"\n        className={cn(\n          'inline-flex size-8 items-center justify-center rounded-md text-muted-foreground',\n          'transition-colors hover:bg-muted hover:text-foreground',\n          'disabled:pointer-events-none disabled:opacity-50',\n          'data-[state=open]:bg-muted data-[state=open]:text-foreground',\n        )}\n      >\n        <MoreHorizontal className=\"size-4\" />\n      </DropdownMenuTrigger>\n      <DropdownMenuContent align={align}>\n        {items.map((item, i) => (\n          <DropdownMenuItem\n            key={i}\n            onSelect={item.onSelect}\n            className={cn(item.destructive && 'text-destructive focus:text-destructive')}\n          >\n            {item.icon}\n            {item.label}\n          </DropdownMenuItem>\n        ))}\n      </DropdownMenuContent>\n    </DropdownMenu>\n  );\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toolbar",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/domain/toolbar.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from 'react';\n\nimport { cn } from '../../lib/utils';\n\nexport interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {}\n\n/**\n * Flat list toolbar layout primitive. A horizontal bar for filters/search on\n * the left and actions on the right — pair with `ToolbarSpacer` to push\n * trailing items to the end. Flat surface: border + card bg, no shadow.\n */\nexport const Toolbar = React.forwardRef<HTMLDivElement, ToolbarProps>(\n  ({ className, ...props }, ref) => (\n    <div\n      ref={ref}\n      className={cn(\n        'flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-3',\n        className,\n      )}\n      {...props}\n    />\n  ),\n);\nToolbar.displayName = 'Toolbar';\n\nexport interface ToolbarSpacerProps extends React.HTMLAttributes<HTMLDivElement> {}\n\n/** Flexible spacer — pushes following toolbar items to the trailing edge. */\nexport function ToolbarSpacer({ className, ...props }: ToolbarSpacerProps) {\n  return <div aria-hidden className={cn('flex-1', className)} {...props} />;\n}\n"
+    }
+  ]
+}

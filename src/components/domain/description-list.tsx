@@ -2,15 +2,15 @@ import * as React from 'react';
 import { cn } from '../../lib/utils';
 
 /**
- * DescriptionList — key/value detail display cho read view (order/customer detail).
- * Compound: <DescriptionList> render <dl>; <DescriptionItem> render 1 hàng (dt + dd).
- * Hairline giữa các hàng khi `divided`. `columns={2}` cho grid responsive.
+ * DescriptionList — key/value detail display for read views (order/customer detail).
+ * Compound: <DescriptionList> renders <dl>; <DescriptionItem> renders one row (dt + dd).
+ * Hairline between rows when `divided`. `columns={2}` gives a responsive grid.
  */
 export interface DescriptionListProps
   extends React.HTMLAttributes<HTMLDListElement> {
-  /** Số cột (responsive grid). Mặc định 1. */
+  /** Number of columns (responsive grid). Default 1. */
   columns?: 1 | 2;
-  /** Hairline border-border giữa các hàng. */
+  /** Hairline border-border between rows. */
   divided?: boolean;
 }
 
@@ -43,9 +43,9 @@ DescriptionList.displayName = 'DescriptionList';
 
 export interface DescriptionItemProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  /** Nhãn (dt). */
+  /** Label (dt). */
   term: React.ReactNode;
-  /** Giá trị hiển thị dạng số → dùng tabular. */
+  /** Value displayed as a number → uses tabular figures. */
   numeric?: boolean;
 }
 

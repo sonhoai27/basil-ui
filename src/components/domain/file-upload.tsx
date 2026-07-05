@@ -6,19 +6,19 @@ import { cn } from '../../lib/utils';
 export interface FileUploadProps {
   value?: File[];
   onChange: (files: File[]) => void;
-  /** Chuỗi accept giống input[type=file] (vd. "image/*,.pdf"). */
+  /** An accept string like input[type=file] (e.g. "image/*,.pdf"). */
   accept?: string;
-  /** Cho chọn nhiều file (mặc định true). */
+  /** Allow selecting multiple files (default true). */
   multiple?: boolean;
-  /** Dung lượng tối đa mỗi file (MB). */
+  /** Maximum size per file (MB). */
   maxSizeMB?: number;
   disabled?: boolean;
-  /** Ghi chú phụ dưới dòng chính (vd. loại file được phép). */
+  /** Secondary note below the main line (e.g. the allowed file types). */
   hint?: string;
   className?: string;
 }
 
-/** Định dạng dung lượng file sang KB / MB. */
+/** Formats a file size into KB / MB. */
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   const kb = bytes / 1024;
@@ -27,7 +27,7 @@ function formatSize(bytes: number): string {
   return `${mb.toFixed(mb < 10 ? 1 : 0)} MB`;
 }
 
-/** Kiểm tra file có khớp chuỗi accept không (hỗ trợ extension, mime, wildcard mime). */
+/** Checks whether a file matches the accept string (supports extension, mime, wildcard mime). */
 function matchesAccept(file: File, accept?: string): boolean {
   if (!accept) return true;
   const tokens = accept
@@ -44,7 +44,7 @@ function matchesAccept(file: File, accept?: string): boolean {
   });
 }
 
-/** Một dòng file đã chọn — thumbnail (nếu là ảnh) + tên + dung lượng + nút xoá. */
+/** A single selected file row — thumbnail (if an image) + name + size + remove button. */
 interface FilePreviewProps {
   file: File;
   onRemove: () => void;
@@ -89,7 +89,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove, disabled }) =
         type="button"
         onClick={onRemove}
         disabled={disabled}
-        aria-label={`Xoá ${file.name}`}
+        aria-label={`Remove ${file.name}`}
         className={cn(
           'flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors',
           'hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50',
@@ -102,8 +102,8 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove, disabled }) =
 };
 
 /**
- * Vùng kéo-thả + bấm để chọn file, không phụ thuộc thư viện ngoài.
- * Lọc theo accept + dung lượng tối đa (bỏ qua file quá lớn và báo lại).
+ * A drag-and-drop + click-to-pick file area with no external dependencies.
+ * Filters by accept + maximum size (skips oversized files and reports back).
  */
 export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
   (
@@ -141,11 +141,11 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       const messages: string[] = [];
       if (rejectedSize.length > 0) {
         messages.push(
-          `${rejectedSize.length} file vượt quá ${maxSizeMB} MB đã bị bỏ qua.`,
+          `${rejectedSize.length} file(s) over ${maxSizeMB} MB were skipped.`,
         );
       }
       if (rejectedType.length > 0) {
-        messages.push(`${rejectedType.length} file sai định dạng đã bị bỏ qua.`);
+        messages.push(`${rejectedType.length} file(s) of the wrong type were skipped.`);
       }
       setNote(messages.length > 0 ? messages.join(' ') : null);
 
@@ -211,7 +211,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <UploadIcon className="size-5" />
           </span>
           <p className="text-sm font-medium text-foreground">
-            Kéo thả hoặc bấm để chọn
+            Drag and drop or click to select
           </p>
           {hint ? (
             <p id={descId} className="text-xs text-muted-foreground">
@@ -228,7 +228,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             tabIndex={-1}
             onChange={(e) => {
               acceptFiles(e.target.files);
-              // Reset để chọn lại cùng file vẫn kích hoạt onChange.
+              // Reset so re-selecting the same file still triggers onChange.
               e.target.value = '';
             }}
           />

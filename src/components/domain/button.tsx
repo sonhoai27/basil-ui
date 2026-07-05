@@ -9,10 +9,10 @@ import { cn } from '../../lib/utils';
 
 /**
  * Thin pass-through over shadcn Button.
- * Visual 100% từ shadcn cva. Wrapper CHỈ thêm 4 ergonomic prop, KHÔNG override visual.
+ * Visuals come 100% from the shadcn cva. The wrapper ONLY adds 4 ergonomic props; it does NOT override visuals.
  *
- * shadcn Button có:  variant (default/destructive/outline/secondary/ghost/link) + size (default/sm/lg/icon)
- * Wrapper thêm:      isLoading + leadingIcon + trailingIcon + fullWidth
+ * shadcn Button has:  variant (default/destructive/outline/secondary/ghost/link) + size (default/sm/lg/icon)
+ * Wrapper adds:       isLoading + leadingIcon + trailingIcon + fullWidth
  */
 export interface ButtonProps extends ShadcnButtonProps {
   isLoading?: boolean;

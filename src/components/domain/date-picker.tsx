@@ -15,13 +15,13 @@ export interface DatePickerProps {
   placeholder?: string
   className?: string
   disabled?: boolean
-  /** Ngày sớm nhất được chọn. */
+  /** Earliest selectable date. */
   fromDate?: Date
-  /** Ngày muộn nhất được chọn. */
+  /** Latest selectable date. */
   toDate?: Date
-  /** Matcher các ngày bị vô hiệu hoá trong lịch. */
+  /** Matcher for dates disabled in the calendar. */
   disabledDates?: Matcher | Matcher[]
-  /** Ẩn nút xoá ngày đã chọn. */
+  /** Hide the button that clears the selected date. */
   hideClear?: boolean
 }
 
@@ -30,7 +30,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
     {
       value,
       onChange,
-      placeholder = "Chọn ngày",
+      placeholder = "Pick a date",
       className,
       disabled,
       fromDate,
@@ -43,8 +43,8 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
     const [open, setOpen] = React.useState(false)
     const showClear = !hideClear && !disabled && value != null
 
-    // react-day-picker v10: giới hạn khoảng ngày qua matcher `before`/`after`,
-    // gộp cùng matcher `disabledDates` do caller truyền vào.
+    // react-day-picker v10: constrain the date range via `before`/`after` matchers,
+    // merged with the caller-provided `disabledDates` matcher.
     const disabledMatchers: Matcher[] = []
     if (fromDate) disabledMatchers.push({ before: fromDate })
     if (toDate) disabledMatchers.push({ after: toDate })
@@ -77,7 +77,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
               <span
                 role="button"
                 tabIndex={0}
-                aria-label="Xoá ngày"
+                aria-label="Clear date"
                 className="-mr-1 inline-flex shrink-0 items-center justify-center rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                 onClick={(e) => {
                   e.stopPropagation()

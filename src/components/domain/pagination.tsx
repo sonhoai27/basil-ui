@@ -13,7 +13,7 @@ export function Pagination({ page, pageCount, onPageChange, className }: Paginat
   return (
     <nav
       role="navigation"
-      aria-label="Phân trang"
+      aria-label="Pagination"
       className={cn('flex items-center justify-between gap-3', className)}
     >
       <Button
@@ -23,10 +23,10 @@ export function Pagination({ page, pageCount, onPageChange, className }: Paginat
         onClick={() => onPageChange(Math.max(1, page - 1))}
         disabled={page <= 1}
       >
-        Trước
+        Previous
       </Button>
       <span aria-live="polite" className="font-tabular text-xs text-muted-foreground">
-        Trang <strong className="text-foreground">{page}</strong> / {pageCount}
+        Page <strong className="text-foreground">{page}</strong> / {pageCount}
       </span>
       <Button
         variant="outline"
@@ -35,7 +35,7 @@ export function Pagination({ page, pageCount, onPageChange, className }: Paginat
         onClick={() => onPageChange(Math.min(pageCount, page + 1))}
         disabled={page >= pageCount}
       >
-        Sau
+        Next
       </Button>
     </nav>
   );
