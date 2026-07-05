@@ -21,6 +21,18 @@
     "accessible"
   ],
   "license": "MIT",
+  "author": "ainewdev",
+  "homepage": "https://github.com/sonhoai27/basil-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonhoai27/basil-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sonhoai27/basil-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": [
     "**/*.css",
