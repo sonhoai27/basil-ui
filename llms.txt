@@ -1,0 +1,102 @@
+# Basil
+
+> Basil (`basil-ui`) is an open-source dashboard & POS component kit for food, retail & sales — ~68 accessible React components built on Radix primitives and Tailwind v4, extracted from a real wholesale F&B ordering tool. It ships design tokens, unstyled-first primitives, and higher-level domain components (data tables, KPI cards, status pills, editable cells) for building admin dashboards, point-of-sale, and order-management UIs. For React 18/19 apps that want a coherent, production-tested surface rather than assembling one from scratch.
+
+Basil follows a deliberate visual language ("v2"): **flat hairline surfaces** — inline cards, tables, toolbars and inputs wear exactly one warm hairline border and no shadow; shadows are reserved for things that float (dropdowns, dialogs, sheets, toasts). Status is shown with **borderless tinted pairs** (`bg-{hue}-bg text-{hue}-text`) rather than bordered chips. Focus uses **two treatments only**: text inputs get a 2px field-ring (`focus-visible:ring-2 ring-primary` with `outline-none`), while every other control defers to a single global `:focus-visible` outline — the two are mutually exclusive so focus never doubles up. The page surface is warm (`#fafaf7`, never pure white), the primary is a banana-leaf green (`#1b5e20`), radii are tight (6/8/10/12), and money/counts use tabular numbers. All theming lives in `@theme` tokens in `src/styles/globals.css` (the single source of truth — no hardcoded hex elsewhere); light-mode only. The default typeface is **Nunito but it is opt-in** (not bundled) — install `@fontsource-variable/nunito` and import it, or supply your own via the `--font-sans` token.
+
+Consumers install `basil-ui`, import components from the barrel (`import { Button } from 'basil-ui'`) and load the stylesheet once (`import 'basil-ui/styles.css'`). Everything below is re-exported from `src/index.ts`; shadcn-derived primitives also export their sub-parts (e.g. `DialogHeader`, `SelectItem`).
+
+## Primitives
+
+- [Button](src/components/domain/button.tsx): Thin wrapper over the base button adding `isLoading`, `leadingIcon`, `trailingIcon`, `fullWidth` ergonomics.
+- [Badge](src/components/ui/badge.tsx): Pill label with solid and borderless `soft-*` tinted variants.
+- [Avatar](src/components/ui/avatar.tsx): User/customer avatar with image + fallback (`AvatarImage`, `AvatarFallback`).
+- [Separator](src/components/ui/separator.tsx): Hairline divider, horizontal or vertical.
+- [Skeleton](src/components/ui/skeleton.tsx): Loading placeholder block sized via `className`.
+- [Spinner](src/components/domain/spinner.tsx): Brand-green loading spinner (`sm`/`md`/`lg`).
+- [Slider](src/components/ui/slider.tsx): Range slider primitive.
+- [ScrollArea](src/components/ui/scroll-area.tsx): Styled custom-scrollbar container.
+- [Accordion](src/components/ui/accordion.tsx): Collapsible sections (single/multiple).
+- [Tabs](src/components/ui/tabs.tsx): Tabbed navigation (`TabsList`, `TabsTrigger`, `TabsContent`).
+- [Tooltip](src/components/ui/tooltip.tsx): Hover hint with overlay shadow.
+- [BrandMark](src/components/domain/brand-mark.tsx): Green square + leaf glyph brand icon.
+- [Wordmark](src/components/domain/wordmark.tsx): BrandMark + wordmark lockup with app subtitle.
+
+## Forms
+
+- [Input](src/components/ui/input.tsx): Text field with the 2px field-ring focus and `aria-invalid` destructive border.
+- [Textarea](src/components/ui/textarea.tsx): Multi-line field sharing the input focus/invalid treatment.
+- [Label](src/components/ui/label.tsx): Accessible form label.
+- [Checkbox](src/components/ui/checkbox.tsx): Boolean control (supports indeterminate).
+- [RadioGroup](src/components/ui/radio-group.tsx): Single-choice group (`RadioGroupItem`).
+- [Switch](src/components/ui/switch.tsx): On/off toggle.
+- [SegmentedControl](src/components/domain/segmented-control.tsx): Single-select segmented toggle on a muted track with arrow-key nav.
+- [Select](src/components/ui/select.tsx): Dropdown select (`SelectTrigger`, `SelectContent`, `SelectItem`).
+- [Combobox](src/components/domain/combobox.tsx): Searchable single-select popover with optional inline "create new".
+- [MultiSelect](src/components/domain/multi-select.tsx): Multi-select popover; picks render as removable soft chips.
+- [DatePicker](src/components/domain/date-picker.tsx): Popover calendar, clearable, min/max + disabled dates.
+- [DateRangePicker](src/components/domain/date-range-picker.tsx): Range popover with a preset column, clearable.
+- [Calendar](src/components/ui/calendar.tsx): Raw month calendar (react-day-picker).
+- [CurrencyInput](src/components/domain/currency-input.tsx): Money entry with locale thousands grouping on blur, emits a raw integer.
+- [NumberField](src/components/domain/currency-input.tsx): Generic integer entry with optional −/+ steppers.
+- [InputOTP](src/components/ui/input-otp.tsx): Segmented OTP entry with auto-advance, paste-to-fill, digits only.
+- [FileUpload](src/components/domain/file-upload.tsx): Dependency-free drag-drop / click picker with accept + size filtering and thumbnails.
+- [Form](src/components/ui/form.tsx): react-hook-form field wiring (`FormField`, `FormItem`, `FormControl`, `FormMessage`).
+- [QuantityStepper](src/components/domain/quantity-stepper.tsx): −/n/+ integer stepper with min/max/step.
+- [FieldHint](src/components/domain/field-helpers.tsx): Caption under a field, destructive when `error`.
+- [RequiredHint](src/components/domain/field-helpers.tsx): Dot indicator marking a required field.
+
+## Data
+
+- [DataTable](src/components/domain/data-table.tsx): Full TanStack table — sorting, pagination, row selection + bulk actions, density toggle, sticky header, column pinning/visibility/resizing, built-in search, server-driven pagination, saved-view state, and loading/empty/filtered-empty/error states.
+- [DataTableFacetedFilter](src/components/domain/data-table-faceted-filter.tsx): Multi-select column filter with per-value counts, for a DataTable toolbar render-prop.
+- [EditableCell](src/components/domain/editable-cell.tsx): Inline-editable table cell (text/number/currency/select) committing on Enter or blur.
+- [SavedViews](src/components/domain/saved-views.tsx): Preset tab strip for saved DataTable filter/sort snapshots.
+- [Table](src/components/ui/table.tsx): Raw table primitives (`TableHeader`, `TableRow`, `TableCell`, `TableCaption`).
+- [TableHelpers](src/components/domain/table-helpers.tsx): `DataTableColumnHeader` (sortable header) + `DataTableRowActions` (row kebab).
+- [Pagination](src/components/domain/pagination.tsx): Prev / "page n / N" / Next control.
+- [Toolbar](src/components/domain/toolbar.tsx): Flat filter/action bar layout primitive (with `ToolbarSpacer`).
+- [FilterChips](src/components/domain/filter-chips.tsx): Applied-filter chips row, each removable, with optional clear-all + result count.
+- [DescriptionList](src/components/domain/description-list.tsx): Key/value detail display for read views (`DescriptionItem`).
+- [csv](src/lib/csv.ts): `downloadCsv` / `toCsv` — spreadsheet-friendly (UTF-8 BOM), SSR-safe CSV export paired with DataTable.
+- [SectionGroup](src/components/domain/section-group.tsx): Titled form/detail section with a divider.
+- [Card](src/components/ui/card.tsx): Flat content surface (`CardHeader`, `CardTitle`, `CardContent`, `CardFooter`).
+- [Breadcrumb](src/components/ui/breadcrumb.tsx): Path navigation.
+
+## Overlays
+
+- [Dialog](src/components/ui/dialog.tsx): Modal dialog (`DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`).
+- [AlertDialog](src/components/ui/alert-dialog.tsx): Confirm/destructive modal (`AlertDialogAction` supports `variant`).
+- [ConfirmDialog](src/components/domain/confirm-dialog.tsx): Prebuilt confirm on AlertDialog with loading + destructive support.
+- [Sheet](src/components/ui/sheet.tsx): Side drawer (`SheetHeader`, `SheetTitle`, `SheetDescription`).
+- [EntitySheet](src/components/domain/entity-sheet.tsx): Right-side detail/edit sheet with sticky footer, loading and error states.
+- [Drawer](src/components/ui/drawer.tsx): Vaul-based bottom drawer for mobile.
+- [Popover](src/components/ui/popover.tsx): Anchored floating panel (`PopoverTrigger`, `PopoverContent`).
+- [DropdownMenu](src/components/ui/dropdown-menu.tsx): Action menu (`DropdownMenuItem`, `DropdownMenuTrigger`).
+- [KebabMenu](src/components/domain/kebab-menu.tsx): Standalone "more" overflow menu with destructive items.
+- [Command](src/components/ui/command.tsx): Command palette / combobox (cmdk parts).
+
+## Feedback
+
+- [Alert](src/components/ui/alert.tsx): Inline banner (`AlertTitle`, `AlertDescription`).
+- [Banner](src/components/ui/banner.tsx): Page-level full-width tinted notice, dismissible with an action slot.
+- [Progress](src/components/ui/progress.tsx): Determinate progress bar with optional label/percent, or indeterminate mode.
+- [Sonner](src/components/ui/sonner.tsx): `Toaster` + `toast()` overlay notifications.
+- [EmptyState](src/components/domain/empty-state.tsx): Leaf icon + title + description + optional CTA; also exports `ErrorState`.
+- [Timeline](src/components/domain/timeline.tsx): Vertical connector-line feed for history / audit trails (`TimelineItem`).
+- [Stepper](src/components/domain/stepper.tsx): Horizontal/vertical multi-step wizard indicator (distinct from QuantityStepper).
+
+## Domain
+
+- [StatusPill](src/components/domain/status-pill.tsx): Order-status pill with dot, mapped from an `OrderStatus` union.
+- [DomainBadges](src/components/domain/mocchinh-badges.tsx): `VatBadge` (soft-warning) + `OutOfStockBadge` (soft-destructive).
+- [KpiCard](src/components/domain/kpi-card.tsx): Metric tile with label, value, trend arrow, icon chip, featured state and optional inline sparkline.
+- [Sparkline](src/components/domain/sparkline.tsx): Inline mini trend chart (SVG line + optional area fill + endpoint dot).
+
+## Key files
+
+- [src/index.ts](src/index.ts): The full public export surface — every component and helper.
+- [src/styles/globals.css](src/styles/globals.css): Tailwind v4 `@theme` tokens — the single source of truth for colours, radii, shadows and type.
+- [README.md](README.md): Full documentation — design principles, token families and the component index.
+- [AGENTS.md](AGENTS.md): Guidance for coding agents working in this repo.
+- [components.json](components.json): shadcn registry config (style, aliases, icon library).

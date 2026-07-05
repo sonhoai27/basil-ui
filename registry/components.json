@@ -1,0 +1,808 @@
+{
+  "$schema": "https://basil-ui.dev/registry.schema.json",
+  "name": "basil-ui",
+  "version": "0.1.0",
+  "components": [
+    {
+      "name": "Button",
+      "category": "primitive",
+      "source": "src/components/domain/button.tsx",
+      "story": "src/stories/buttons-badges.stories.tsx",
+      "description": "Thin ergonomic wrapper over the base button, adding loading state and leading/trailing icon slots.",
+      "props": [
+        { "name": "variant", "type": "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", "required": false, "description": "Visual style." },
+        { "name": "size", "type": "'default' | 'sm' | 'lg' | 'icon' | 'icon-sm'", "required": false, "description": "Control size." },
+        { "name": "isLoading", "type": "boolean", "required": false, "description": "Shows a spinner, disables the button, and sets aria-busy." },
+        { "name": "leadingIcon", "type": "React.ReactNode", "required": false, "description": "Icon rendered before the label." },
+        { "name": "trailingIcon", "type": "React.ReactNode", "required": false, "description": "Icon rendered after the label." },
+        { "name": "fullWidth", "type": "boolean", "required": false, "description": "Stretch to the container width." }
+      ],
+      "variants": {
+        "variant": ["default", "destructive", "outline", "secondary", "ghost", "link"],
+        "size": ["default", "sm", "lg", "icon", "icon-sm"]
+      }
+    },
+    {
+      "name": "Badge",
+      "category": "primitive",
+      "source": "src/components/ui/badge.tsx",
+      "story": "src/stories/buttons-badges.stories.tsx",
+      "description": "Small pill label with solid and borderless tinted (soft) status variants.",
+      "props": [
+        { "name": "variant", "type": "'default' | 'secondary' | 'destructive' | 'outline' | 'caption' | 'soft-primary' | 'soft-success' | 'soft-warning' | 'soft-info' | 'soft-muted' | 'soft-destructive'", "required": false, "description": "Solid or borderless tinted style." },
+        { "name": "size", "type": "'default' | 'sm'", "required": false, "description": "Pill size." }
+      ],
+      "variants": {
+        "variant": ["default", "secondary", "destructive", "outline", "caption", "soft-primary", "soft-success", "soft-warning", "soft-info", "soft-muted", "soft-destructive"],
+        "size": ["default", "sm"]
+      }
+    },
+    {
+      "name": "StatusPill",
+      "category": "domain",
+      "source": "src/components/domain/status-pill.tsx",
+      "story": "src/stories/buttons-badges.stories.tsx",
+      "description": "Opinionated order-lifecycle status pill: a colored dot plus label mapped from a status key.",
+      "props": [
+        { "name": "status", "type": "'pending_payment' | 'paid' | 'packing' | 'sent' | 'cancelled'", "required": true, "description": "Lifecycle state; maps to a soft Badge variant, dot color, and label." }
+      ]
+    },
+    {
+      "name": "Input",
+      "category": "form",
+      "source": "src/components/ui/input.tsx",
+      "story": "src/stories/forms.stories.tsx",
+      "description": "Hairline text field with a crisp 2px primary focus ring and aria-invalid destructive border.",
+      "props": [
+        { "name": "type", "type": "string", "required": false, "description": "Native input type." },
+        { "name": "disabled", "type": "boolean", "required": false, "description": "Disable the field." },
+        { "name": "aria-invalid", "type": "boolean", "required": false, "description": "Render the destructive error border." }
+      ]
+    },
+    {
+      "name": "Textarea",
+      "category": "form",
+      "source": "src/components/ui/textarea.tsx",
+      "story": "src/stories/forms.stories.tsx",
+      "description": "Multi-line text field matching Input's hairline surface and focus treatment.",
+      "props": [
+        { "name": "disabled", "type": "boolean", "required": false, "description": "Disable the field." },
+        { "name": "aria-invalid", "type": "boolean", "required": false, "description": "Render the destructive error border." }
+      ]
+    },
+    {
+      "name": "Select",
+      "category": "form",
+      "source": "src/components/ui/select.tsx",
+      "story": "src/stories/forms.stories.tsx",
+      "description": "Radix single-select composed from Trigger, Content, Item, Group, Label, and Separator parts.",
+      "props": [
+        { "name": "value", "type": "string", "required": false, "description": "Controlled selected value (on Select root)." },
+        { "name": "onValueChange", "type": "(value: string) => void", "required": false, "description": "Selection change handler (on Select root)." },
+        { "name": "disabled", "type": "boolean", "required": false, "description": "Disable the control." }
+      ],
+      "dependencies": ["@radix-ui/react-select"]
+    },
+    {
+      "name": "Combobox",
+      "category": "form",
+      "source": "src/components/domain/combobox.tsx",
+      "story": "src/stories/pickers.stories.tsx",
+      "description": "Searchable single-select popover with optional clear and inline create-new affordance.",
+      "props": [
+        { "name": "items", "type": "ComboboxItem[]", "required": true, "description": "Selectable options ({ value, label, description?, icon?, disabled? })." },
+        { "name": "value", "type": "string", "required": false, "description": "Currently selected value." },
+        { "name": "onChange", "type": "(value?: string) => void", "required": true, "description": "Selection change handler." },
+        { "name": "allowClear", "type": "boolean", "required": false, "description": "Show an inline clear button on the trigger." },
+        { "name": "onCreate", "type": "(query: string) => void", "required": false, "description": "Called when the user picks the create-new row." },
+        { "name": "createLabel", "type": "(query: string) => React.ReactNode", "required": false, "description": "Custom label for the create-new row." }
+      ],
+      "dependencies": ["cmdk", "@radix-ui/react-popover"]
+    },
+    {
+      "name": "MultiSelect",
+      "category": "form",
+      "source": "src/components/domain/multi-select.tsx",
+      "story": "src/stories/pickers.stories.tsx",
+      "description": "Searchable multi-select popover that renders selected items as removable chips with overflow collapse.",
+      "props": [
+        { "name": "items", "type": "MultiSelectItem[]", "required": true, "description": "Selectable options ({ value, label, description?, icon?, disabled? })." },
+        { "name": "value", "type": "string[]", "required": true, "description": "Array of selected values." },
+        { "name": "onChange", "type": "(value: string[]) => void", "required": true, "description": "Selection change handler." },
+        { "name": "maxDisplay", "type": "number", "required": false, "description": "Max chips shown before collapsing into a +N badge." }
+      ],
+      "dependencies": ["cmdk", "@radix-ui/react-popover"]
+    },
+    {
+      "name": "CurrencyInput",
+      "category": "form",
+      "source": "src/components/domain/currency-input.tsx",
+      "story": "src/stories/data-entry.stories.tsx",
+      "description": "Money field with thousands grouping on blur that emits a raw integer and reserves space for a currency suffix.",
+      "props": [
+        { "name": "value", "type": "number", "required": false, "description": "Raw integer amount (no decimals)." },
+        { "name": "onChange", "type": "(value?: number) => void", "required": true, "description": "Emits the raw integer; undefined when empty." },
+        { "name": "min", "type": "number", "required": false, "description": "Lower bound clamped on blur." },
+        { "name": "suffix", "type": "string", "required": false, "description": "Trailing adornment inside the field (defaults to the currency symbol)." }
+      ]
+    },
+    {
+      "name": "NumberField",
+      "category": "form",
+      "source": "src/components/domain/currency-input.tsx",
+      "story": "src/stories/data-entry.stories.tsx",
+      "description": "Integer entry with optional minus/plus steppers that clamps to [min, max] and emits a raw integer.",
+      "props": [
+        { "name": "value", "type": "number", "required": false, "description": "Current integer value." },
+        { "name": "onChange", "type": "(value?: number) => void", "required": true, "description": "Emits the raw integer." },
+        { "name": "min", "type": "number", "required": false, "description": "Lower bound." },
+        { "name": "max", "type": "number", "required": false, "description": "Upper bound." },
+        { "name": "step", "type": "number", "required": false, "description": "Increment applied by the steppers (default 1)." },
+        { "name": "steppers", "type": "boolean", "required": false, "description": "Render flanking minus/plus buttons." },
+        { "name": "suffix", "type": "string", "required": false, "description": "Trailing unit adornment, e.g. 'kg'." }
+      ]
+    },
+    {
+      "name": "QuantityStepper",
+      "category": "form",
+      "source": "src/components/domain/quantity-stepper.tsx",
+      "story": "src/stories/data-entry.stories.tsx",
+      "description": "Compact bordered minus/value/plus stepper for quantity fields.",
+      "props": [
+        { "name": "value", "type": "number", "required": true, "description": "Current quantity." },
+        { "name": "onChange", "type": "(value: number) => void", "required": true, "description": "Change handler." },
+        { "name": "min", "type": "number", "required": false, "description": "Lower bound (default 0)." },
+        { "name": "max", "type": "number", "required": false, "description": "Upper bound (default 9999)." },
+        { "name": "step", "type": "number", "required": false, "description": "Increment (default 1)." },
+        { "name": "size", "type": "'sm' | 'md'", "required": false, "description": "Control size." }
+      ],
+      "variants": { "size": ["sm", "md"] }
+    },
+    {
+      "name": "DatePicker",
+      "category": "form",
+      "source": "src/components/domain/date-picker.tsx",
+      "story": "src/stories/pickers.stories.tsx",
+      "description": "Single-date popover backed by the Calendar, with clearable value and min/max bounds.",
+      "props": [
+        { "name": "value", "type": "Date", "required": false, "description": "Selected date." },
+        { "name": "onChange", "type": "(date?: Date) => void", "required": false, "description": "Selection change handler." },
+        { "name": "fromDate", "type": "Date", "required": false, "description": "Earliest selectable date." },
+        { "name": "toDate", "type": "Date", "required": false, "description": "Latest selectable date." },
+        { "name": "disabledDates", "type": "Matcher | Matcher[]", "required": false, "description": "Disabled-day matcher(s)." },
+        { "name": "hideClear", "type": "boolean", "required": false, "description": "Hide the clear button." }
+      ],
+      "dependencies": ["react-day-picker", "date-fns", "@radix-ui/react-popover"]
+    },
+    {
+      "name": "DateRangePicker",
+      "category": "form",
+      "source": "src/components/domain/date-range-picker.tsx",
+      "story": "src/stories/pickers.stories.tsx",
+      "description": "Two-month range popover with an optional preset column (Today / 7d / 30d / This month or custom).",
+      "props": [
+        { "name": "value", "type": "DateRange", "required": false, "description": "Selected { from, to } range." },
+        { "name": "onChange", "type": "(range?: DateRange) => void", "required": true, "description": "Range change handler; undefined when cleared." },
+        { "name": "numberOfMonths", "type": "number", "required": false, "description": "Side-by-side months (default 2)." },
+        { "name": "presets", "type": "boolean | DateRangePickerPreset[]", "required": false, "description": "true for the default presets, or a custom preset list." },
+        { "name": "align", "type": "'start' | 'center' | 'end'", "required": false, "description": "Popover alignment against the trigger." }
+      ],
+      "dependencies": ["react-day-picker", "date-fns", "@radix-ui/react-popover"]
+    },
+    {
+      "name": "Calendar",
+      "category": "form",
+      "source": "src/components/ui/calendar.tsx",
+      "story": "src/stories/pickers.stories.tsx",
+      "description": "Themed react-day-picker calendar used by DatePicker and DateRangePicker.",
+      "props": [
+        { "name": "mode", "type": "'single' | 'multiple' | 'range'", "required": false, "description": "Selection mode." },
+        { "name": "selected", "type": "Date | Date[] | DateRange", "required": false, "description": "Current selection." },
+        { "name": "onSelect", "type": "(value) => void", "required": false, "description": "Selection handler." }
+      ],
+      "dependencies": ["react-day-picker"]
+    },
+    {
+      "name": "Checkbox",
+      "category": "form",
+      "source": "src/components/ui/checkbox.tsx",
+      "story": "src/stories/forms.stories.tsx",
+      "description": "Radix checkbox with a primary checked fill.",
+      "props": [
+        { "name": "checked", "type": "boolean | 'indeterminate'", "required": false, "description": "Controlled checked state." },
+        { "name": "onCheckedChange", "type": "(checked: boolean | 'indeterminate') => void", "required": false, "description": "Change handler." },
+        { "name": "disabled", "type": "boolean", "required": false, "description": "Disable the control." }
+      ],
+      "dependencies": ["@radix-ui/react-checkbox"]
+    },
+    {
+      "name": "RadioGroup",
+      "category": "form",
+      "source": "src/components/ui/radio-group.tsx",
+      "story": "src/stories/forms.stories.tsx",
+      "description": "Radix radio group composed from RadioGroup and RadioGroupItem.",
+      "props": [
+        { "name": "value", "type": "string", "required": false, "description": "Controlled selected value." },
+        { "name": "onValueChange", "type": "(value: string) => void", "required": false, "description": "Change handler." },
+        { "name": "disabled", "type": "boolean", "required": false, "description": "Disable the group." }
+      ],
+      "dependencies": ["@radix-ui/react-radio-group"]
+    },
+    {
+      "name": "Switch",
+      "category": "form",
+      "source": "src/components/ui/switch.tsx",
+      "story": "src/stories/forms.stories.tsx",
+      "description": "Radix toggle switch with a primary checked track.",
+      "props": [
+        { "name": "checked", "type": "boolean", "required": false, "description": "Controlled on/off state." },
+        { "name": "onCheckedChange", "type": "(checked: boolean) => void", "required": false, "description": "Change handler." },
+        { "name": "disabled", "type": "boolean", "required": false, "description": "Disable the control." }
+      ],
+      "dependencies": ["@radix-ui/react-switch"]
+    },
+    {
+      "name": "Slider",
+      "category": "form",
+      "source": "src/components/ui/slider.tsx",
+      "story": "src/stories/forms.stories.tsx",
+      "description": "Radix range slider with a primary filled track and focus-ringed thumb.",
+      "props": [
+        { "name": "value", "type": "number[]", "required": false, "description": "Controlled thumb positions." },
+        { "name": "onValueChange", "type": "(value: number[]) => void", "required": false, "description": "Change handler." },
+        { "name": "min", "type": "number", "required": false, "description": "Lower bound." },
+        { "name": "max", "type": "number", "required": false, "description": "Upper bound." },
+        { "name": "step", "type": "number", "required": false, "description": "Step increment." }
+      ],
+      "dependencies": ["@radix-ui/react-slider"]
+    },
+    {
+      "name": "InputOTP",
+      "category": "form",
+      "source": "src/components/ui/input-otp.tsx",
+      "story": "src/stories/data-entry.stories.tsx",
+      "description": "Segmented one-time-code input: one digit per box with auto-advance, backspace, arrows, and paste-to-fill.",
+      "props": [
+        { "name": "value", "type": "string", "required": true, "description": "Current code string." },
+        { "name": "onChange", "type": "(value: string) => void", "required": true, "description": "Change handler." },
+        { "name": "length", "type": "number", "required": false, "description": "Number of digit boxes (default 6)." },
+        { "name": "autoFocus", "type": "boolean", "required": false, "description": "Focus the first box on mount." },
+        { "name": "disabled", "type": "boolean", "required": false, "description": "Disable input." }
+      ]
+    },
+    {
+      "name": "FileUpload",
+      "category": "form",
+      "source": "src/components/domain/file-upload.tsx",
+      "story": "src/stories/data-entry.stories.tsx",
+      "description": "Drag-and-drop file dropzone with accept/size validation and a preview list of selected files.",
+      "props": [
+        { "name": "value", "type": "File[]", "required": false, "description": "Currently selected files." },
+        { "name": "onChange", "type": "(files: File[]) => void", "required": true, "description": "Selection change handler." },
+        { "name": "accept", "type": "string", "required": false, "description": "Accept string like input[type=file] (e.g. 'image/*,.pdf')." },
+        { "name": "multiple", "type": "boolean", "required": false, "description": "Allow multiple files (default true)." },
+        { "name": "maxSizeMB", "type": "number", "required": false, "description": "Per-file size limit in MB." },
+        { "name": "hint", "type": "string", "required": false, "description": "Secondary helper line, e.g. allowed types." }
+      ]
+    },
+    {
+      "name": "SegmentedControl",
+      "category": "form",
+      "source": "src/components/domain/segmented-control.tsx",
+      "story": "src/stories/data-entry.stories.tsx",
+      "description": "Single-choice segmented toggle with an animated active segment and optional icons.",
+      "props": [
+        { "name": "options", "type": "SegmentedControlOption[]", "required": true, "description": "Segments ({ value, label, icon? })." },
+        { "name": "value", "type": "string", "required": true, "description": "Selected segment value." },
+        { "name": "onChange", "type": "(value: string) => void", "required": true, "description": "Change handler." },
+        { "name": "size", "type": "'sm' | 'md'", "required": false, "description": "Control size." }
+      ],
+      "variants": { "size": ["sm", "md"] }
+    },
+    {
+      "name": "Dialog",
+      "category": "overlay",
+      "source": "src/components/ui/dialog.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Radix modal dialog composed from Trigger, Content, Header, Footer, Title, and Description parts.",
+      "props": [
+        { "name": "open", "type": "boolean", "required": false, "description": "Controlled open state (on Dialog root)." },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false, "description": "Open-state handler (on Dialog root)." }
+      ],
+      "dependencies": ["@radix-ui/react-dialog"]
+    },
+    {
+      "name": "AlertDialog",
+      "category": "overlay",
+      "source": "src/components/ui/alert-dialog.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Radix confirmation dialog with Action and Cancel parts; the action supports a destructive variant.",
+      "props": [
+        { "name": "open", "type": "boolean", "required": false, "description": "Controlled open state (on root)." },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false, "description": "Open-state handler (on root)." }
+      ],
+      "dependencies": ["@radix-ui/react-alert-dialog"]
+    },
+    {
+      "name": "ConfirmDialog",
+      "category": "overlay",
+      "source": "src/components/domain/confirm-dialog.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Ready-made confirm/cancel dialog with async-aware loading and a destructive mode.",
+      "props": [
+        { "name": "open", "type": "boolean", "required": true, "description": "Open state." },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": true, "description": "Open-state handler." },
+        { "name": "title", "type": "string", "required": true, "description": "Dialog heading." },
+        { "name": "onConfirm", "type": "() => void | Promise<void>", "required": true, "description": "Confirm handler; may be async." },
+        { "name": "destructive", "type": "boolean", "required": false, "description": "Style the confirm action as destructive." },
+        { "name": "isLoading", "type": "boolean", "required": false, "description": "Show a spinner on the confirm action." }
+      ],
+      "dependencies": ["@radix-ui/react-alert-dialog"]
+    },
+    {
+      "name": "Sheet",
+      "category": "overlay",
+      "source": "src/components/ui/sheet.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Radix edge-anchored panel composed from Trigger, Content, Header, and Footer parts.",
+      "props": [
+        { "name": "open", "type": "boolean", "required": false, "description": "Controlled open state (on root)." },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false, "description": "Open-state handler (on root)." },
+        { "name": "side", "type": "'top' | 'right' | 'bottom' | 'left'", "required": false, "description": "Edge the panel slides from (on SheetContent)." }
+      ],
+      "dependencies": ["@radix-ui/react-dialog"]
+    },
+    {
+      "name": "Drawer",
+      "category": "overlay",
+      "source": "src/components/ui/drawer.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Sheet-based drawer preset for bottom/side panels, re-exporting the Sheet part set.",
+      "props": [
+        { "name": "open", "type": "boolean", "required": false, "description": "Controlled open state." },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false, "description": "Open-state handler." }
+      ],
+      "dependencies": ["@radix-ui/react-dialog"]
+    },
+    {
+      "name": "EntitySheet",
+      "category": "domain",
+      "source": "src/components/domain/entity-sheet.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Detail/edit side sheet with a sticky action footer plus built-in loading skeleton and inline error states.",
+      "props": [
+        { "name": "open", "type": "boolean", "required": true, "description": "Open state." },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": true, "description": "Open-state handler." },
+        { "name": "title", "type": "string", "required": true, "description": "Sheet heading." },
+        { "name": "primaryActions", "type": "React.ReactNode", "required": true, "description": "Primary footer action(s)." },
+        { "name": "loading", "type": "boolean", "required": false, "description": "Replace the body with a skeleton and hide footer actions." },
+        { "name": "error", "type": "{ title?; description?; onRetry? } | string", "required": false, "description": "Replace the body with an inline ErrorState." }
+      ],
+      "dependencies": ["@radix-ui/react-dialog"]
+    },
+    {
+      "name": "Popover",
+      "category": "overlay",
+      "source": "src/components/ui/popover.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Radix popover composed from Trigger and Content parts.",
+      "props": [
+        { "name": "open", "type": "boolean", "required": false, "description": "Controlled open state (on root)." },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false, "description": "Open-state handler (on root)." },
+        { "name": "align", "type": "'start' | 'center' | 'end'", "required": false, "description": "Alignment against the trigger (on PopoverContent)." }
+      ],
+      "dependencies": ["@radix-ui/react-popover"]
+    },
+    {
+      "name": "DropdownMenu",
+      "category": "overlay",
+      "source": "src/components/ui/dropdown-menu.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Radix dropdown menu with Item, CheckboxItem, RadioItem, Sub, Label, and Separator parts.",
+      "props": [
+        { "name": "open", "type": "boolean", "required": false, "description": "Controlled open state (on root)." },
+        { "name": "onOpenChange", "type": "(open: boolean) => void", "required": false, "description": "Open-state handler (on root)." }
+      ],
+      "dependencies": ["@radix-ui/react-dropdown-menu"]
+    },
+    {
+      "name": "KebabMenu",
+      "category": "domain",
+      "source": "src/components/domain/kebab-menu.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Standalone overflow menu: a kebab icon button that opens a dropdown of actions.",
+      "props": [
+        { "name": "items", "type": "KebabMenuItem[]", "required": true, "description": "Actions ({ label, icon?, onSelect, destructive? })." },
+        { "name": "align", "type": "'start' | 'center' | 'end'", "required": false, "description": "Menu alignment (default 'end')." }
+      ],
+      "dependencies": ["@radix-ui/react-dropdown-menu"]
+    },
+    {
+      "name": "Tooltip",
+      "category": "overlay",
+      "source": "src/components/ui/tooltip.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Radix tooltip composed from Provider, Trigger, and Content parts.",
+      "props": [
+        { "name": "delayDuration", "type": "number", "required": false, "description": "Open delay in ms (on Provider/Tooltip)." },
+        { "name": "side", "type": "'top' | 'right' | 'bottom' | 'left'", "required": false, "description": "Preferred side (on TooltipContent)." }
+      ],
+      "dependencies": ["@radix-ui/react-tooltip"]
+    },
+    {
+      "name": "Command",
+      "category": "overlay",
+      "source": "src/components/ui/command.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "cmdk command palette with Input, List, Group, Item, and Dialog parts for searchable menus.",
+      "props": [
+        { "name": "value", "type": "string", "required": false, "description": "Controlled highlighted value." },
+        { "name": "onValueChange", "type": "(value: string) => void", "required": false, "description": "Highlight change handler." }
+      ],
+      "dependencies": ["cmdk", "@radix-ui/react-dialog"]
+    },
+    {
+      "name": "Tabs",
+      "category": "primitive",
+      "source": "src/components/ui/tabs.tsx",
+      "story": "src/stories/overlays.stories.tsx",
+      "description": "Radix tabs composed from List, Trigger, and Content parts.",
+      "props": [
+        { "name": "value", "type": "string", "required": false, "description": "Controlled active tab (on root)." },
+        { "name": "onValueChange", "type": "(value: string) => void", "required": false, "description": "Tab change handler (on root)." },
+        { "name": "defaultValue", "type": "string", "required": false, "description": "Uncontrolled initial tab." }
+      ],
+      "dependencies": ["@radix-ui/react-tabs"]
+    },
+    {
+      "name": "Accordion",
+      "category": "primitive",
+      "source": "src/components/ui/accordion.tsx",
+      "story": "src/stories/display-extras.stories.tsx",
+      "description": "Radix accordion composed from Item, Trigger, and Content parts.",
+      "props": [
+        { "name": "type", "type": "'single' | 'multiple'", "required": true, "description": "Whether one or many items can be open (on root)." },
+        { "name": "collapsible", "type": "boolean", "required": false, "description": "Allow closing the open item in single mode." }
+      ],
+      "dependencies": ["@radix-ui/react-accordion"]
+    },
+    {
+      "name": "Table",
+      "category": "data",
+      "source": "src/components/ui/table.tsx",
+      "story": "src/stories/data.stories.tsx",
+      "description": "Styled table primitives: Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableCaption.",
+      "props": []
+    },
+    {
+      "name": "DataTable",
+      "category": "data",
+      "source": "src/components/domain/data-table.tsx",
+      "story": "src/stories/data-table-depth.stories.tsx",
+      "description": "Full-featured TanStack table with search, faceted filters, sorting, pagination, row selection, density, sticky/pinned columns, and built-in empty/error/loading states.",
+      "props": [
+        { "name": "columns", "type": "ColumnDef<TData, unknown>[]", "required": true, "description": "TanStack column definitions." },
+        { "name": "data", "type": "TData[]", "required": true, "description": "Row data." },
+        { "name": "isLoading", "type": "boolean", "required": false, "description": "Render skeleton rows." },
+        { "name": "isError", "type": "boolean", "required": false, "description": "Render the ErrorState with onRetry." },
+        { "name": "onRowClick", "type": "(row: TData) => void", "required": false, "description": "Row click handler (ignores clicks on inner controls)." },
+        { "name": "enableRowSelection", "type": "boolean", "required": false, "description": "Enable the checkbox selection column." },
+        { "name": "toolbar", "type": "React.ReactNode | ((table) => React.ReactNode)", "required": false, "description": "Toolbar node or render-prop receiving the table instance." },
+        { "name": "pageCount", "type": "number", "required": false, "description": "Server-provided page count; enables manual (server-side) pagination." }
+      ],
+      "dependencies": ["@tanstack/react-table"]
+    },
+    {
+      "name": "DataTableFacetedFilter",
+      "category": "data",
+      "source": "src/components/domain/data-table-faceted-filter.tsx",
+      "story": "src/stories/table-advanced.stories.tsx",
+      "description": "Multi-value column filter popover with per-value counts, for use in a DataTable toolbar.",
+      "props": [
+        { "name": "column", "type": "Column<TData, unknown>", "required": false, "description": "Column from table.getColumn(id)." },
+        { "name": "title", "type": "string", "required": true, "description": "Filter label." },
+        { "name": "options", "type": "FacetedFilterOption[]", "required": true, "description": "Selectable values ({ label, value, icon? })." }
+      ],
+      "dependencies": ["@tanstack/react-table", "cmdk"]
+    },
+    {
+      "name": "EditableCell",
+      "category": "data",
+      "source": "src/components/domain/editable-cell.tsx",
+      "story": "src/stories/table-advanced.stories.tsx",
+      "description": "Inline-editable table cell (text/number/currency/select) committing on Enter or blur and reverting on Escape.",
+      "props": [
+        { "name": "value", "type": "string | number", "required": true, "description": "Current value shown and seeded into the editor." },
+        { "name": "onSave", "type": "(value: string | number) => void", "required": true, "description": "Commit handler." },
+        { "name": "type", "type": "'text' | 'number' | 'currency' | 'select'", "required": false, "description": "Editor flavour (default 'text')." },
+        { "name": "options", "type": "{ label: string; value: string }[]", "required": false, "description": "Options for the select editor." },
+        { "name": "align", "type": "'left' | 'right'", "required": false, "description": "Read-mode alignment." }
+      ]
+    },
+    {
+      "name": "SavedViews",
+      "category": "data",
+      "source": "src/components/domain/saved-views.tsx",
+      "story": "src/stories/table-advanced.stories.tsx",
+      "description": "Tab strip of saved table views with create, rename, and delete affordances plus an always-present 'all' view.",
+      "props": [
+        { "name": "views", "type": "SavedView[]", "required": true, "description": "Saved views ({ id, name })." },
+        { "name": "activeId", "type": "string", "required": false, "description": "Active view id; empty selects the 'all' pseudo-view." },
+        { "name": "onSelect", "type": "(id: string) => void", "required": true, "description": "View selection handler." },
+        { "name": "onSaveNew", "type": "(name: string) => void", "required": false, "description": "Create a new view from the entered name." },
+        { "name": "onRename", "type": "(id: string, name: string) => void", "required": false, "description": "Rename handler." },
+        { "name": "onDelete", "type": "(id: string) => void", "required": false, "description": "Delete handler." }
+      ]
+    },
+    {
+      "name": "FilterChips",
+      "category": "data",
+      "source": "src/components/domain/filter-chips.tsx",
+      "story": "src/stories/table-advanced.stories.tsx",
+      "description": "Row of applied-filter chips, each removable, with an optional clear-all and result count.",
+      "props": [
+        { "name": "filters", "type": "FilterChip[]", "required": true, "description": "Active filters ({ id, label, value? })." },
+        { "name": "onRemove", "type": "(id: string) => void", "required": true, "description": "Remove a single chip." },
+        { "name": "onClearAll", "type": "() => void", "required": false, "description": "Clear-all handler (shown at >= 2 chips)." },
+        { "name": "resultCount", "type": "number", "required": false, "description": "Filtered result count shown inline." }
+      ]
+    },
+    {
+      "name": "Pagination",
+      "category": "data",
+      "source": "src/components/domain/pagination.tsx",
+      "story": "src/stories/data.stories.tsx",
+      "description": "Prev/next pager with a windowed page-number list.",
+      "props": [
+        { "name": "page", "type": "number", "required": true, "description": "Current 1-based page." },
+        { "name": "pageCount", "type": "number", "required": true, "description": "Total pages." },
+        { "name": "onPageChange", "type": "(page: number) => void", "required": true, "description": "Page change handler." }
+      ]
+    },
+    {
+      "name": "Card",
+      "category": "primitive",
+      "source": "src/components/ui/card.tsx",
+      "story": "src/stories/display-extras.stories.tsx",
+      "description": "Surface container composed from Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter.",
+      "props": []
+    },
+    {
+      "name": "KpiCard",
+      "category": "domain",
+      "source": "src/components/domain/kpi-card.tsx",
+      "story": "src/stories/display-extras.stories.tsx",
+      "description": "Metric card with label, value, trend, tinted icon chip, optional inline sparkline, and loading skeleton.",
+      "props": [
+        { "name": "label", "type": "string", "required": true, "description": "Metric name." },
+        { "name": "value", "type": "string | number", "required": true, "description": "Metric value." },
+        { "name": "trend", "type": "{ value: number; positive?: boolean }", "required": false, "description": "Delta indicator." },
+        { "name": "tone", "type": "'warning' | 'success' | 'primary' | 'muted'", "required": false, "description": "Icon-chip tint." },
+        { "name": "sparkline", "type": "number[]", "required": false, "description": "Inline sparkline series." },
+        { "name": "loading", "type": "boolean", "required": false, "description": "Render a skeleton." }
+      ],
+      "variants": { "tone": ["warning", "success", "primary", "muted"] }
+    },
+    {
+      "name": "Sparkline",
+      "category": "data",
+      "source": "src/components/domain/sparkline.tsx",
+      "story": "src/stories/progress-timeline.stories.tsx",
+      "description": "Compact inline SVG trend line with optional area fill and endpoint dot.",
+      "props": [
+        { "name": "data", "type": "number[]", "required": true, "description": "Series values." },
+        { "name": "variant", "type": "'primary' | 'success' | 'destructive' | 'muted'", "required": false, "description": "Line color." },
+        { "name": "showArea", "type": "boolean", "required": false, "description": "Fill the area under the line." },
+        { "name": "showEndpoint", "type": "boolean", "required": false, "description": "Draw a dot on the last point." }
+      ],
+      "variants": { "variant": ["primary", "success", "destructive", "muted"] }
+    },
+    {
+      "name": "Avatar",
+      "category": "primitive",
+      "source": "src/components/ui/avatar.tsx",
+      "story": "src/stories/display-extras.stories.tsx",
+      "description": "Radix avatar composed from Avatar, AvatarImage, and AvatarFallback.",
+      "props": [],
+      "dependencies": ["@radix-ui/react-avatar"]
+    },
+    {
+      "name": "Alert",
+      "category": "feedback",
+      "source": "src/components/ui/alert.tsx",
+      "story": "src/stories/feedback.stories.tsx",
+      "description": "Inline borderless callout with a tinted surface and a variant-derived leading icon.",
+      "props": [
+        { "name": "variant", "type": "'default' | 'info' | 'success' | 'warning' | 'destructive'", "required": false, "description": "Tint and default icon." },
+        { "name": "icon", "type": "React.ReactNode | false", "required": false, "description": "Override the icon, or false to hide it." }
+      ],
+      "variants": { "variant": ["default", "info", "success", "warning", "destructive"] }
+    },
+    {
+      "name": "Banner",
+      "category": "feedback",
+      "source": "src/components/ui/banner.tsx",
+      "story": "src/stories/feedback.stories.tsx",
+      "description": "Full-width page-level notice with a tinted surface, optional title/action, and a dismiss button.",
+      "props": [
+        { "name": "variant", "type": "'info' | 'success' | 'warning' | 'destructive'", "required": false, "description": "Tint and default icon." },
+        { "name": "title", "type": "React.ReactNode", "required": false, "description": "Bold heading." },
+        { "name": "action", "type": "React.ReactNode", "required": false, "description": "Right-aligned action slot." },
+        { "name": "onDismiss", "type": "() => void", "required": false, "description": "Renders a close button when provided." }
+      ],
+      "variants": { "variant": ["info", "success", "warning", "destructive"] }
+    },
+    {
+      "name": "Toaster",
+      "category": "feedback",
+      "source": "src/components/ui/sonner.tsx",
+      "story": "src/stories/feedback.stories.tsx",
+      "description": "Sonner toast host plus the imperative toast() function for transient notifications.",
+      "props": [
+        { "name": "position", "type": "string", "required": false, "description": "Toast anchor position (Sonner prop)." }
+      ],
+      "dependencies": ["sonner"]
+    },
+    {
+      "name": "Skeleton",
+      "category": "feedback",
+      "source": "src/components/ui/skeleton.tsx",
+      "story": "src/stories/feedback.stories.tsx",
+      "description": "Pulsing placeholder block for loading states.",
+      "props": [
+        { "name": "className", "type": "string", "required": false, "description": "Size and shape via utility classes." }
+      ]
+    },
+    {
+      "name": "Spinner",
+      "category": "feedback",
+      "source": "src/components/domain/spinner.tsx",
+      "story": "src/stories/feedback.stories.tsx",
+      "description": "Accessible spinning loader in three sizes.",
+      "props": [
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false, "description": "Spinner size (default 'md')." }
+      ],
+      "variants": { "size": ["sm", "md", "lg"] }
+    },
+    {
+      "name": "Progress",
+      "category": "feedback",
+      "source": "src/components/ui/progress.tsx",
+      "story": "src/stories/progress-timeline.stories.tsx",
+      "description": "Determinate or indeterminate progress bar with variant colors and an optional value label.",
+      "props": [
+        { "name": "value", "type": "number", "required": false, "description": "Current value, clamped to 0..max." },
+        { "name": "max", "type": "number", "required": false, "description": "Scale upper bound (default 100)." },
+        { "name": "variant", "type": "'default' | 'success' | 'warning' | 'destructive'", "required": false, "description": "Fill color." },
+        { "name": "size", "type": "'sm' | 'md'", "required": false, "description": "Track height." },
+        { "name": "indeterminate", "type": "boolean", "required": false, "description": "Animate with no known value." },
+        { "name": "showValue", "type": "boolean", "required": false, "description": "Show a percentage label." }
+      ],
+      "variants": {
+        "variant": ["default", "success", "warning", "destructive"],
+        "size": ["sm", "md"]
+      }
+    },
+    {
+      "name": "EmptyState",
+      "category": "feedback",
+      "source": "src/components/domain/empty-state.tsx",
+      "story": "src/stories/feedback.stories.tsx",
+      "description": "Centered empty placeholder with icon, title, description, and an optional call to action.",
+      "props": [
+        { "name": "title", "type": "string", "required": true, "description": "Primary message." },
+        { "name": "description", "type": "string", "required": false, "description": "Supporting text." },
+        { "name": "icon", "type": "React.ReactNode", "required": false, "description": "Custom icon (defaults to a leaf glyph)." },
+        { "name": "action", "type": "{ label: string; onClick: () => void }", "required": false, "description": "CTA button." }
+      ]
+    },
+    {
+      "name": "ErrorState",
+      "category": "feedback",
+      "source": "src/components/domain/empty-state.tsx",
+      "story": "src/stories/feedback.stories.tsx",
+      "description": "Centered error placeholder with a destructive icon and a retry action.",
+      "props": [
+        { "name": "title", "type": "string", "required": false, "description": "Error heading (has a default)." },
+        { "name": "description", "type": "string", "required": false, "description": "Supporting text." },
+        { "name": "action", "type": "{ label: string; onClick: () => void }", "required": false, "description": "Retry CTA." }
+      ]
+    },
+    {
+      "name": "Timeline",
+      "category": "data",
+      "source": "src/components/domain/timeline.tsx",
+      "story": "src/stories/progress-timeline.stories.tsx",
+      "description": "Vertical event timeline (Timeline + TimelineItem) with per-item variant dots, timestamps, actors, and icon overrides.",
+      "props": [
+        { "name": "title", "type": "React.ReactNode", "required": true, "description": "Entry label (on TimelineItem)." },
+        { "name": "timestamp", "type": "string", "required": false, "description": "Tabular timestamp rendered in a time element." },
+        { "name": "description", "type": "React.ReactNode", "required": false, "description": "Secondary detail." },
+        { "name": "actor", "type": "string", "required": false, "description": "Rendered as 'by {actor}'." },
+        { "name": "variant", "type": "'default' | 'primary' | 'success' | 'warning' | 'destructive' | 'info' | 'muted'", "required": false, "description": "Dot / icon-chip color." },
+        { "name": "icon", "type": "LucideIcon", "required": false, "description": "Replace the dot with an icon in a tinted circle." }
+      ],
+      "variants": {
+        "variant": ["default", "primary", "success", "warning", "destructive", "info", "muted"]
+      }
+    },
+    {
+      "name": "Stepper",
+      "category": "data",
+      "source": "src/components/domain/stepper.tsx",
+      "story": "src/stories/progress-timeline.stories.tsx",
+      "description": "Multi-step progress indicator (horizontal or vertical) with completed/current/upcoming states and optional back-navigation.",
+      "props": [
+        { "name": "steps", "type": "StepperStep[]", "required": true, "description": "Steps ({ label, description? })." },
+        { "name": "current", "type": "number", "required": true, "description": "Active step index (0-based)." },
+        { "name": "orientation", "type": "'horizontal' | 'vertical'", "required": false, "description": "Layout direction." },
+        { "name": "onStepClick", "type": "(index: number) => void", "required": false, "description": "Makes completed steps clickable for back-navigation." }
+      ]
+    },
+    {
+      "name": "DescriptionList",
+      "category": "data",
+      "source": "src/components/domain/description-list.tsx",
+      "story": "src/stories/display-extras.stories.tsx",
+      "description": "Term/value list (DescriptionList + DescriptionItem) with one/two-column layout and optional hairline dividers.",
+      "props": [
+        { "name": "columns", "type": "1 | 2", "required": false, "description": "Responsive column count (default 1)." },
+        { "name": "divided", "type": "boolean", "required": false, "description": "Hairline border between rows." },
+        { "name": "term", "type": "React.ReactNode", "required": true, "description": "Row label (on DescriptionItem)." },
+        { "name": "numeric", "type": "boolean", "required": false, "description": "Render the value with tabular numbers (on DescriptionItem)." }
+      ],
+      "variants": { "columns": ["1", "2"] }
+    },
+    {
+      "name": "Toolbar",
+      "category": "data",
+      "source": "src/components/domain/toolbar.tsx",
+      "story": "src/stories/table-advanced.stories.tsx",
+      "description": "Horizontal action bar (Toolbar + ToolbarSpacer) for grouping controls above tables and lists.",
+      "props": []
+    },
+    {
+      "name": "SectionGroup",
+      "category": "data",
+      "source": "src/components/domain/section-group.tsx",
+      "story": "src/stories/display-extras.stories.tsx",
+      "description": "Titled section wrapper for grouping related form fields or content blocks.",
+      "props": [
+        { "name": "title", "type": "React.ReactNode", "required": false, "description": "Section heading." },
+        { "name": "description", "type": "React.ReactNode", "required": false, "description": "Supporting text under the heading." }
+      ]
+    },
+    {
+      "name": "Breadcrumb",
+      "category": "primitive",
+      "source": "src/components/ui/breadcrumb.tsx",
+      "story": "src/stories/display-extras.stories.tsx",
+      "description": "Breadcrumb trail composed from List, Item, Link, Page, Separator, and Ellipsis parts.",
+      "props": []
+    },
+    {
+      "name": "Wordmark",
+      "category": "domain",
+      "source": "src/components/domain/wordmark.tsx",
+      "story": "src/stories/foundations.stories.tsx",
+      "description": "Brand lockup pairing the BrandMark with a product name and app-scoped subtitle, in dark or light tone.",
+      "props": [
+        { "name": "app", "type": "'cms' | 'order' | 'warehouse'", "required": true, "description": "Selects the subtitle." },
+        { "name": "tone", "type": "'dark' | 'light'", "required": false, "description": "Color scheme for the text." },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false, "description": "BrandMark size." }
+      ],
+      "variants": { "tone": ["dark", "light"], "size": ["sm", "md", "lg"] }
+    },
+    {
+      "name": "BrandMark",
+      "category": "domain",
+      "source": "src/components/domain/brand-mark.tsx",
+      "story": "src/stories/foundations.stories.tsx",
+      "description": "Square primary-green app icon containing a contrast leaf glyph.",
+      "props": [
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false, "description": "Icon box size (default 'md')." }
+      ],
+      "variants": { "size": ["sm", "md", "lg"] }
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+# Basil
+
+> Basil (`basil-ui`) is an open-source dashboard & POS component kit for food, retail & sales — ~68 accessible React components built on Radix primitives and Tailwind v4, extracted from a real wholesale F&B ordering tool. It ships design tokens, unstyled-first primitives, and higher-level domain components (data tables, KPI cards, status pills, editable cells) for building admin dashboards, point-of-sale, and order-management UIs. For React 18/19 apps that want a coherent, production-tested surface rather than assembling one from scratch.
+
+This is the fuller single-file context for LLMs: the same map as `llms.txt` plus the design principles, token families, and inlined usage snippets. `src/styles/globals.css` is the single source of truth for tokens; `src/index.ts` is the full export surface.
+
+## Install & setup
+
+```bash
+npm install basil-ui
+# Font is opt-in (not bundled). For the default Nunito:
+npm install @fontsource-variable/nunito
+```
+
+```tsx
+// app root, once:
+import 'basil-ui/styles.css';
+import '@fontsource-variable/nunito'; // optional — or supply your own via --font-sans
+
+import { Button, DataTable } from 'basil-ui';
+```
+
+Peer deps: React 18 or 19 and Tailwind v4. Every component uses the exported `cn` helper (`clsx` + `tailwind-merge`), so `className` overrides merge predictably. MIT licensed.
+
+## Design principles ("v2")
+
+- **Flat hairline surfaces.** Inline surfaces (cards, tables, toolbars, inputs) wear exactly one warm hairline border and **no shadow**. Depth is reserved for things that float.
+- **Shadows only on overlays.** `--shadow-popover` / `--shadow-modal` / `--shadow-toast` are the *only* shadows — dropdowns, dialogs, sheets, toasts. Never on an inline card.
+- **Borderless tinted status.** Status is a `bg-{hue}-bg text-{hue}-text` pair (no border, no dot-on-white). See `StatusPill` and `Badge` soft variants.
+- **Single crisp focus, 2px offset — two treatments only.**
+  - **Text inputs** (`Input`, `Textarea`, `DatePicker` trigger) use a **2px field-ring** (`focus-visible:ring-2 ring-primary`) with `outline-none`.
+  - **All other controls** (buttons, links, tabs, switches…) defer to the **global outline** (`:focus-visible { outline: 2px solid primary; outline-offset: 2px }`).
+  - The two are mutually exclusive by design — inputs suppress the outline so focus never doubles up.
+- **Warm surface.** Page background is never pure white (`#fafaf7`); cards are `#ffffff` against it.
+- **Opt-in Nunito.** The default typeface is Nunito but it is **not bundled** — load it yourself (`@fontsource-variable/nunito`) or point `--font-sans` at your own font.
+- **Tabular numbers.** Money, counts, and codes use `.font-tabular` / `.tabular` (`font-variant-numeric: tabular-nums`) so digits line up.
+- **Primary green `#1b5e20`** (banana-leaf) — CTAs, nav-active, brand mark, focus ring. Light-mode only.
+
+## Tokens
+
+`src/styles/globals.css` is the single source of truth. It is Tailwind **v4 CSS-first**: the `@theme { … }` block declares CSS custom properties that Tailwind turns directly into utilities (`bg-*`, `text-*`, `border-*`, `ring-*`, `rounded-*`, `shadow-*`). Never hardcode hex — change a value here and every consumer updates.
+
+| Family | Tokens | Notes |
+| --- | --- | --- |
+| **Brand** | `primary`, `primary-hover`, `primary-subtle`, `primary-foreground` | Green `#1b5e20`; `-subtle` is the row/chip hover, focus-bg, and featured-KPI tint. |
+| **Surfaces** | `background`, `foreground`, `card`, `card-foreground`, `popover`, `popover-foreground` | `background` `#fafaf7` (warm), `card` `#ffffff`. |
+| **Neutrals** | `secondary`, `muted`, `muted-foreground`, `accent`, `accent-foreground` | `accent` is the green-tint hover surface. |
+| **Borders / inputs / ring** | `border`, `border-strong`, `input`, `ring` | Warm hairline `#e8e8e3`; `input` `#918f86` meets non-text 3:1; ring = primary. |
+| **Status triads** | `destructive`, `success`, `warning`, `info` — each with a solid base, `-foreground`, and a **`-bg` / `-text`** tinted pair | `-bg`/`-text` drive all borderless tinted status. `success` is intentionally `#10b981` (≠ brand green) to avoid drift. |
+| **Sidebar chrome** | `sidebar`, `sidebar-foreground`, `sidebar-primary(-foreground)`, `sidebar-accent(-foreground)`, `sidebar-border`, `sidebar-ring` | Dark banana-leaf `#1b3a1f` app chrome. |
+| **Radius** | `sm` 6px · `md` 8px · `lg` 10px · `xl` 12px | `sm` chips/badges, `md` controls (buttons/inputs), `lg` cards/tables/alerts, `xl` modals. |
+| **Overlay shadows** | `shadow-popover`, `shadow-modal`, `shadow-toast` | The only shadows in the system. |
+| **Type / motion** | `--font-sans` (Nunito, opt-in), accordion animations | Plus `@utility font-tabular` / `tabular` for numerics. |
+
+## Usage: Button
+
+The exported `Button` is a thin domain wrapper adding ergonomic props on top of the base button.
+
+```tsx
+import { Button } from 'basil-ui';
+import { Plus } from 'lucide-react';
+
+<Button variant="default" leadingIcon={<Plus />}>New order</Button>
+<Button variant="destructive" isLoading>Deleting…</Button>
+<Button variant="outline" size="sm">Filter</Button>
+<Button variant="ghost" size="icon" aria-label="More" />
+```
+
+Props: `variant` (`default` | `destructive` | `outline` | `secondary` | `ghost` | `link`), `size` (`default` | `sm` | `lg` | `icon` | `icon-sm`), `isLoading` (shows a spinner + disables), `leadingIcon`, `trailingIcon`, `fullWidth`, plus all native `<button>` attributes.
+
+## Usage: DataTable
+
+`DataTable` is a full TanStack table with sorting, pagination, selection + bulk actions, density/sticky/pinning options, built-in search, server-driven pagination, saved-view state, and loading/empty/error states. Pair it with `StatusPill`, `downloadCsv`, `DataTableFacetedFilter`, and `SavedViews`.
+
+```tsx
+import { DataTable, StatusPill, Button, downloadCsv } from 'basil-ui';
+import type { ColumnDef } from '@tanstack/react-table';
+import { Download } from 'lucide-react';
+
+type Order = { code: string; customer: string; total: number; status: 'pending_payment' | 'paid' };
+
+const columns: ColumnDef<Order, unknown>[] = [
+  { accessorKey: 'code', header: 'Order' },
+  { accessorKey: 'customer', header: 'Customer' },
+  {
+    accessorKey: 'total',
+    header: 'Total',
+    cell: (c) => <span className="font-tabular">{c.getValue<number>().toLocaleString()}</span>,
+  },
+  { accessorKey: 'status', header: 'Status', cell: (c) => <StatusPill status={c.getValue<Order['status']>()} /> },
+];
+
+export function OrdersTable({ data }: { data: Order[] }) {
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+      searchable
+      searchPlaceholder="Search orders…"
+      density="comfortable"
+      densityToggle
+      stickyHeader
+      maxHeight={640}
+      enableRowSelection
+      bulkActions={(rows) => <Button size="sm" variant="outline">Export {rows.length}</Button>}
+      toolbar={
+        <Button size="sm" variant="outline" leadingIcon={<Download />}
+          onClick={() => downloadCsv('orders.csv', data, [
+            { header: 'Order', value: (r) => r.code },
+            { header: 'Total', value: (r) => r.total },
+          ])}>
+          Export CSV
+        </Button>
+      }
+      onRowClick={(row) => console.log(row.code)}
+      caption="Order list"
+    />
+  );
+}
+```
+
+Selected props: `columns`, `data`, `isLoading`, `isError`, `onRetry`, `enableRowSelection`, `bulkActions`, `toolbar` (node or `(table) => node`), `onRowClick`, `pageSize`, `caption`, `density`, `densityToggle`, `maxHeight`, `stickyHeader`, `pinFirstColumn`, `enableColumnVisibility`, `enableColumnResizing`, `searchable`, `searchPlaceholder`, `pageSizeOptions`, `rowCount`, `pageCount`, `onPaginationChange`, `isFiltered`, `filteredEmptyTitle`/`Description`, `onClearFilters`, `onSelectAllAcrossPages`, and saved-view wiring `onStateChange` / `appliedView` / `initialColumnFilters` / `initialColumnVisibility` / `initialGlobalFilter` (type `DataTableViewState`).
+
+---
+
+## Component index
+
+Everything is re-exported from `src/index.ts`; shadcn-derived primitives also export their sub-parts (e.g. `DialogHeader`, `SelectItem`).
+
+### Primitives
+
+- [Button](src/components/domain/button.tsx): Thin wrapper over the base button adding `isLoading`, `leadingIcon`, `trailingIcon`, `fullWidth` ergonomics.
+- [Badge](src/components/ui/badge.tsx): Pill label with solid and borderless `soft-*` tinted variants.
+- [Avatar](src/components/ui/avatar.tsx): User/customer avatar with image + fallback (`AvatarImage`, `AvatarFallback`).
+- [Separator](src/components/ui/separator.tsx): Hairline divider, horizontal or vertical.
+- [Skeleton](src/components/ui/skeleton.tsx): Loading placeholder block sized via `className`.
+- [Spinner](src/components/domain/spinner.tsx): Brand-green loading spinner (`sm`/`md`/`lg`).
+- [Slider](src/components/ui/slider.tsx): Range slider primitive.
+- [ScrollArea](src/components/ui/scroll-area.tsx): Styled custom-scrollbar container.
+- [Accordion](src/components/ui/accordion.tsx): Collapsible sections (single/multiple).
+- [Tabs](src/components/ui/tabs.tsx): Tabbed navigation (`TabsList`, `TabsTrigger`, `TabsContent`).
+- [Tooltip](src/components/ui/tooltip.tsx): Hover hint with overlay shadow.
+- [BrandMark](src/components/domain/brand-mark.tsx): Green square + leaf glyph brand icon.
+- [Wordmark](src/components/domain/wordmark.tsx): BrandMark + wordmark lockup with app subtitle.
+
+### Forms
+
+- [Input](src/components/ui/input.tsx): Text field with the 2px field-ring focus and `aria-invalid` destructive border.
+- [Textarea](src/components/ui/textarea.tsx): Multi-line field sharing the input focus/invalid treatment.
+- [Label](src/components/ui/label.tsx): Accessible form label.
+- [Checkbox](src/components/ui/checkbox.tsx): Boolean control (supports indeterminate).
+- [RadioGroup](src/components/ui/radio-group.tsx): Single-choice group (`RadioGroupItem`).
+- [Switch](src/components/ui/switch.tsx): On/off toggle.
+- [SegmentedControl](src/components/domain/segmented-control.tsx): Single-select segmented toggle on a muted track with arrow-key nav.
+- [Select](src/components/ui/select.tsx): Dropdown select (`SelectTrigger`, `SelectContent`, `SelectItem`).
+- [Combobox](src/components/domain/combobox.tsx): Searchable single-select popover with optional inline "create new".
+- [MultiSelect](src/components/domain/multi-select.tsx): Multi-select popover; picks render as removable soft chips.
+- [DatePicker](src/components/domain/date-picker.tsx): Popover calendar, clearable, min/max + disabled dates.
+- [DateRangePicker](src/components/domain/date-range-picker.tsx): Range popover with a preset column, clearable.
+- [Calendar](src/components/ui/calendar.tsx): Raw month calendar (react-day-picker).
+- [CurrencyInput](src/components/domain/currency-input.tsx): Money entry with locale thousands grouping on blur, emits a raw integer.
+- [NumberField](src/components/domain/currency-input.tsx): Generic integer entry with optional −/+ steppers.
+- [InputOTP](src/components/ui/input-otp.tsx): Segmented OTP entry with auto-advance, paste-to-fill, digits only.
+- [FileUpload](src/components/domain/file-upload.tsx): Dependency-free drag-drop / click picker with accept + size filtering and thumbnails.
+- [Form](src/components/ui/form.tsx): react-hook-form field wiring (`FormField`, `FormItem`, `FormControl`, `FormMessage`).
+- [QuantityStepper](src/components/domain/quantity-stepper.tsx): −/n/+ integer stepper with min/max/step.
+- [FieldHint](src/components/domain/field-helpers.tsx): Caption under a field, destructive when `error`.
+- [RequiredHint](src/components/domain/field-helpers.tsx): Dot indicator marking a required field.
+
+### Data
+
+- [DataTable](src/components/domain/data-table.tsx): Full TanStack table — sorting, pagination, row selection + bulk actions, density toggle, sticky header, column pinning/visibility/resizing, built-in search, server-driven pagination, saved-view state, and loading/empty/filtered-empty/error states.
+- [DataTableFacetedFilter](src/components/domain/data-table-faceted-filter.tsx): Multi-select column filter with per-value counts, for a DataTable toolbar render-prop.
+- [EditableCell](src/components/domain/editable-cell.tsx): Inline-editable table cell (text/number/currency/select) committing on Enter or blur.
+- [SavedViews](src/components/domain/saved-views.tsx): Preset tab strip for saved DataTable filter/sort snapshots.
+- [Table](src/components/ui/table.tsx): Raw table primitives (`TableHeader`, `TableRow`, `TableCell`, `TableCaption`).
+- [TableHelpers](src/components/domain/table-helpers.tsx): `DataTableColumnHeader` (sortable header) + `DataTableRowActions` (row kebab).
+- [Pagination](src/components/domain/pagination.tsx): Prev / "page n / N" / Next control.
+- [Toolbar](src/components/domain/toolbar.tsx): Flat filter/action bar layout primitive (with `ToolbarSpacer`).
+- [FilterChips](src/components/domain/filter-chips.tsx): Applied-filter chips row, each removable, with optional clear-all + result count.
+- [DescriptionList](src/components/domain/description-list.tsx): Key/value detail display for read views (`DescriptionItem`).
+- [csv](src/lib/csv.ts): `downloadCsv` / `toCsv` — spreadsheet-friendly (UTF-8 BOM), SSR-safe CSV export paired with DataTable.
+- [SectionGroup](src/components/domain/section-group.tsx): Titled form/detail section with a divider.
+- [Card](src/components/ui/card.tsx): Flat content surface (`CardHeader`, `CardTitle`, `CardContent`, `CardFooter`).
+- [Breadcrumb](src/components/ui/breadcrumb.tsx): Path navigation.
+
+### Overlays
+
+- [Dialog](src/components/ui/dialog.tsx): Modal dialog (`DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`).
+- [AlertDialog](src/components/ui/alert-dialog.tsx): Confirm/destructive modal (`AlertDialogAction` supports `variant`).
+- [ConfirmDialog](src/components/domain/confirm-dialog.tsx): Prebuilt confirm on AlertDialog with loading + destructive support.
+- [Sheet](src/components/ui/sheet.tsx): Side drawer (`SheetHeader`, `SheetTitle`, `SheetDescription`).
+- [EntitySheet](src/components/domain/entity-sheet.tsx): Right-side detail/edit sheet with sticky footer, loading and error states.
+- [Drawer](src/components/ui/drawer.tsx): Vaul-based bottom drawer for mobile.
+- [Popover](src/components/ui/popover.tsx): Anchored floating panel (`PopoverTrigger`, `PopoverContent`).
+- [DropdownMenu](src/components/ui/dropdown-menu.tsx): Action menu (`DropdownMenuItem`, `DropdownMenuTrigger`).
+- [KebabMenu](src/components/domain/kebab-menu.tsx): Standalone "more" overflow menu with destructive items.
+- [Command](src/components/ui/command.tsx): Command palette / combobox (cmdk parts).
+
+### Feedback
+
+- [Alert](src/components/ui/alert.tsx): Inline banner (`AlertTitle`, `AlertDescription`).
+- [Banner](src/components/ui/banner.tsx): Page-level full-width tinted notice, dismissible with an action slot.
+- [Progress](src/components/ui/progress.tsx): Determinate progress bar with optional label/percent, or indeterminate mode.
+- [Sonner](src/components/ui/sonner.tsx): `Toaster` + `toast()` overlay notifications.
+- [EmptyState](src/components/domain/empty-state.tsx): Leaf icon + title + description + optional CTA; also exports `ErrorState`.
+- [Timeline](src/components/domain/timeline.tsx): Vertical connector-line feed for history / audit trails (`TimelineItem`).
+- [Stepper](src/components/domain/stepper.tsx): Horizontal/vertical multi-step wizard indicator (distinct from QuantityStepper).
+
+### Domain
+
+- [StatusPill](src/components/domain/status-pill.tsx): Order-status pill with dot, mapped from an `OrderStatus` union.
+- [DomainBadges](src/components/domain/mocchinh-badges.tsx): `VatBadge` (soft-warning) + `OutOfStockBadge` (soft-destructive).
+- [KpiCard](src/components/domain/kpi-card.tsx): Metric tile with label, value, trend arrow, icon chip, featured state and optional inline sparkline.
+- [Sparkline](src/components/domain/sparkline.tsx): Inline mini trend chart (SVG line + optional area fill + endpoint dot).
+
+## Key files
+
+- [src/index.ts](src/index.ts): The full public export surface — every component and helper.
+- [src/styles/globals.css](src/styles/globals.css): Tailwind v4 `@theme` tokens — the single source of truth for colours, radii, shadows and type.
+- [README.md](README.md): Full documentation — design principles, token families and the component index.
+- [AGENTS.md](AGENTS.md): Guidance for coding agents working in this repo.
+- [components.json](components.json): shadcn registry config (style, aliases, icon library).
