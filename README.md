@@ -203,11 +203,9 @@ PRs are welcome! Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md) and open an 
 
 ## Roadmap
 
-- 📖 Dedicated docs site (beyond Storybook)
-- 🧩 shadcn-style component registry + an **MCP server** for agents
-- 🧱 More dashboard & POS templates
-- 🌍 i18n / RTL support and dark mode
-- 🎨 Additional theme presets
+**Up next:** real i18n (English + Vietnamese) · charts on Recharts. → **[Full roadmap](./ROADMAP.md)**
+
+Shipped: shadcn registry ✓ · MCP server ✓ · agent-native docs ✓. Coming: dashboard/POS templates, dark mode, tests + CI, a dedicated docs site.
 
 ## License
 
