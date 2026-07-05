@@ -8,6 +8,8 @@
 [![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38bdf8.svg)](https://tailwindcss.com)
 [![React 18 · 19](https://img.shields.io/badge/React-18%20%C2%B7%2019-149eca.svg)](https://react.dev)
 
+**[📚 Live docs & component explorer →](https://sonhoai27.github.io/basil-ui/)**
+
 ---
 
 ## What is Basil?
@@ -157,7 +159,7 @@ Everything is re-exported from the package barrel (`import { … } from 'basil-u
 ### Domain
 `StatusPill` · `KpiCard` · `Timeline` · `Stepper` · `Sparkline` · `VatBadge` · `OutOfStockBadge`
 
-> 📚 Full API docs, prop tables, and live examples live in the **Storybook** (Ladle). Run `npm run storybook` locally, or browse the hosted docs — _link coming soon_.
+> 📚 Full API docs, prop tables, and live examples live in the **[Storybook](https://sonhoai27.github.io/basil-ui/)** (Ladle). Browse the [hosted docs](https://sonhoai27.github.io/basil-ui/), or run `npm run storybook` locally.
 
 #### About the `DataTable`
 
