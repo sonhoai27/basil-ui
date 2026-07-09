@@ -1,6 +1,6 @@
 {
   "name": "basil-ui",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Open-source dashboard & POS component kit for food, retail & sales — flat, accessible, agent-friendly. Built on Radix + Tailwind v4.",
   "keywords": [
     "react",

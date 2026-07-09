@@ -106,10 +106,14 @@ export const EntitySheet = React.forwardRef<HTMLDivElement, EntitySheetProps>(
           {isBusy ? null : (
             <div className="sticky bottom-0 flex flex-col gap-2 border-t bg-card px-6 py-3">
               {helper ? <p className="text-xs text-muted-foreground">{helper}</p> : null}
-              {/* Nguy hiểm tách trái; phụ + chính gom phải (mobile: nguy hiểm trên,
-                  chính xuống đáy cho ngón tay). */}
+              {/* Mobile (trên→dưới): phụ (1 hàng) → chính → nguy hiểm (order-last).
+                  Desktop: nguy hiểm trái (order-first), phụ+chính gom phải. */}
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                {destructive ? <div className="flex items-center gap-2">{destructive}</div> : null}
+                {destructive ? (
+                  <div className="order-last flex items-center gap-2 sm:order-first">
+                    {destructive}
+                  </div>
+                ) : null}
                 <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row sm:items-center">
                   {secondaryActions ? (
                     <div className="flex flex-wrap items-center gap-2">{secondaryActions}</div>
