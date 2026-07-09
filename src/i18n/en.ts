@@ -76,6 +76,8 @@ export const en: Messages = {
   fileUpload: {
     hint: 'Drag and drop or click to select',
     remove: (name) => `Remove ${name}`,
+    overSizeSkipped: (count, maxMB) => `${count} file(s) over ${maxMB} MB were skipped.`,
+    wrongTypeSkipped: (count) => `${count} file(s) of the wrong type were skipped.`,
   },
   savedViews: {
     all: 'All',

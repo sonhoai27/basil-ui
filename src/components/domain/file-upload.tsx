@@ -113,7 +113,6 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     ref,
   ) => {
     const t = useMessages();
-    const hintText = hint ?? t.fileUpload.hint;
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [dragOver, setDragOver] = React.useState(false);
     const [note, setNote] = React.useState<string | null>(null);
@@ -144,12 +143,10 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
 
       const messages: string[] = [];
       if (rejectedSize.length > 0) {
-        messages.push(
-          `${rejectedSize.length} file(s) over ${maxSizeMB} MB were skipped.`,
-        );
+        messages.push(t.fileUpload.overSizeSkipped(rejectedSize.length, maxSizeMB ?? 0));
       }
       if (rejectedType.length > 0) {
-        messages.push(`${rejectedType.length} file(s) of the wrong type were skipped.`);
+        messages.push(t.fileUpload.wrongTypeSkipped(rejectedType.length));
       }
       setNote(messages.length > 0 ? messages.join(' ') : null);
 
@@ -181,7 +178,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           role="button"
           tabIndex={disabled ? -1 : 0}
           aria-disabled={disabled || undefined}
-          aria-describedby={hintText ? descId : undefined}
+          aria-describedby={hint ? descId : undefined}
           onClick={openPicker}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -214,12 +211,10 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           >
             <UploadIcon className="size-5" />
           </span>
-          <p className="text-sm font-medium text-foreground">
-            Drag and drop or click to select
-          </p>
-          {hintText ? (
+          <p className="text-sm font-medium text-foreground">{t.fileUpload.hint}</p>
+          {hint ? (
             <p id={descId} className="text-xs text-muted-foreground">
-              {hintText}
+              {hint}
             </p>
           ) : null}
           <input

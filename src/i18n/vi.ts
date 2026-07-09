@@ -76,6 +76,8 @@ export const vi: Messages = {
   fileUpload: {
     hint: 'Kéo thả hoặc bấm để chọn',
     remove: (name) => `Bỏ ${name}`,
+    overSizeSkipped: (count, maxMB) => `Đã bỏ qua ${count} tệp vượt ${maxMB} MB.`,
+    wrongTypeSkipped: (count) => `Đã bỏ qua ${count} tệp sai định dạng.`,
   },
   savedViews: {
     all: 'Tất cả',

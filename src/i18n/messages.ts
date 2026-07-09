@@ -86,9 +86,14 @@ export interface Messages {
     digit: (n: number) => string;
   };
   fileUpload: {
+    /** Main prompt inside the dropzone, e.g. "Drag and drop or click to select" */
     hint: string;
     /** e.g. "Remove report.pdf" */
     remove: (name: string) => string;
+    /** e.g. "2 file(s) over 5 MB were skipped." */
+    overSizeSkipped: (count: number, maxMB: number) => string;
+    /** e.g. "1 file(s) of the wrong type were skipped." */
+    wrongTypeSkipped: (count: number) => string;
   };
   savedViews: {
     all: string;
