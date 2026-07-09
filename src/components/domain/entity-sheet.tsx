@@ -76,7 +76,7 @@ export const EntitySheet = React.forwardRef<HTMLDivElement, EntitySheetProps>(
           side="right"
           className={cn('flex w-full flex-col gap-0 p-0 sm:max-w-[520px]', className)}
         >
-          <SheetHeader className="border-b bg-muted px-6 py-4 text-left">
+          <SheetHeader className="border-b bg-muted px-6 py-4 pr-14 text-left">
             {subtitle ? (
               <SheetDescription className="font-tabular text-xs uppercase tracking-wider">
                 {subtitle}
@@ -106,14 +106,14 @@ export const EntitySheet = React.forwardRef<HTMLDivElement, EntitySheetProps>(
           {isBusy ? null : (
             <div className="sticky bottom-0 flex flex-col gap-2 border-t bg-card px-6 py-3">
               {helper ? <p className="text-xs text-muted-foreground">{helper}</p> : null}
-              {secondaryActions ? (
-                <div className="flex flex-wrap items-center gap-2 border-b pb-2">
-                  {secondaryActions}
-                </div>
-              ) : null}
-              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-center gap-2">{destructive}</div>
-                <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
+              {/* Nguy hiểm tách trái; phụ + chính gom phải (mobile: nguy hiểm trên,
+                  chính xuống đáy cho ngón tay). */}
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                {destructive ? <div className="flex items-center gap-2">{destructive}</div> : null}
+                <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row sm:items-center">
+                  {secondaryActions ? (
+                    <div className="flex flex-wrap items-center gap-2">{secondaryActions}</div>
+                  ) : null}
                   {primaryActions}
                 </div>
               </div>
