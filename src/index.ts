@@ -49,6 +49,7 @@ export * from './components/domain/quantity-stepper';
 export * from './components/domain/confirm-dialog';
 export * from './components/domain/pagination';
 export * from './components/domain/data-table';
+export * from './components/domain/data-card';
 export * from './components/domain/data-table-faceted-filter';
 export * from './components/domain/editable-cell';
 export * from './components/domain/saved-views';

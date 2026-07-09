@@ -60,6 +60,12 @@ export interface DataTableProps<TData> {
   initialSorting?: SortingState;
   /** Click the whole row (open detail). Ignored when clicking a button/checkbox/menu inside the row. */
   onRowClick?: (row: TData) => void;
+  /**
+   * Below the `md` breakpoint, render each row as this card instead of a table row
+   * (the table scrolls out of view on narrow screens). Omit → table-only at all
+   * widths (current behavior). Pairs well with the `DataCard` layout primitive.
+   */
+  renderMobileCard?: (row: TData) => React.ReactNode;
   getRowId?: (row: TData) => string;
   /** Enable the row-selection checkbox column. */
   enableRowSelection?: boolean;
@@ -145,6 +151,7 @@ export function DataTable<TData>({
   pageSize = 15,
   initialSorting,
   onRowClick,
+  renderMobileCard,
   getRowId,
   enableRowSelection,
   bulkActions,
@@ -470,7 +477,47 @@ export function DataTable<TData>({
             <EmptyState title={emptyTitle ?? t.table.noData} description={emptyDescription} action={emptyAction} />
           )
         ) : (
-            <Table aria-label={caption ? undefined : ariaLabel} className={densityCls} style={tableStyle} containerStyle={scrollStyle}>
+          <>
+            {/* Mobile: mỗi dòng thành 1 thẻ (bảng cuộn ngang không thân thiện màn nhỏ). */}
+            {renderMobileCard ? (
+              <ul className="divide-y divide-border md:hidden">
+                {rows.map((row) => (
+                  <li key={row.id}>
+                    <div
+                      role={onRowClick ? 'button' : undefined}
+                      tabIndex={onRowClick ? 0 : undefined}
+                      data-state={row.getIsSelected() ? 'selected' : undefined}
+                      onClick={onRowClick ? (e) => handleRowClick(e, row.original) : undefined}
+                      onKeyDown={
+                        onRowClick
+                          ? (e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                onRowClick(row.original);
+                              }
+                            }
+                          : undefined
+                      }
+                      className={cn(
+                        'block px-4 py-3 outline-none transition-colors',
+                        'data-[state=selected]:bg-primary-subtle',
+                        onRowClick &&
+                          'cursor-pointer hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+                      )}
+                    >
+                      {renderMobileCard(row.original)}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            <Table
+              aria-label={caption ? undefined : ariaLabel}
+              className={densityCls}
+              style={tableStyle}
+              containerStyle={scrollStyle}
+              containerClassName={cn(renderMobileCard && 'max-md:hidden')}
+            >
               {caption ? <TableCaption className="sr-only">{caption}</TableCaption> : null}
               <TableHeader>
                 {table.getHeaderGroups().map((hg) => (
@@ -538,6 +585,7 @@ export function DataTable<TData>({
                 ))}
               </TableBody>
             </Table>
+          </>
         )}
       </div>
 
